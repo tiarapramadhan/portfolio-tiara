@@ -95,19 +95,53 @@ async function renderProfile() {
   document.getElementById("hero-bio").textContent = p.bio || "";
   document.getElementById("footer-name").textContent = p.nama || "—";
   document.getElementById("footer-year").textContent = new Date().getFullYear();
+  document.getElementById("footer-logo-name").textContent = p.nama || "Portfolio";
+  document.getElementById("footer-tagline").textContent = p.tagline || "";
 
   if (p.foto_url) document.getElementById("hero-photo").src = p.foto_url;
 
   const cv = document.getElementById("hero-cv");
   if (p.link_cv) cv.href = p.link_cv; else cv.style.display = "none";
 
-  const emailBtn = document.getElementById("contact-email");
-  if (p.email) emailBtn.href = "mailto:" + p.email;
+  // hero socials
+  const heroSocials = document.getElementById("hero-socials");
+  heroSocials.innerHTML = "";
+  if (p.link_linkedin) heroSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
+  if (p.email) heroSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
 
-  const socials = document.getElementById("hero-socials");
-  socials.innerHTML = "";
-  if (p.link_linkedin) socials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
-  if (p.email) socials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+  // contact section
+  const emailLink = document.getElementById("contact-email-link");
+  const emailText = document.getElementById("contact-email-text");
+  if (p.email) {
+    emailLink.href = "mailto:" + p.email;
+    emailText.textContent = p.email;
+  } else {
+    emailLink.style.display = "none";
+  }
+  const contactSocials = document.getElementById("contact-socials");
+  contactSocials.innerHTML = "";
+  if (p.link_linkedin) contactSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
+  if (p.email) contactSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+
+  // footer socials
+  const footerSocials = document.getElementById("footer-socials");
+  footerSocials.innerHTML = "";
+  if (p.link_linkedin) footerSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
+  if (p.email) footerSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+
+  // contact form -> buka email client dengan pesan udah keisi (nggak butuh backend)
+  const form = document.getElementById("contact-form");
+  if (form && p.email) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = document.getElementById("cf-name").value;
+      const fromEmail = document.getElementById("cf-email").value;
+      const message = document.getElementById("cf-message").value;
+      const subject = encodeURIComponent(`Halo dari ${name} lewat portfolio`);
+      const body = encodeURIComponent(`${message}\n\n— ${name} (${fromEmail})`);
+      window.location.href = `mailto:${p.email}?subject=${subject}&body=${body}`;
+    });
+  }
 }
 
 /* ============================================================
@@ -332,76 +366,79 @@ function toolIconOrFallback(name, url) {
 }
 
 /* ============================================================
-   SKILLS
+   SKILLS — sidebar + panel (pola sama kayak Projects)
    ============================================================ */
+let ALL_SKILLS = [];
+let ACTIVE_SKILL_GROUP = "Semua";
+
 async function renderSkills() {
   const rows = await fetchCSV(CONFIG.SKILLS_CSV_URL);
-  const grid = document.getElementById("skills-grid");
-  grid.innerHTML = "";
+  const sidebar = document.getElementById("skills-filter-bar");
+  const panel = document.getElementById("skills-panel");
+
   if (!rows.length) {
-    grid.appendChild(el(`<div class="empty-state">Belum ada data skills.</div>`));
+    sidebar.innerHTML = "";
+    panel.innerHTML = `<div class="empty-state">Belum ada data skills.</div>`;
     return;
   }
-  const groups = {};
-  rows.forEach(r => {
-    const cat = r.kategori || "Lainnya";
-    if (!groups[cat]) groups[cat] = [];
-    groups[cat].push(r);
-    if (cat.toLowerCase().includes("tool") && r.icon_url && !r.icon_url.startsWith("ISI:")) {
+
+  // flatten: tiap skill dapet "group" label = sub_kategori (kalau Tools & ada) atau kategori
+  ALL_SKILLS = rows.map(r => {
+    const isTools = (r.kategori || "").toLowerCase().includes("tool");
+    if (isTools && r.icon_url && !r.icon_url.startsWith("ISI:")) {
       TOOL_ICON_MAP[r.nama_skill.toLowerCase().trim()] = r.icon_url;
     }
+    return { ...r, isTools, group: (isTools && r.sub_kategori) ? r.sub_kategori : (r.kategori || "Lainnya") };
   });
 
-  function renderTagCard(item, isTools) {
-    const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
-    const iconUrl = isTools ? findToolIconUrl(item.nama_skill) : null;
-    const iconHtml = isTools ? toolIconOrFallback(item.nama_skill, iconUrl) : "";
-    const tag = el(`<span class="skill-tag${isTools ? " clickable" : ""}">${iconHtml}<span>${item.nama_skill}${level}</span></span>`);
-    if (isTools) {
-      tag.addEventListener("click", () => openToolModal(item.nama_skill));
-    }
-    return tag;
+  const groupOrder = [];
+  ALL_SKILLS.forEach(s => { if (!groupOrder.includes(s.group)) groupOrder.push(s.group); });
+
+  sidebar.innerHTML = "";
+  ["Semua", ...groupOrder].forEach(group => {
+    const btn = el(`<button class="filter-pill ${group === ACTIVE_SKILL_GROUP ? "active" : ""}">${group}</button>`);
+    btn.addEventListener("click", () => {
+      ACTIVE_SKILL_GROUP = group;
+      document.querySelectorAll("#skills-filter-bar .filter-pill").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      drawSkillsPanel();
+    });
+    sidebar.appendChild(btn);
+  });
+
+  drawSkillsPanel();
+}
+
+function renderSkillTagCard(item) {
+  const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
+  const iconUrl = item.isTools ? findToolIconUrl(item.nama_skill) : null;
+  const iconHtml = item.isTools ? toolIconOrFallback(item.nama_skill, iconUrl) : "";
+  const tag = el(`<span class="skill-tag${item.isTools ? " clickable" : ""}">${iconHtml}<span>${item.nama_skill}${level}</span></span>`);
+  if (item.isTools) {
+    tag.addEventListener("click", () => openToolModal(item.nama_skill));
   }
+  return tag;
+}
 
-  Object.entries(groups).forEach(([cat, items]) => {
-    const isTools = cat.toLowerCase().includes("tool");
-    const block = el(`<div><p class="skill-category-title">${cat}</p></div>`);
+function drawSkillsPanel() {
+  const panel = document.getElementById("skills-panel");
+  panel.innerHTML = "";
 
-    if (isTools && items.some(i => i.sub_kategori)) {
-      // kelompokkan lagi berdasarkan sub_kategori
-      const subGroups = {};
-      items.forEach(item => {
-        const sub = item.sub_kategori || "Lainnya";
-        if (!subGroups[sub]) subGroups[sub] = [];
-        subGroups[sub].push(item);
-      });
-      Object.entries(subGroups).forEach(([sub, subItems]) => {
-        const subBlock = el(`
-          <div class="skill-subgroup">
-            <button class="skill-subgroup-toggle" type="button">
-              <span>${sub}</span>
-              <span class="chevron">⌄</span>
-            </button>
-            <div class="skill-tags collapsed"></div>
-          </div>
-        `);
-        const toggleBtn = subBlock.querySelector(".skill-subgroup-toggle");
-        const tagsWrap = subBlock.querySelector(".skill-tags");
-        subItems.forEach(item => tagsWrap.appendChild(renderTagCard(item, isTools)));
-        toggleBtn.addEventListener("click", () => {
-          tagsWrap.classList.toggle("collapsed");
-          toggleBtn.classList.toggle("open");
-        });
-        block.appendChild(subBlock);
-      });
-    } else {
-      const tagsWrap = el(`<div class="skill-tags"></div>`);
-      items.forEach(item => tagsWrap.appendChild(renderTagCard(item, isTools)));
-      block.appendChild(tagsWrap);
-    }
-
-    grid.appendChild(block);
-  });
+  if (ACTIVE_SKILL_GROUP === "Semua") {
+    const groups = {};
+    ALL_SKILLS.forEach(s => { (groups[s.group] = groups[s.group] || []).push(s); });
+    Object.entries(groups).forEach(([group, items]) => {
+      const block = el(`<div class="skill-category-block"><p class="skill-category-title">${group}</p><div class="skill-tags"></div></div>`);
+      const tagsWrap = block.querySelector(".skill-tags");
+      items.forEach(item => tagsWrap.appendChild(renderSkillTagCard(item)));
+      panel.appendChild(block);
+    });
+  } else {
+    const items = ALL_SKILLS.filter(s => s.group === ACTIVE_SKILL_GROUP);
+    const tagsWrap = el(`<div class="skill-tags"></div>`);
+    items.forEach(item => tagsWrap.appendChild(renderSkillTagCard(item)));
+    panel.appendChild(tagsWrap);
+  }
 }
 
 /* ============================================================
@@ -581,6 +618,17 @@ function openModal(p) {
     githubBtn.style.display = "inline-flex";
   } else {
     githubBtn.style.display = "none";
+  }
+
+  const relatedBlock = document.getElementById("modal-related-block");
+  const relatedWrap = document.getElementById("modal-related");
+  const relatedExp = ALL_EXPERIENCE.filter(r => splitTags(r.project_terkait).includes(p.id));
+  if (relatedExp.length) {
+    document.getElementById("modal-related-title").textContent = "Dikerjakan selama";
+    relatedWrap.innerHTML = relatedExp.map(r => `<div class="linkable-item">💼 ${r.posisi} · ${r.institusi || ""}</div>`).join("");
+    relatedBlock.style.display = "block";
+  } else {
+    relatedBlock.style.display = "none";
   }
 
   document.getElementById("modal-overlay").classList.add("open");

@@ -50,14 +50,19 @@
   <!-- SKILLS -->
   <section id="skills" class="section">
     <h2 class="section-title center"><span class="eyebrow">kemampuan</span>Skills</h2>
-    <div class="skills-grid" id="skills-grid"></div>
+    <div class="projects-layout">
+      <aside class="filter-sidebar" id="skills-filter-bar"></aside>
+      <div class="content-panel" id="skills-panel"></div>
+    </div>
   </section>
 
   <!-- EXPERIENCE -->
   <section id="experience" class="section">
     <h2 class="section-title center"><span class="eyebrow">perjalanan</span>Pengalaman</h2>
-    <div class="filter-bar center-bar" id="exp-tabs"></div>
-    <div class="exp-list" id="exp-list"></div>
+    <div class="projects-layout">
+      <aside class="filter-sidebar" id="exp-tabs"></aside>
+      <div class="content-panel exp-list" id="exp-list"></div>
+    </div>
   </section>
 
   <!-- PROJECTS -->
@@ -70,16 +75,44 @@
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="section contact-section">
-    <h2 class="section-title"><span class="eyebrow">kontak</span>Yuk terhubung</h2>
-    <p class="contact-sub">Terbuka untuk kolaborasi, magang, atau ngobrol soal data.</p>
-    <a href="#" id="contact-email" class="btn btn-primary">Kirim email</a>
+  <section id="contact" class="section">
+    <h2 class="section-title center"><span class="eyebrow">kontak</span>Contact Me</h2>
+    <div class="contact-layout">
+      <div class="contact-info-card">
+        <p class="contact-block-title">Contact Info</p>
+        <a href="#" id="contact-email-link" class="contact-info-item">
+          <span class="contact-info-icon">✉</span><span id="contact-email-text">—</span>
+        </a>
+        <p class="contact-block-title" style="margin-top:24px;">Social</p>
+        <div class="contact-socials" id="contact-socials"></div>
+      </div>
+      <form class="contact-form" id="contact-form">
+        <input type="text" id="cf-name" placeholder="Nama" required>
+        <input type="email" id="cf-email" placeholder="Email" required>
+        <textarea id="cf-message" placeholder="Pesan" rows="5" required></textarea>
+        <button type="submit" class="btn btn-primary">Send</button>
+      </form>
+    </div>
   </section>
 
 </main>
 
 <footer class="footer">
-  <p>Dibuat oleh <span id="footer-name">—</span> · <span id="footer-year"></span></p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-logo" id="footer-logo-name">—</p>
+      <p class="footer-tag" id="footer-tagline">Portfolio</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="#home">Home</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="footer-socials" id="footer-socials"></div>
+  </div>
+  <p class="footer-copyright">© <span id="footer-year"></span> <span id="footer-name">—</span>. All rights reserved.</p>
 </footer>
 
 <!-- PROJECT DETAIL MODAL -->

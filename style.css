@@ -687,3 +687,166 @@ main { position: relative; z-index: 1; }
 }
 .file-list.linkable li.linkable-item:hover { background: var(--pink-100); }
 .file-list li.muted-item { color: var(--lavender-dark); font-style: italic; font-weight: 500; }
+
+/* ============================================================
+   SKILLS — sidebar + panel (sama pola kayak Projects)
+   ============================================================ */
+.content-panel {
+  flex: 1 1 500px;
+}
+.content-panel .skill-category-block { margin-bottom: 28px; }
+.content-panel .skill-category-block:last-child { margin-bottom: 0; }
+
+/* ============================================================
+   CONTACT
+   ============================================================ */
+.contact-layout {
+  display: flex;
+  gap: 28px;
+  flex-wrap: wrap;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.contact-info-card {
+  flex: 1 1 260px;
+  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
+  border: 1px solid var(--pink-100);
+  border-radius: var(--radius-md);
+  padding: 26px 28px;
+  box-shadow: var(--shadow);
+}
+.contact-block-title {
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lavender-dark);
+  margin: 0 0 14px;
+}
+.contact-info-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pink-900);
+  padding: 10px 0;
+}
+.contact-info-icon {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--pink-100);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  font-size: 14px;
+}
+.contact-socials {
+  display: flex;
+  gap: 10px;
+}
+.contact-socials a {
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: var(--pink-100);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--pink-900);
+  font-size: 14px;
+  font-weight: 700;
+  transition: transform 0.15s ease;
+}
+.contact-socials a:hover { transform: translateY(-3px); }
+
+.contact-form {
+  flex: 1 1 320px;
+  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
+  border: 1px solid var(--pink-100);
+  border-radius: var(--radius-md);
+  padding: 26px 28px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  background: var(--pink-50);
+  border: 1px solid var(--pink-100);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--pink-900);
+  resize: vertical;
+}
+.contact-form input::placeholder,
+.contact-form textarea::placeholder { color: var(--lavender-dark); }
+.contact-form input:focus,
+.contact-form textarea:focus { outline: none; border-color: var(--pink-800); }
+.contact-form .btn { align-self: flex-start; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  padding: 40px 24px 24px;
+  border-top: 1px solid var(--pink-100);
+  margin-top: 30px;
+}
+.footer-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding-bottom: 24px;
+}
+.footer-logo {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 18px;
+  color: var(--pink-900);
+  margin: 0;
+}
+.footer-tag {
+  font-size: 13px;
+  color: var(--pink-800);
+  margin: 2px 0 0;
+}
+.footer-nav { display: flex; gap: 18px; flex-wrap: wrap; }
+.footer-nav a { font-size: 13px; font-weight: 600; color: var(--pink-800); }
+.footer-nav a:hover { color: var(--pink-900); }
+.footer-socials { display: flex; gap: 10px; }
+.footer-socials a {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  background: var(--pink-100);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--pink-900);
+  font-size: 13px;
+  font-weight: 700;
+}
+.footer-copyright {
+  text-align: center;
+  font-size: 12.5px;
+  color: var(--lavender-dark);
+  margin: 0;
+}
+
+/* ============================================================
+   RELATED LIST (project modal — dipakai di mana aja)
+   ============================================================ */
+.related-list { display: flex; flex-direction: column; gap: 8px; }
+.related-list .linkable-item {
+  font-size: 13.5px;
+  color: var(--pink-800);
+  background: var(--pink-50);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.related-list .linkable-item:hover { background: var(--pink-100); }
