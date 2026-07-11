@@ -94,6 +94,8 @@ async function renderProfile() {
   document.getElementById("hero-tagline").textContent = p.tagline || "";
   document.getElementById("hero-bio").textContent = (p.bio || "").split(". ").slice(0, 2).join(". ");
   document.getElementById("about-bio").textContent = p.bio || "";
+  document.getElementById("about-name").textContent = p.nama || "";
+  document.getElementById("about-tagline").textContent = p.tagline || "";
   document.getElementById("footer-name").textContent = p.nama || "—";
   document.getElementById("footer-year").textContent = new Date().getFullYear();
 
@@ -112,33 +114,60 @@ async function renderProfile() {
 }
 
 /* ============================================================
-   EXPERIENCE
+   EXPERIENCE — tab kategori (tipe: Kerja / Organisasi / Pendidikan / Lomba, dst)
    ============================================================ */
+let ALL_EXPERIENCE = [];
+let ACTIVE_EXP_TAB = "Semua";
+
 async function renderExperience() {
-  const rows = await fetchCSV(CONFIG.EXPERIENCE_CSV_URL);
-  const timeline = document.getElementById("timeline");
-  timeline.innerHTML = "";
-  if (!rows.length) {
-    timeline.appendChild(el(`<div class="empty-state">Belum ada data pengalaman.</div>`));
+  ALL_EXPERIENCE = await fetchCSV(CONFIG.EXPERIENCE_CSV_URL);
+  const tabsWrap = document.getElementById("exp-tabs");
+  const list = document.getElementById("exp-list");
+
+  if (!ALL_EXPERIENCE.length) {
+    tabsWrap.innerHTML = "";
+    list.innerHTML = `<div class="empty-state">Belum ada data pengalaman.</div>`;
     return;
   }
-  rows.forEach((row, idx) => {
-    const isLast = idx === rows.length - 1;
-    const item = el(`
-      <div class="timeline-item">
-        <div class="timeline-marker">
-          <div class="timeline-dot"></div>
-          ${isLast ? "" : '<div class="timeline-line"></div>'}
-        </div>
-        <div class="timeline-content">
-          <span class="timeline-tag">${row.tipe || "Pengalaman"}</span>
-          <p class="timeline-role">${row.posisi || ""}</p>
-          <p class="timeline-meta">${row.institusi || ""} · ${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}</p>
-          <p class="timeline-desc">${row.deskripsi || ""}</p>
-        </div>
+
+  const tipes = new Set(["Semua"]);
+  ALL_EXPERIENCE.forEach(r => { if (r.tipe) tipes.add(r.tipe); });
+
+  tabsWrap.innerHTML = "";
+  tipes.forEach(tipe => {
+    const btn = el(`<button class="filter-pill ${tipe === ACTIVE_EXP_TAB ? "active" : ""}">${tipe}</button>`);
+    btn.addEventListener("click", () => {
+      ACTIVE_EXP_TAB = tipe;
+      document.querySelectorAll("#exp-tabs .filter-pill").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      drawExperienceList();
+    });
+    tabsWrap.appendChild(btn);
+  });
+
+  drawExperienceList();
+}
+
+function drawExperienceList() {
+  const list = document.getElementById("exp-list");
+  list.innerHTML = "";
+  const filtered = ACTIVE_EXP_TAB === "Semua"
+    ? ALL_EXPERIENCE
+    : ALL_EXPERIENCE.filter(r => r.tipe === ACTIVE_EXP_TAB);
+
+  if (!filtered.length) {
+    list.appendChild(el(`<div class="empty-state">Belum ada data di kategori ini.</div>`));
+    return;
+  }
+
+  filtered.forEach(row => {
+    list.appendChild(el(`
+      <div class="exp-card">
+        <p class="exp-role">${row.posisi || ""}</p>
+        <p class="exp-meta">${row.institusi || ""} · ${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}</p>
+        <p class="exp-desc">${row.deskripsi || ""}</p>
       </div>
-    `);
-    timeline.appendChild(item);
+    `));
   });
 }
 
