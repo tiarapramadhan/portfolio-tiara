@@ -92,10 +92,7 @@ async function renderProfile() {
 
   document.getElementById("hero-name").textContent = p.nama || "—";
   document.getElementById("hero-tagline").textContent = p.tagline || "";
-  document.getElementById("hero-bio").textContent = (p.bio || "").split(". ").slice(0, 2).join(". ");
-  document.getElementById("about-bio").textContent = p.bio || "";
-  document.getElementById("about-name").textContent = p.nama || "";
-  document.getElementById("about-tagline").textContent = p.tagline || "";
+  document.getElementById("hero-bio").textContent = p.bio || "";
   document.getElementById("footer-name").textContent = p.nama || "—";
   document.getElementById("footer-year").textContent = new Date().getFullYear();
 
