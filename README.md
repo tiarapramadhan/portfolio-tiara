@@ -97,3 +97,18 @@ Link siap pakai buat tools yang kamu punya sekarang (tinggal copy-paste ke kolom
 ## Kategori Tools (sub_kategori)
 
 Kalau kamu mau tools di section Skills dikelompokkan (Programming, Data Analysis, Database, dst), tambah kolom `sub_kategori` di sheet Skills — isi cuma buat baris yang `kategori`-nya "Tools".
+
+## Update tampilan Experience (format baru)
+
+Sekarang kartu Experience formatnya: logo bulat di kiri, judul + tanggal sejajar, nama institusi, badge tipe di kanan, lalu deskripsi dalam bentuk bullet points.
+
+**Kolom baru (opsional):**
+- `logo_url` — link logo perusahaan/institusi. Kalau kosong, otomatis pakai huruf pertama nama institusi dalam lingkaran
+
+**Cara bikin deskripsi jadi bullet points (bukan 1 paragraf):**
+1. Klik cell `deskripsi` di sheet Experience
+2. Tulis poin pertama, lalu tekan **Alt+Enter** (Windows) atau **Option+Enter** (Mac) buat pindah baris di cell yang sama
+3. Tulis poin berikutnya, ulangi
+4. Tiap baris otomatis jadi 1 bullet point terpisah di web
+
+Kalau cell cuma diisi 1 baris teks tanpa Alt+Enter, tetap muncul sebagai 1 bullet point aja (nggak error).

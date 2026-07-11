@@ -283,9 +283,47 @@ main { position: relative; z-index: 1; }
   padding: 22px 26px;
   box-shadow: var(--shadow);
 }
-.exp-role { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--pink-900); margin: 0 0 2px; }
-.exp-meta { font-size: 13px; font-weight: 700; color: var(--lavender-dark); margin: 0 0 10px; }
-.exp-desc { font-size: 14.5px; line-height: 1.7; color: var(--pink-800); margin: 0; }
+.exp-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.exp-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--pink-100);
+  color: var(--pink-900);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 16px;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.exp-logo img { width: 100%; height: 100%; object-fit: cover; }
+.exp-heading { flex: 1; min-width: 0; }
+.exp-title-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.exp-role { font-family: var(--font-display); font-size: 17px; font-weight: 600; color: var(--pink-900); }
+.exp-date { font-size: 12.5px; font-weight: 600; color: var(--lavender-dark); white-space: nowrap; }
+.exp-institusi { font-size: 13.5px; font-weight: 600; color: var(--pink-800); margin: 4px 0 0; }
+.exp-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--pink-100);
+  color: var(--pink-800);
+  padding: 6px 13px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.exp-divider { border: none; border-top: 1px solid var(--pink-100); margin: 16px 0; }
+.exp-bullets { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 7px; }
+.exp-bullets li { font-size: 14px; line-height: 1.65; color: var(--pink-800); }
 
 /* PROJECTS — sidebar layout */
 .filter-bar {
@@ -556,7 +594,7 @@ main { position: relative; z-index: 1; }
   height: 160px;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  margin-bottom: 16px;
+  margin-top: 16px;
 }
 .exp-cover img { width: 100%; height: 100%; object-fit: cover; }
 .exp-tools {

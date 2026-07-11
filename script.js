@@ -159,12 +159,33 @@ function drawExperienceList() {
 
   filtered.forEach(row => {
     const hasImage = row.gambar_url && !row.gambar_url.startsWith("ISI:");
+    const hasLogo = row.logo_url && !row.logo_url.startsWith("ISI:");
+    const initial = (row.institusi || row.posisi || "?").trim().slice(0, 1).toUpperCase();
+    const logoHtml = hasLogo ? `<img src="${row.logo_url}" alt="">` : initial;
+
+    const bullets = (row.deskripsi || "")
+      .split("\n")
+      .map(s => s.trim())
+      .filter(Boolean);
+
     const card = el(`
       <div class="exp-card">
+        <div class="exp-card-header">
+          <div class="exp-logo">${logoHtml}</div>
+          <div class="exp-heading">
+            <div class="exp-title-row">
+              <span class="exp-role">${row.posisi || ""}</span>
+              <span class="exp-date">${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}</span>
+            </div>
+            <p class="exp-institusi">${row.institusi || ""}</p>
+          </div>
+          ${row.tipe ? `<span class="exp-badge">${row.tipe}</span>` : ""}
+        </div>
+        <hr class="exp-divider">
+        <ul class="exp-bullets">
+          ${bullets.map(b => `<li>${b}</li>`).join("")}
+        </ul>
         ${hasImage ? `<div class="exp-cover"><img src="${row.gambar_url}" alt=""></div>` : ""}
-        <p class="exp-role">${row.posisi || ""}</p>
-        <p class="exp-meta">${row.institusi || ""} · ${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}</p>
-        <p class="exp-desc">${row.deskripsi || ""}</p>
         <div class="exp-tools"></div>
         <div class="exp-links"></div>
       </div>
