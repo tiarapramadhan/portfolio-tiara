@@ -373,26 +373,53 @@ let ACTIVE_SKILL_GROUP = "Semua";
 
 async function renderSkills() {
   const rows = await fetchCSV(CONFIG.SKILLS_CSV_URL);
+  const staticWrap = document.getElementById("skills-static");
   const sidebar = document.getElementById("skills-filter-bar");
   const panel = document.getElementById("skills-panel");
 
   if (!rows.length) {
+    staticWrap.innerHTML = `<div class="empty-state">Belum ada data skills.</div>`;
     sidebar.innerHTML = "";
-    panel.innerHTML = `<div class="empty-state">Belum ada data skills.</div>`;
+    panel.innerHTML = "";
     return;
   }
 
-  // flatten: tiap skill dapet "group" label = sub_kategori (kalau Tools & ada) atau kategori
-  ALL_SKILLS = rows.map(r => {
+  const staticItems = []; // Soft Skill, Hard Skill, dst — langsung tampil semua
+  const toolItems = [];   // Tools — masuk sidebar + panel
+
+  rows.forEach(r => {
     const isTools = (r.kategori || "").toLowerCase().includes("tool");
-    if (isTools && r.icon_url && !r.icon_url.startsWith("ISI:")) {
-      TOOL_ICON_MAP[r.nama_skill.toLowerCase().trim()] = r.icon_url;
+    if (isTools) {
+      if (r.icon_url && !r.icon_url.startsWith("ISI:")) {
+        TOOL_ICON_MAP[r.nama_skill.toLowerCase().trim()] = r.icon_url;
+      }
+      toolItems.push({ ...r, isTools: true, group: r.sub_kategori || "Lainnya" });
+    } else {
+      staticItems.push({ ...r, isTools: false, group: r.kategori || "Lainnya" });
     }
-    return { ...r, isTools, group: (isTools && r.sub_kategori) ? r.sub_kategori : (r.kategori || "Lainnya") };
   });
 
+  // render Soft Skill / Hard Skill langsung, semua tampil
+  staticWrap.innerHTML = "";
+  const staticGroups = {};
+  staticItems.forEach(s => { (staticGroups[s.group] = staticGroups[s.group] || []).push(s); });
+  Object.entries(staticGroups).forEach(([group, items]) => {
+    const block = el(`<div class="skill-category-block"><p class="skill-category-title">${group}</p><div class="skill-tags"></div></div>`);
+    const tagsWrap = block.querySelector(".skill-tags");
+    items.forEach(item => tagsWrap.appendChild(renderSkillTagCard(item)));
+    staticWrap.appendChild(block);
+  });
+
+  // Tools: sidebar sub-kategori + panel
+  ALL_SKILLS = toolItems;
+  if (!toolItems.length) {
+    sidebar.innerHTML = "";
+    panel.innerHTML = "";
+    return;
+  }
+
   const groupOrder = [];
-  ALL_SKILLS.forEach(s => { if (!groupOrder.includes(s.group)) groupOrder.push(s.group); });
+  toolItems.forEach(s => { if (!groupOrder.includes(s.group)) groupOrder.push(s.group); });
 
   sidebar.innerHTML = "";
   ["Semua", ...groupOrder].forEach(group => {
@@ -648,8 +675,101 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ============================================================
-   SCROLLSPY — nav aktif sesuai section yang lagi keliatan
+   CONTACT CANVAS — animasi network titik-titik, reaktif ke mouse
    ============================================================ */
+function initContactCanvas() {
+  const canvas = document.getElementById("contact-canvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  const styles = getComputedStyle(document.documentElement);
+  const dotColor = styles.getPropertyValue("--pink-800").trim() || "#9DA3A9";
+  const lineColor = styles.getPropertyValue("--pink-100").trim() || "#434952";
+
+  let width, height, points;
+  const mouse = { x: -9999, y: -9999 };
+  const POINT_COUNT = 26;
+  const LINK_DIST = 110;
+
+  function resize() {
+    width = canvas.clientWidth;
+    height = canvas.clientHeight;
+    canvas.width = width * devicePixelRatio;
+    canvas.height = height * devicePixelRatio;
+    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+  }
+
+  function makePoints() {
+    points = Array.from({ length: POINT_COUNT }, () => ({
+      x: Math.random() * width,
+      y: Math.random() * height,
+      vx: (Math.random() - 0.5) * 0.35,
+      vy: (Math.random() - 0.5) * 0.35,
+    }));
+  }
+
+  function step() {
+    ctx.clearRect(0, 0, width, height);
+
+    points.forEach(p => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0 || p.x > width) p.vx *= -1;
+      if (p.y < 0 || p.y > height) p.vy *= -1;
+    });
+
+    for (let i = 0; i < points.length; i++) {
+      for (let j = i + 1; j < points.length; j++) {
+        const dx = points[i].x - points[j].x, dy = points[i].y - points[j].y;
+        const dist = Math.hypot(dx, dy);
+        if (dist < LINK_DIST) {
+          ctx.strokeStyle = lineColor;
+          ctx.globalAlpha = 1 - dist / LINK_DIST;
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(points[i].x, points[i].y);
+          ctx.lineTo(points[j].x, points[j].y);
+          ctx.stroke();
+        }
+      }
+      // garis ke posisi mouse — efek "connecting"
+      const dxm = points[i].x - mouse.x, dym = points[i].y - mouse.y;
+      const distm = Math.hypot(dxm, dym);
+      if (distm < LINK_DIST * 1.4) {
+        ctx.strokeStyle = dotColor;
+        ctx.globalAlpha = (1 - distm / (LINK_DIST * 1.4)) * 0.8;
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(points[i].x, points[i].y);
+        ctx.lineTo(mouse.x, mouse.y);
+        ctx.stroke();
+      }
+    }
+
+    ctx.globalAlpha = 1;
+    points.forEach(p => {
+      ctx.fillStyle = dotColor;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    if (!reduceMotion) requestAnimationFrame(step);
+  }
+
+  canvas.addEventListener("mousemove", (e) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+  });
+  canvas.addEventListener("mouseleave", () => { mouse.x = -9999; mouse.y = -9999; });
+
+  resize();
+  makePoints();
+  step();
+  window.addEventListener("resize", () => { resize(); makePoints(); if (reduceMotion) step(); });
+}
+initContactCanvas();
 function initScrollSpy() {
   const navLinks = document.querySelectorAll(".nav-links a");
   const sections = Array.from(navLinks)

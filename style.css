@@ -696,6 +696,17 @@ main { position: relative; z-index: 1; }
 }
 .content-panel .skill-category-block { margin-bottom: 28px; }
 .content-panel .skill-category-block:last-child { margin-bottom: 0; }
+#skills-static { margin-bottom: 40px; }
+#skills-static .skill-category-block { margin-bottom: 28px; }
+#skills-static .skill-category-block:last-child { margin-bottom: 0; }
+.skills-tools-heading {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--pink-900);
+  text-align: center;
+  margin: 0 0 24px;
+}
 
 /* ============================================================
    CONTACT
@@ -714,6 +725,16 @@ main { position: relative; z-index: 1; }
   border-radius: var(--radius-md);
   padding: 26px 28px;
   box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+#contact-canvas {
+  flex: 1;
+  width: 100%;
+  min-height: 140px;
+  margin-top: 20px;
+  border-radius: var(--radius-sm);
+  display: block;
 }
 .contact-block-title {
   font-size: 12px;

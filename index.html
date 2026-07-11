@@ -50,6 +50,8 @@
   <!-- SKILLS -->
   <section id="skills" class="section">
     <h2 class="section-title center"><span class="eyebrow">kemampuan</span>Skills</h2>
+    <div id="skills-static"></div>
+    <p class="skills-tools-heading">Tools</p>
     <div class="projects-layout">
       <aside class="filter-sidebar" id="skills-filter-bar"></aside>
       <div class="content-panel" id="skills-panel"></div>
@@ -85,11 +87,12 @@
         </a>
         <p class="contact-block-title" style="margin-top:24px;">Social</p>
         <div class="contact-socials" id="contact-socials"></div>
+        <canvas id="contact-canvas" aria-hidden="true"></canvas>
       </div>
       <form class="contact-form" id="contact-form">
-        <input type="text" id="cf-name" placeholder="Nama" required>
-        <input type="email" id="cf-email" placeholder="Email" required>
-        <textarea id="cf-message" placeholder="Pesan" rows="5" required></textarea>
+        <input type="text" id="cf-name" placeholder="Nama kamu" required>
+        <input type="email" id="cf-email" placeholder="Email kamu (biar aku bisa balas)" required>
+        <textarea id="cf-message" placeholder="Tulis pesan kamu di sini..." rows="5" required></textarea>
         <button type="submit" class="btn btn-primary">Send</button>
       </form>
     </div>
