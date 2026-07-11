@@ -376,9 +376,22 @@ async function renderSkills() {
         subGroups[sub].push(item);
       });
       Object.entries(subGroups).forEach(([sub, subItems]) => {
-        const subBlock = el(`<div class="skill-subgroup"><p class="skill-subgroup-title">${sub}</p><div class="skill-tags"></div></div>`);
+        const subBlock = el(`
+          <div class="skill-subgroup">
+            <button class="skill-subgroup-toggle" type="button">
+              <span>${sub}</span>
+              <span class="chevron">⌄</span>
+            </button>
+            <div class="skill-tags collapsed"></div>
+          </div>
+        `);
+        const toggleBtn = subBlock.querySelector(".skill-subgroup-toggle");
         const tagsWrap = subBlock.querySelector(".skill-tags");
         subItems.forEach(item => tagsWrap.appendChild(renderTagCard(item, isTools)));
+        toggleBtn.addEventListener("click", () => {
+          tagsWrap.classList.toggle("collapsed");
+          toggleBtn.classList.toggle("open");
+        });
         block.appendChild(subBlock);
       });
     } else {
@@ -587,8 +600,30 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ============================================================
-   INIT
+   SCROLLSPY — nav aktif sesuai section yang lagi keliatan
    ============================================================ */
+function initScrollSpy() {
+  const navLinks = document.querySelectorAll(".nav-links a");
+  const sections = Array.from(navLinks)
+    .map(link => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+
+  if (!sections.length) return;
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = "#" + entry.target.id;
+        navLinks.forEach(link => {
+          link.classList.toggle("active", link.getAttribute("href") === id);
+        });
+      }
+    });
+  }, { rootMargin: "-45% 0px -50% 0px", threshold: 0 });
+
+  sections.forEach(section => observer.observe(section));
+}
+initScrollSpy();
 (async () => {
   renderProfile();
   await renderSkills();
