@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<meta name="description" content="Portfolio data science">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- decorative blobs -->
+<div class="bg-blob blob-1" aria-hidden="true"></div>
+<div class="bg-blob blob-2" aria-hidden="true"></div>
+<div class="bg-blob blob-3" aria-hidden="true"></div>
+
+<nav class="navbar" id="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="nav-logo">✦ porto</a>
+    <div class="nav-links">
+      <a href="#home">Home</a>
+      <a href="#about">About</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section id="home" class="section hero">
+    <div class="hero-text">
+      <span class="badge" id="hero-badge">✧ terbuka untuk kolaborasi</span>
+      <h1 class="hero-title">Hi, aku <span id="hero-name">—</span></h1>
+      <p class="hero-tagline" id="hero-tagline">memuat…</p>
+      <p class="hero-bio" id="hero-bio"></p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">Lihat project</a>
+        <a href="#" id="hero-cv" class="btn btn-secondary" target="_blank" rel="noopener">Download CV</a>
+      </div>
+      <div class="hero-socials" id="hero-socials"></div>
+    </div>
+    <div class="hero-art">
+      <div class="hero-photo-frame">
+        <img id="hero-photo" src="" alt="Foto profil" />
+      </div>
+      <span class="sticker sticker-star">✦</span>
+      <span class="sticker sticker-heart">◈</span>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="section">
+    <h2 class="section-title"><span class="eyebrow">tentang</span>Kenalan yuk</h2>
+    <p class="about-text" id="about-bio">memuat data…</p>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills" class="section">
+    <h2 class="section-title"><span class="eyebrow">kemampuan</span>Skills &amp; Tools</h2>
+    <div class="skills-grid" id="skills-grid"></div>
+  </section>
+
+  <!-- EXPERIENCE -->
+  <section id="experience" class="section">
+    <h2 class="section-title"><span class="eyebrow">perjalanan</span>Pengalaman</h2>
+    <div class="timeline" id="timeline"></div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects" class="section">
+    <h2 class="section-title"><span class="eyebrow">karya</span>Projects</h2>
+    <div class="filter-bar" id="filter-bar"></div>
+    <div class="projects-grid" id="projects-grid"></div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="section contact-section">
+    <h2 class="section-title"><span class="eyebrow">kontak</span>Yuk terhubung</h2>
+    <p class="contact-sub">Terbuka untuk kolaborasi, magang, atau ngobrol soal data.</p>
+    <a href="#" id="contact-email" class="btn btn-primary">Kirim email</a>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>Dibuat dengan ✦ oleh <span id="footer-name">—</span> · <span id="footer-year"></span></p>
+</footer>
+
+<!-- PROJECT DETAIL MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal-close" id="modal-close" aria-label="Tutup">✕</button>
+    <div class="modal-cover" id="modal-cover"></div>
+    <div class="modal-body">
+      <span class="modal-status" id="modal-status"></span>
+      <h3 id="modal-title"></h3>
+      <div class="modal-tags" id="modal-tools"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+
+      <div class="modal-block" id="modal-files-block">
+        <p class="modal-block-title">File terkait</p>
+        <ul class="file-list" id="modal-files"></ul>
+      </div>
+
+      <div class="modal-block" id="modal-dashboard-block">
+        <p class="modal-block-title">Dashboard</p>
+        <div class="dashboard-embed" id="modal-dashboard"></div>
+      </div>
+
+      <a href="#" id="modal-github" class="btn btn-primary" target="_blank" rel="noopener">Lihat di GitHub</a>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
