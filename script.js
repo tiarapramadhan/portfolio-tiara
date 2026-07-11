@@ -223,8 +223,9 @@ function openExpModal(row) {
     ? `<img src="${row.gambar_url}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : "";
   document.getElementById("exp-modal-badge").textContent = row.tipe || "";
   document.getElementById("exp-modal-title").textContent = row.posisi || "";
-  document.getElementById("exp-modal-meta").textContent =
-    `${row.institusi || ""} · ${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}`;
+  document.getElementById("exp-modal-date").textContent =
+    `${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}`;
+  document.getElementById("exp-modal-institusi").textContent = row.institusi || "";
 
   const bullets = (row.deskripsi || "").split("\n").map(s => s.trim()).filter(Boolean);
   document.getElementById("exp-modal-bullets").innerHTML = bullets.map(b => `<li>${b}</li>`).join("");
@@ -233,10 +234,9 @@ function openExpModal(row) {
   const toolsWrap = document.getElementById("exp-modal-tools");
   const tools = splitTags(row.tools);
   if (tools.length) {
-    toolsWrap.innerHTML = tools.map(t => {
-      const chip = `<span class="skill-tag clickable small" data-tool="${t}">${toolIconOrFallback(t, findToolIconUrl(t))}<span>${t}</span></span>`;
-      return chip;
-    }).join("");
+    toolsWrap.innerHTML = tools.map(t =>
+      `<span class="skill-tag clickable small" data-tool="${t}">${toolIconOrFallback(t, findToolIconUrl(t))}<span>${t}</span></span>`
+    ).join("");
     toolsWrap.querySelectorAll("[data-tool]").forEach(node => {
       node.addEventListener("click", () => openToolModal(node.dataset.tool));
     });
@@ -244,6 +244,11 @@ function openExpModal(row) {
   } else {
     toolsBlock.style.display = "none";
   }
+
+  const isPendidikan = (row.tipe || "").toLowerCase().includes("pendidikan");
+  document.getElementById("exp-modal-projects-label").textContent = isPendidikan
+    ? "Prestasi selama di sini"
+    : "Project selama menjabat di posisi ini";
 
   const projBlock = document.getElementById("exp-modal-projects-block");
   const projWrap = document.getElementById("exp-modal-projects");

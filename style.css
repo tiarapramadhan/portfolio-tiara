@@ -479,7 +479,27 @@ main { position: relative; z-index: 1; }
   overflow-y: auto;
   position: relative;
   box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+  border: 1px solid var(--pink-100);
+  /* custom scrollbar - Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-100) transparent;
 }
+.modal::-webkit-scrollbar { width: 8px; }
+.modal::-webkit-scrollbar-track { background: transparent; }
+.modal::-webkit-scrollbar-thumb {
+  background: var(--pink-100);
+  border-radius: 999px;
+  border: 2px solid var(--pink-50);
+}
+.modal::-webkit-scrollbar-thumb:hover { background: var(--lavender-dark); }
+
+.exp-modal-line {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--pink-900);
+  margin: 0 0 4px;
+}
+.exp-modal-line.muted { color: var(--pink-800); font-weight: 500; margin-bottom: 0; }
 .modal-close {
   position: absolute;
   top: 16px; right: 16px;
