@@ -194,23 +194,86 @@ function drawExperienceList() {
     const toolsWrap = card.querySelector(".exp-tools");
     splitTags(row.tools).forEach(toolName => {
       const chip = el(`<span class="skill-tag clickable small">${toolIconOrFallback(toolName, findToolIconUrl(toolName))}<span>${toolName}</span></span>`);
-      chip.addEventListener("click", () => openToolModal(toolName));
+      chip.addEventListener("click", (e) => { e.stopPropagation(); openToolModal(toolName); });
       toolsWrap.appendChild(chip);
     });
 
     const linksWrap = card.querySelector(".exp-links");
     splitTags(row.project_terkait).forEach(projectId => {
       const linkBtn = el(`<button class="exp-project-link">Lihat project terkait →</button>`);
-      linkBtn.addEventListener("click", () => {
+      linkBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
         const proj = ALL_PROJECTS.find(p => p.id === projectId);
         if (proj) openModal(proj);
       });
       linksWrap.appendChild(linkBtn);
     });
 
+    card.addEventListener("click", () => openExpModal(row));
     list.appendChild(card);
   });
 }
+
+/* ============================================================
+   EXPERIENCE DETAIL MODAL
+   ============================================================ */
+function openExpModal(row) {
+  const hasImage = row.gambar_url && !row.gambar_url.startsWith("ISI:");
+  document.getElementById("exp-modal-cover").innerHTML = hasImage
+    ? `<img src="${row.gambar_url}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : "";
+  document.getElementById("exp-modal-badge").textContent = row.tipe || "";
+  document.getElementById("exp-modal-title").textContent = row.posisi || "";
+  document.getElementById("exp-modal-meta").textContent =
+    `${row.institusi || ""} · ${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}`;
+
+  const bullets = (row.deskripsi || "").split("\n").map(s => s.trim()).filter(Boolean);
+  document.getElementById("exp-modal-bullets").innerHTML = bullets.map(b => `<li>${b}</li>`).join("");
+
+  const toolsBlock = document.getElementById("exp-modal-tools-block");
+  const toolsWrap = document.getElementById("exp-modal-tools");
+  const tools = splitTags(row.tools);
+  if (tools.length) {
+    toolsWrap.innerHTML = tools.map(t => {
+      const chip = `<span class="skill-tag clickable small" data-tool="${t}">${toolIconOrFallback(t, findToolIconUrl(t))}<span>${t}</span></span>`;
+      return chip;
+    }).join("");
+    toolsWrap.querySelectorAll("[data-tool]").forEach(node => {
+      node.addEventListener("click", () => openToolModal(node.dataset.tool));
+    });
+    toolsBlock.style.display = "block";
+  } else {
+    toolsBlock.style.display = "none";
+  }
+
+  const projBlock = document.getElementById("exp-modal-projects-block");
+  const projWrap = document.getElementById("exp-modal-projects");
+  const relatedIds = splitTags(row.project_terkait);
+  const relatedProjects = relatedIds.map(id => ALL_PROJECTS.find(p => p.id === id)).filter(Boolean);
+  if (relatedProjects.length) {
+    projWrap.innerHTML = relatedProjects.map(p => `<li data-project-id="${p.id}" class="linkable-item">📁 ${p.nama_project}</li>`).join("");
+    projWrap.querySelectorAll("[data-project-id]").forEach(node => {
+      node.addEventListener("click", () => {
+        const proj = ALL_PROJECTS.find(p => p.id === node.dataset.projectId);
+        closeExpModal();
+        if (proj) openModal(proj);
+      });
+    });
+    projBlock.style.display = "block";
+  } else {
+    projBlock.style.display = "none";
+  }
+
+  document.getElementById("exp-modal-overlay").classList.add("open");
+}
+
+function closeExpModal() {
+  document.getElementById("exp-modal-overlay").classList.remove("open");
+}
+
+document.getElementById("exp-modal-close").addEventListener("click", closeExpModal);
+document.getElementById("exp-modal-overlay").addEventListener("click", (e) => {
+  if (e.target.id === "exp-modal-overlay") closeExpModal();
+});
 
 /* ============================================================
    ICON MAPPING (khusus kategori Tools)
@@ -515,7 +578,7 @@ document.getElementById("modal-overlay").addEventListener("click", (e) => {
   if (e.target.id === "modal-overlay") closeModal();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") { closeModal(); closeToolModal(); }
+  if (e.key === "Escape") { closeModal(); closeToolModal(); closeExpModal(); }
 });
 
 /* ============================================================
