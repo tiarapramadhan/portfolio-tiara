@@ -625,6 +625,11 @@ main { position: relative; z-index: 1; }
   font-weight: 800;
   flex-shrink: 0;
 }
+.icon-emoji {
+  font-size: 22px;
+  line-height: 1;
+  flex-shrink: 0;
+}
 
 /* clickable skill/tool tag */
 .skill-tag.clickable {
@@ -871,3 +876,93 @@ main { position: relative; z-index: 1; }
   transition: background 0.15s ease;
 }
 .related-list .linkable-item:hover { background: var(--pink-100); }
+
+/* ============================================================
+   CONTACT ILLUSTRATION — karakter animasi original (bukan replika karya lain)
+   ============================================================ */
+.contact-illustration {
+  flex: 1 1 260px;
+  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
+  border: 1px solid var(--pink-100);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow);
+  padding: 20px 20px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.contact-illustration svg { width: 100%; max-width: 300px; height: auto; }
+.illustration-caption {
+  margin: 10px 0 0;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--pink-800);
+  text-align: center;
+}
+
+.desk, .desk-leg { fill: var(--pink-100); }
+.laptop-base { fill: var(--lavender-dark); }
+.laptop-screen { fill: #1b1b24; stroke: var(--pink-100); stroke-width: 2; }
+.screen-line { fill: #6b7280; }
+.shirt, .sleeve { fill: var(--pink-50); stroke: var(--pink-100); stroke-width: 2; }
+.neck, .hand { fill: #e8cdb0; }
+.collar { fill: #c23b3b; opacity: 0.85; }
+.face { fill: #e8cdb0; }
+.hair-back, .hair-front { fill: #1b1b24; }
+.glasses-ring { fill: none; stroke: #1b1b24; stroke-width: 3; }
+.glasses-bridge, .glasses-arm { stroke: #1b1b24; stroke-width: 2.5; fill: none; }
+.eye { fill: #1b1b24; }
+.blush { fill: #e3a9a0; opacity: 0.55; }
+.smile { fill: none; stroke: #1b1b24; stroke-width: 3; stroke-linecap: round; }
+.arrow-stroke { stroke: var(--lavender-dark); }
+.sparkle { fill: var(--lavender-dark); }
+
+/* animasi */
+.character-body {
+  transform-origin: center bottom;
+  animation: bodyBob 3s ease-in-out infinite;
+}
+@keyframes bodyBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.waving-arm {
+  transform-origin: 258px 322px;
+  animation: waveArm 1.8s ease-in-out infinite;
+}
+@keyframes waveArm {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-14deg); }
+  50% { transform: rotate(6deg); }
+  75% { transform: rotate(-10deg); }
+}
+
+.eyes {
+  transform-origin: 200px 197px;
+  animation: blinkEyes 4.5s ease-in-out infinite;
+}
+@keyframes blinkEyes {
+  0%, 92%, 100% { transform: scaleY(1); }
+  96% { transform: scaleY(0.1); }
+}
+
+.point-arrow { animation: arrowBounce 1.4s ease-in-out infinite; }
+@keyframes arrowBounce {
+  0%, 100% { transform: translateX(0); opacity: 0.55; }
+  50% { transform: translateX(10px); opacity: 1; }
+}
+
+.sparkle { transform-origin: center; animation: twinkle 2.4s ease-in-out infinite; }
+.sparkle-2 { animation-delay: 1.1s; }
+@keyframes twinkle {
+  0%, 100% { opacity: 0.2; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .character-body, .waving-arm, .eyes, .point-arrow, .sparkle {
+    animation: none !important;
+  }
+}

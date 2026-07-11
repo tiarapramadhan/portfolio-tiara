@@ -112,3 +112,50 @@ Sekarang kartu Experience formatnya: logo bulat di kiri, judul + tanggal sejajar
 4. Tiap baris otomatis jadi 1 bullet point terpisah di web
 
 Kalau cell cuma diisi 1 baris teks tanpa Alt+Enter, tetap muncul sebagai 1 bullet point aja (nggak error).
+
+## Update — kolom baru buat fitur terbaru
+
+### Sheet Profile
+Tambah 2 kolom:
+| Kolom | Isinya |
+|---|---|
+| `link_github` | Link profil GitHub kamu |
+| `wa_number` | Nomor WhatsApp, format internasional tanpa simbol (misal `6281234567890`, bukan `0812-3456-7890`) |
+
+Kolom ini otomatis muncul jadi icon di hero (bagian atas web) dan footer.
+
+### Sheet Skills
+Tambah 1 kolom opsional:
+| Kolom | Isinya |
+|---|---|
+| `icon_emoji` | Emoji buat Soft Skill / Hard Skill (contoh di bawah) — kalau kosong, otomatis pakai huruf inisial |
+
+Contoh isian buat skill kamu yang sekarang:
+| nama_skill | icon_emoji |
+|---|---|
+| Analytical Thinking | 🧠 |
+| Attention to Detail | 🔍 |
+| Clear Communication | 💬 |
+| Team Collaboration | 🤝 |
+| Time Management | ⏱️ |
+| Willingness to Learn | 🌱 |
+| Basic Data Analysis | 📊 |
+| Data Cleaning | 🧹 |
+| Exploratory Data Analysis (EDA) | 🔎 |
+| Data Visualization & Reporting | 📈 |
+| Dashboard Creation | 🖥️ |
+| Basic SQL & Querying | 🗄️ |
+| Database Design | 🏗️ |
+| Entity Relationship Diagram (ERD) | 🧩 |
+| Relational Database | 🔗 |
+
+Catatan: kolom `icon_url` (yang udah ada dari sebelumnya) tetap dipakai buat logo asli tools — kalau suatu Hard Skill kamu isi `icon_url` juga, itu yang dipakai duluan (prioritas di atas emoji).
+
+### Hard Skill sekarang bisa diklik (bukti nyata skill kamu)
+Ini **tidak butuh kolom baru** — sistemnya reuse kolom `tools` yang udah ada di sheet Experience dan Projects. Supaya sebuah Hard Skill (misal "Exploratory Data Analysis (EDA)") ke-link ke project/pengalaman tertentu, pastikan kata itu (atau kata yang mirip) disebut di kolom `tools` project/pengalaman terkait.
+
+Contoh: kalau project "Analisis Kesehatan Mental" pakai EDA, isi kolom `tools`-nya jadi:
+```
+Excel, Pivot Table, Data Cleaning, Exploratory Data Analysis (EDA), Data Visualization
+```
+Biar pas orang klik "Exploratory Data Analysis (EDA)" di section Skills, project ini otomatis muncul di daftar "Dipakai di project".

@@ -80,14 +80,62 @@
   <section id="contact" class="section">
     <h2 class="section-title center"><span class="eyebrow">kontak</span>Contact Me</h2>
     <div class="contact-layout">
-      <div class="contact-info-card">
-        <p class="contact-block-title">Contact Info</p>
-        <a href="#" id="contact-email-link" class="contact-info-item">
-          <span class="contact-info-icon">✉</span><span id="contact-email-text">—</span>
-        </a>
-        <p class="contact-block-title" style="margin-top:24px;">Social</p>
-        <div class="contact-socials" id="contact-socials"></div>
-        <canvas id="contact-canvas" aria-hidden="true"></canvas>
+      <div class="contact-illustration" aria-hidden="true">
+        <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg">
+          <!-- meja -->
+          <rect x="30" y="392" width="340" height="16" rx="4" class="desk"/>
+          <rect x="46" y="408" width="14" height="46" class="desk-leg"/>
+          <rect x="340" y="408" width="14" height="46" class="desk-leg"/>
+          <!-- laptop -->
+          <rect x="150" y="368" width="100" height="10" rx="2" class="laptop-base"/>
+          <g class="laptop-screen-group">
+            <rect x="158" y="318" width="84" height="54" rx="6" class="laptop-screen"/>
+            <rect x="166" y="328" width="50" height="5" rx="2" class="screen-line"/>
+            <rect x="166" y="339" width="34" height="5" rx="2" class="screen-line"/>
+            <rect x="166" y="350" width="44" height="5" rx="2" class="screen-line"/>
+          </g>
+          <!-- panah nunjuk ke form -->
+          <g class="point-arrow">
+            <path d="M368 200 L390 214 L368 228" fill="none" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" class="arrow-stroke"/>
+          </g>
+          <!-- badan -->
+          <g class="character-body">
+            <path d="M130 400 Q130 300 200 292 Q270 300 270 400 Z" class="shirt"/>
+            <rect x="188" y="255" width="24" height="45" class="neck"/>
+            <path d="M170 268 Q200 285 230 268 L226 258 Q200 270 174 258 Z" class="collar"/>
+            <!-- lengan melambai -->
+            <g class="waving-arm">
+              <path d="M255 320 Q290 300 300 260 Q304 245 292 240 Q300 258 290 270 Q280 295 250 312 Z" class="sleeve"/>
+              <circle cx="294" cy="244" r="12" class="hand"/>
+            </g>
+            <path d="M145 330 Q120 345 118 375 Q117 388 128 390 Q126 368 138 352 Q150 340 158 330 Z" class="sleeve"/>
+            <!-- kepala -->
+            <g class="head-group">
+              <ellipse cx="200" cy="195" rx="62" ry="66" class="face"/>
+              <path d="M140 190 Q136 100 200 88 Q264 100 260 190 Q256 150 236 130 Q220 118 200 122 Q180 118 164 130 Q144 150 140 190 Z" class="hair-back"/>
+              <path d="M200 88 Q140 92 138 175 Q145 145 165 128 Q152 155 155 178 Q168 150 185 138 Q178 160 182 178 Q195 152 200 140 Q205 152 218 178 Q222 160 215 138 Q232 150 245 178 Q248 155 235 128 Q255 145 262 175 Q260 92 200 88 Z" class="hair-front"/>
+              <!-- kacamata -->
+              <circle cx="176" cy="196" r="21" class="glasses-ring"/>
+              <circle cx="224" cy="196" r="21" class="glasses-ring"/>
+              <path d="M197 196 L203 196" class="glasses-bridge"/>
+              <path d="M155 192 L145 188" class="glasses-arm"/>
+              <path d="M245 192 L255 188" class="glasses-arm"/>
+              <!-- mata (berkedip) -->
+              <g class="eyes">
+                <ellipse cx="176" cy="197" rx="5" ry="6" class="eye"/>
+                <ellipse cx="224" cy="197" rx="5" ry="6" class="eye"/>
+              </g>
+              <ellipse cx="158" cy="215" rx="10" ry="6" class="blush"/>
+              <ellipse cx="242" cy="215" rx="10" ry="6" class="blush"/>
+              <!-- senyum -->
+              <path d="M182 226 Q200 236 218 226" class="smile"/>
+            </g>
+          </g>
+          <!-- sparkle kecil -->
+          <g class="sparkle sparkle-1"><path d="M60 120 L64 132 L76 136 L64 140 L60 152 L56 140 L44 136 L56 132 Z"/></g>
+          <g class="sparkle sparkle-2"><path d="M320 90 L323 98 L331 101 L323 104 L320 112 L317 104 L309 101 L317 98 Z"/></g>
+        </svg>
+        <p class="illustration-caption">Yuk isi form di sebelah, aku bakal baca kok! 👉</p>
       </div>
       <form class="contact-form" id="contact-form">
         <input type="text" id="cf-name" placeholder="Nama kamu" required>

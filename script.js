@@ -107,26 +107,16 @@ async function renderProfile() {
   const heroSocials = document.getElementById("hero-socials");
   heroSocials.innerHTML = "";
   if (p.link_linkedin) heroSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
+  if (p.link_github) heroSocials.appendChild(el(`<a href="${p.link_github}" target="_blank" rel="noopener" aria-label="GitHub">gh</a>`));
+  if (p.wa_number) heroSocials.appendChild(el(`<a href="https://wa.me/${p.wa_number.replace(/[^0-9]/g,"")}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`));
   if (p.email) heroSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
-
-  // contact section
-  const emailLink = document.getElementById("contact-email-link");
-  const emailText = document.getElementById("contact-email-text");
-  if (p.email) {
-    emailLink.href = "mailto:" + p.email;
-    emailText.textContent = p.email;
-  } else {
-    emailLink.style.display = "none";
-  }
-  const contactSocials = document.getElementById("contact-socials");
-  contactSocials.innerHTML = "";
-  if (p.link_linkedin) contactSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
-  if (p.email) contactSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
 
   // footer socials
   const footerSocials = document.getElementById("footer-socials");
   footerSocials.innerHTML = "";
   if (p.link_linkedin) footerSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
+  if (p.link_github) footerSocials.appendChild(el(`<a href="${p.link_github}" target="_blank" rel="noopener" aria-label="GitHub">gh</a>`));
+  if (p.wa_number) footerSocials.appendChild(el(`<a href="https://wa.me/${p.wa_number.replace(/[^0-9]/g,"")}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`));
   if (p.email) footerSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
 
   // contact form -> buka email client dengan pesan udah keisi (nggak butuh backend)
@@ -395,7 +385,7 @@ async function renderSkills() {
       }
       toolItems.push({ ...r, isTools: true, group: r.sub_kategori || "Lainnya" });
     } else {
-      staticItems.push({ ...r, isTools: false, group: r.kategori || "Lainnya" });
+      staticItems.push({ ...r, isTools: false, isHard: (r.kategori || "").toLowerCase().includes("hard"), group: r.kategori || "Lainnya" });
     }
   });
 
@@ -436,12 +426,25 @@ async function renderSkills() {
   drawSkillsPanel();
 }
 
+function resolveSkillIcon(item) {
+  if (item.icon_url && !item.icon_url.startsWith("ISI:")) {
+    return toolIconOrFallback(item.nama_skill, item.icon_url);
+  }
+  if (item.icon_emoji) {
+    return `<span class="icon-emoji">${item.icon_emoji}</span>`;
+  }
+  if (item.isTools) {
+    return toolIconOrFallback(item.nama_skill, findToolIconUrl(item.nama_skill));
+  }
+  return `<span class="icon-fallback">${(item.nama_skill || "?").trim().slice(0, 1).toUpperCase()}</span>`;
+}
+
 function renderSkillTagCard(item) {
   const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
-  const iconUrl = item.isTools ? findToolIconUrl(item.nama_skill) : null;
-  const iconHtml = item.isTools ? toolIconOrFallback(item.nama_skill, iconUrl) : "";
-  const tag = el(`<span class="skill-tag${item.isTools ? " clickable" : ""}">${iconHtml}<span>${item.nama_skill}${level}</span></span>`);
-  if (item.isTools) {
+  const iconHtml = resolveSkillIcon(item);
+  const clickable = item.isTools || item.isHard;
+  const tag = el(`<span class="skill-tag${clickable ? " clickable" : ""}">${iconHtml}<span>${item.nama_skill}${level}</span></span>`);
+  if (clickable) {
     tag.addEventListener("click", () => openToolModal(item.nama_skill));
   }
   return tag;
