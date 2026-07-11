@@ -1,17 +1,17 @@
 :root {
-  --pink-50: #ECEFFA;
-  --pink-100: #D8DBE8;
-  --pink-400: #121820;
-  --pink-600: #000000;
-  --pink-800: #51565A;
-  --pink-900: #121820;
-  --lavender: #D8DBE8;
-  --lavender-dark: #7B7D7F;
-  --mint: #D8DBE8;
-  --peach: #D8DBE8;
-  --ink: #121820;
-  --white: #FFFFFF;
-  --shadow: 0 1px 2px rgba(18, 24, 32, 0.05), 0 8px 24px rgba(18, 24, 32, 0.08);
+  --pink-50: #1C1E24;
+  --pink-100: #434952;
+  --pink-400: #F2F3F5;
+  --pink-600: #FFFFFF;
+  --pink-800: #9DA3A9;
+  --pink-900: #F2F3F5;
+  --lavender: #434952;
+  --lavender-dark: #767F88;
+  --mint: #434952;
+  --peach: #434952;
+  --ink: #F2F3F5;
+  --white: #30333A;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.2), 0 8px 24px rgba(0, 0, 0, 0.28);
   --radius-lg: 20px;
   --radius-md: 14px;
   --radius-sm: 10px;
@@ -234,6 +234,17 @@ main { position: relative; z-index: 1; }
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 12px;
+}
+.skill-subgroup { margin-bottom: 22px; }
+.skill-subgroup:last-child { margin-bottom: 0; }
+.skill-subgroup-title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lavender-dark);
+  margin: 0 0 10px;
+  text-align: center;
 }
 .skill-tag {
   background: var(--white);
@@ -500,3 +511,80 @@ main { position: relative; z-index: 1; }
 .dashboard-embed {
   border: 1px solid var(--pink-100);
 }
+
+/* icon fallback badge (kalau logo tools gagal load) */
+.icon-fallback {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--pink-100);
+  color: var(--pink-800);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* clickable skill/tool tag */
+.skill-tag.clickable {
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+  border: 1px solid var(--pink-100);
+}
+.skill-tag.clickable:hover {
+  transform: translateY(-3px);
+  border-color: var(--pink-800);
+}
+.skill-tag.small {
+  flex-direction: row;
+  padding: 7px 12px;
+  min-height: auto;
+  gap: 6px;
+}
+.skill-tag.small img,
+.skill-tag.small .icon-fallback {
+  width: 16px;
+  height: 16px;
+  font-size: 9px;
+}
+
+/* experience card additions */
+.exp-cover {
+  width: 100%;
+  height: 160px;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+.exp-cover img { width: 100%; height: 100%; object-fit: cover; }
+.exp-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.exp-links { margin-top: 14px; }
+.exp-project-link {
+  background: transparent;
+  border: 1px solid var(--pink-100);
+  color: var(--pink-900);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.exp-project-link:hover { background: var(--pink-100); }
+
+/* tool cross-reference modal */
+.tool-modal .modal-body { padding-top: 30px; }
+.file-list.linkable li.linkable-item {
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.file-list.linkable li.linkable-item:hover { background: var(--pink-100); }
+.file-list li.muted-item { color: var(--lavender-dark); font-style: italic; font-weight: 500; }

@@ -158,13 +158,36 @@ function drawExperienceList() {
   }
 
   filtered.forEach(row => {
-    list.appendChild(el(`
+    const hasImage = row.gambar_url && !row.gambar_url.startsWith("ISI:");
+    const card = el(`
       <div class="exp-card">
+        ${hasImage ? `<div class="exp-cover"><img src="${row.gambar_url}" alt=""></div>` : ""}
         <p class="exp-role">${row.posisi || ""}</p>
         <p class="exp-meta">${row.institusi || ""} · ${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}</p>
         <p class="exp-desc">${row.deskripsi || ""}</p>
+        <div class="exp-tools"></div>
+        <div class="exp-links"></div>
       </div>
-    `));
+    `);
+
+    const toolsWrap = card.querySelector(".exp-tools");
+    splitTags(row.tools).forEach(toolName => {
+      const chip = el(`<span class="skill-tag clickable small">${toolIconOrFallback(toolName, findToolIconUrl(toolName))}<span>${toolName}</span></span>`);
+      chip.addEventListener("click", () => openToolModal(toolName));
+      toolsWrap.appendChild(chip);
+    });
+
+    const linksWrap = card.querySelector(".exp-links");
+    splitTags(row.project_terkait).forEach(projectId => {
+      const linkBtn = el(`<button class="exp-project-link">Lihat project terkait →</button>`);
+      linkBtn.addEventListener("click", () => {
+        const proj = ALL_PROJECTS.find(p => p.id === projectId);
+        if (proj) openModal(proj);
+      });
+      linksWrap.appendChild(linkBtn);
+    });
+
+    list.appendChild(card);
   });
 }
 
@@ -204,6 +227,12 @@ function findToolIconUrl(name) {
   return null;
 }
 
+function toolIconOrFallback(name, url) {
+  const initial = (name || "?").trim().slice(0, 1).toUpperCase();
+  if (!url) return `<span class="icon-fallback">${initial}</span>`;
+  return `<img src="${url}" alt="" loading="lazy" onerror="this.outerHTML='<span class=&quot;icon-fallback&quot;>${initial}</span>'">`;
+}
+
 /* ============================================================
    SKILLS
    ============================================================ */
@@ -221,23 +250,42 @@ async function renderSkills() {
     if (!groups[cat]) groups[cat] = [];
     groups[cat].push(r);
   });
+
+  function renderTagCard(item, isTools) {
+    const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
+    const iconUrl = isTools ? findToolIconUrl(item.nama_skill) : null;
+    const iconHtml = isTools ? toolIconOrFallback(item.nama_skill, iconUrl) : "";
+    const tag = el(`<span class="skill-tag${isTools ? " clickable" : ""}">${iconHtml}<span>${item.nama_skill}${level}</span></span>`);
+    if (isTools) {
+      tag.addEventListener("click", () => openToolModal(item.nama_skill));
+    }
+    return tag;
+  }
+
   Object.entries(groups).forEach(([cat, items]) => {
     const isTools = cat.toLowerCase().includes("tool");
-    const block = el(`
-      <div>
-        <p class="skill-category-title">${cat}</p>
-        <div class="skill-tags"></div>
-      </div>
-    `);
-    const tagsWrap = block.querySelector(".skill-tags");
-    items.forEach(item => {
-      const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
-      const iconUrl = isTools ? findToolIconUrl(item.nama_skill) : null;
-      const iconHtml = iconUrl
-        ? `<img src="${iconUrl}" alt="" loading="lazy" onerror="this.remove()">`
-        : "";
-      tagsWrap.appendChild(el(`<span class="skill-tag">${iconHtml}<span>${item.nama_skill}${level}</span></span>`));
-    });
+    const block = el(`<div><p class="skill-category-title">${cat}</p></div>`);
+
+    if (isTools && items.some(i => i.sub_kategori)) {
+      // kelompokkan lagi berdasarkan sub_kategori
+      const subGroups = {};
+      items.forEach(item => {
+        const sub = item.sub_kategori || "Lainnya";
+        if (!subGroups[sub]) subGroups[sub] = [];
+        subGroups[sub].push(item);
+      });
+      Object.entries(subGroups).forEach(([sub, subItems]) => {
+        const subBlock = el(`<div class="skill-subgroup"><p class="skill-subgroup-title">${sub}</p><div class="skill-tags"></div></div>`);
+        const tagsWrap = subBlock.querySelector(".skill-tags");
+        subItems.forEach(item => tagsWrap.appendChild(renderTagCard(item, isTools)));
+        block.appendChild(subBlock);
+      });
+    } else {
+      const tagsWrap = el(`<div class="skill-tags"></div>`);
+      items.forEach(item => tagsWrap.appendChild(renderTagCard(item, isTools)));
+      block.appendChild(tagsWrap);
+    }
+
     grid.appendChild(block);
   });
 }
@@ -342,8 +390,43 @@ async function fetchGithubAutoProjects() {
 }
 
 /* ============================================================
-   MODAL
+   TOOL CROSS-REFERENCE MODAL
    ============================================================ */
+function openToolModal(toolName) {
+  document.getElementById("tool-modal-title").textContent = toolName;
+
+  const needle = toolName.toLowerCase();
+  const matchedProjects = ALL_PROJECTS.filter(p => splitTags(p.tools).some(t => t.toLowerCase().includes(needle) || needle.includes(t.toLowerCase())));
+  const matchedExp = ALL_EXPERIENCE.filter(r => splitTags(r.tools).some(t => t.toLowerCase().includes(needle) || needle.includes(t.toLowerCase())));
+
+  const projList = document.getElementById("tool-modal-projects");
+  projList.innerHTML = matchedProjects.length
+    ? matchedProjects.map(p => `<li data-project-id="${p.id}" class="linkable-item">📁 ${p.nama_project}</li>`).join("")
+    : `<li class="muted-item">Belum ada project yang tercatat</li>`;
+  projList.querySelectorAll("[data-project-id]").forEach(node => {
+    node.addEventListener("click", () => {
+      const proj = ALL_PROJECTS.find(p => p.id === node.dataset.projectId);
+      closeToolModal();
+      if (proj) openModal(proj);
+    });
+  });
+
+  const expList = document.getElementById("tool-modal-experience");
+  expList.innerHTML = matchedExp.length
+    ? matchedExp.map(r => `<li>💼 ${r.posisi} · ${r.institusi || ""}</li>`).join("")
+    : `<li class="muted-item">Belum ada pengalaman yang tercatat</li>`;
+
+  document.getElementById("tool-modal-overlay").classList.add("open");
+}
+
+function closeToolModal() {
+  document.getElementById("tool-modal-overlay").classList.remove("open");
+}
+
+document.getElementById("tool-modal-close").addEventListener("click", closeToolModal);
+document.getElementById("tool-modal-overlay").addEventListener("click", (e) => {
+  if (e.target.id === "tool-modal-overlay") closeToolModal();
+});
 function openModal(p) {
   document.getElementById("modal-status").textContent = p.status || "Selesai";
   document.getElementById("modal-title").textContent = p.nama_project || "";
@@ -354,7 +437,10 @@ function openModal(p) {
     ? `<img src="${p.cover_image_url}" alt="${p.nama_project}">` : "";
 
   const tools = document.getElementById("modal-tools");
-  tools.innerHTML = splitTags(p.tools).map(t => `<span class="skill-tag">${t}</span>`).join("");
+  tools.innerHTML = splitTags(p.tools).map(t => {
+    const iconHtml = toolIconOrFallback(t, findToolIconUrl(t));
+    return `<span class="skill-tag">${iconHtml}<span>${t}</span></span>`;
+  }).join("");
 
   const filesBlock = document.getElementById("modal-files-block");
   const filesList = document.getElementById("modal-files");
@@ -396,7 +482,7 @@ document.getElementById("modal-overlay").addEventListener("click", (e) => {
   if (e.target.id === "modal-overlay") closeModal();
 });
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape") closeModal();
+  if (e.key === "Escape") { closeModal(); closeToolModal(); }
 });
 
 /* ============================================================

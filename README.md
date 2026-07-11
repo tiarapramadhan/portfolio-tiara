@@ -54,3 +54,19 @@ Tunggu sebentar, situs kamu langsung online dengan link `namarepo.vercel.app`.
 - Pastikan link CSV di `script.js` udah kepasang dengan benar (bukan lagi tulisan `TEMPEL_LINK_...`)
 - Pastikan sheet Google Sheets kamu sudah **Publish to web**, bukan cuma "Share"
 - Kolom `cover_image_url`, `link_github`, `link_dashboard` yang masih ditulis "ISI: ..." akan disembunyikan otomatis di tampilan, jadi aman kalau belum lengkap semua
+
+## Update terbaru — kolom baru di sheet Experience
+
+Biar fitur "tools yang dipakai" dan "link ke project terkait" di kartu pengalaman jalan, tambah 3 kolom baru di tab **Experience**:
+
+| Kolom | Isinya | Wajib? |
+|---|---|---|
+| `tools` | Tools yang dipakai, pisah koma (misal `Google Sheets, Excel`) | Opsional |
+| `gambar_url` | Link gambar/screenshot kegiatan | Opsional |
+| `project_terkait` | ID project dari sheet Projects yang berkaitan (misal `proj-001`), bisa lebih dari 1 dipisah koma | Opsional |
+
+Kolom `id` di sheet Projects itu yang jadi acuan buat `project_terkait` — pastiin nulisnya persis sama (case-sensitive).
+
+## Kategori Tools (sub_kategori)
+
+Kalau kamu mau tools di section Skills dikelompokkan (Programming, Data Analysis, Database, dst), tambah kolom `sub_kategori` di sheet Skills — isi cuma buat baris yang `kategori`-nya "Tools".

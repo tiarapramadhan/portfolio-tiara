@@ -56,6 +56,7 @@
   <!-- EXPERIENCE -->
   <section id="experience" class="section">
     <h2 class="section-title center"><span class="eyebrow">perjalanan</span>Pengalaman</h2>
+    <p class="section-hint">Klik salah satu buat lihat detail, tools yang dipakai, dan project terkait.</p>
     <div class="filter-bar center-bar" id="exp-tabs"></div>
     <div class="exp-list" id="exp-list"></div>
   </section>
@@ -103,7 +104,30 @@
         <div class="dashboard-embed" id="modal-dashboard"></div>
       </div>
 
+      <div class="modal-block" id="modal-related-block">
+        <p class="modal-block-title" id="modal-related-title">Terkait</p>
+        <div class="related-list" id="modal-related"></div>
+      </div>
+
       <a href="#" id="modal-github" class="btn btn-primary" target="_blank" rel="noopener">Lihat di GitHub</a>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL CROSS-REFERENCE MODAL -->
+<div class="modal-overlay" id="tool-modal-overlay">
+  <div class="modal tool-modal" role="dialog" aria-modal="true" aria-labelledby="tool-modal-title">
+    <button class="modal-close" id="tool-modal-close" aria-label="Tutup">✕</button>
+    <div class="modal-body">
+      <h3 id="tool-modal-title"></h3>
+      <div class="modal-block">
+        <p class="modal-block-title">Dipakai di project</p>
+        <ul class="file-list linkable" id="tool-modal-projects"></ul>
+      </div>
+      <div class="modal-block">
+        <p class="modal-block-title">Dipakai di pengalaman</p>
+        <ul class="file-list" id="tool-modal-experience"></ul>
+      </div>
     </div>
   </div>
 </div>
