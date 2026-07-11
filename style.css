@@ -180,7 +180,7 @@ main { position: relative; z-index: 1; }
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 .btn:hover { transform: translateY(-2px); }
-.btn-primary { background: var(--pink-400); color: var(--white); box-shadow: 0 8px 20px rgba(212, 83, 126, 0.35); }
+.btn-primary { background: var(--pink-400); color: var(--white); box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35); }
 .btn-secondary { background: var(--white); color: var(--pink-800); box-shadow: var(--shadow); }
 
 .hero-socials { display: flex; gap: 14px; }
@@ -421,7 +421,7 @@ main { position: relative; z-index: 1; }
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(75, 21, 40, 0.45);
+  background: rgba(0, 0, 0, 0.6);
   display: none;
   align-items: center;
   justify-content: center;

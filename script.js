@@ -192,8 +192,11 @@ function drawExperienceList() {
 }
 
 /* ============================================================
-   ICON MAPPING (khusus kategori Tools, pakai Simple Icons CDN)
+   ICON MAPPING (khusus kategori Tools)
+   Prioritas: 1) icon_url dari sheet Skills, 2) tebakan Simple Icons, 3) badge inisial
    ============================================================ */
+let TOOL_ICON_MAP = {}; // diisi otomatis dari kolom icon_url di sheet Skills
+
 const TOOL_ICON_SLUGS = {
   "python": "python",
   "microsoft excel": "microsoftexcel",
@@ -204,7 +207,6 @@ const TOOL_ICON_SLUGS = {
   "bigquery": "googlebigquery",
   "supabase": "supabase",
   "postgresql": "postgresql",
-  "looker studio": "looker",
   "figma": "figma",
   "canva": "canva",
   "google docs": "googledocs",
@@ -212,15 +214,22 @@ const TOOL_ICON_SLUGS = {
   "microsoft powerpoint": "microsoftpowerpoint",
   "tableau": "tableau",
   "power bi": "powerbi",
-  "r": "r",
   "mysql": "mysql",
   "jupyter": "jupyter",
   "github": "github",
   "git": "git",
+  "dbeaver": "dbeaver",
 };
 
 function findToolIconUrl(name) {
-  const key = (name || "").toLowerCase();
+  const key = (name || "").toLowerCase().trim();
+  if (!key) return null;
+
+  // 1) cek dulu link icon yang kamu isi manual di sheet Skills
+  for (const [sheetName, url] of Object.entries(TOOL_ICON_MAP)) {
+    if (key.includes(sheetName) || sheetName.includes(key)) return url;
+  }
+  // 2) fallback: tebak dari Simple Icons
   for (const [needle, slug] of Object.entries(TOOL_ICON_SLUGS)) {
     if (key.includes(needle)) return `https://cdn.simpleicons.org/${slug}`;
   }
@@ -249,6 +258,9 @@ async function renderSkills() {
     const cat = r.kategori || "Lainnya";
     if (!groups[cat]) groups[cat] = [];
     groups[cat].push(r);
+    if (cat.toLowerCase().includes("tool") && r.icon_url && !r.icon_url.startsWith("ISI:")) {
+      TOOL_ICON_MAP[r.nama_skill.toLowerCase().trim()] = r.icon_url;
+    }
   });
 
   function renderTagCard(item, isTools) {
@@ -488,7 +500,9 @@ document.addEventListener("keydown", (e) => {
 /* ============================================================
    INIT
    ============================================================ */
-renderProfile();
-renderExperience();
-renderSkills();
-renderProjects();
+(async () => {
+  renderProfile();
+  await renderSkills();
+  renderExperience();
+  renderProjects();
+})();

@@ -67,6 +67,33 @@ Biar fitur "tools yang dipakai" dan "link ke project terkait" di kartu pengalama
 
 Kolom `id` di sheet Projects itu yang jadi acuan buat `project_terkait` — pastiin nulisnya persis sama (case-sensitive).
 
+
+## Icon tools sekarang dari sheet, bukan tebakan
+
+Tambah kolom `icon_url` di sheet **Skills** (isi cuma buat baris kategori "Tools"). Ini lebih akurat karena kamu yang nentuin linknya, bukan sistem yang nebak nama file.
+
+Link siap pakai buat tools yang kamu punya sekarang (tinggal copy-paste ke kolom `icon_url`):
+
+| nama_skill | icon_url |
+|---|---|
+| Python | `https://cdn.simpleicons.org/python` |
+| Microsoft Excel | `https://cdn.simpleicons.org/microsoftexcel` |
+| Google Sheets | `https://cdn.simpleicons.org/googlesheets` |
+| Google Colab | `https://cdn.simpleicons.org/googlecolab` |
+| Google BigQuery | `https://cdn.simpleicons.org/googlebigquery` |
+| Supabase | `https://cdn.simpleicons.org/supabase` |
+| PostgreSQL | `https://cdn.simpleicons.org/postgresql` |
+| DBeaver | `https://cdn.simpleicons.org/dbeaver` |
+| Figma | `https://cdn.simpleicons.org/figma` |
+| Canva | `https://cdn.simpleicons.org/canva` |
+| Tableau | `https://cdn.simpleicons.org/tableau` |
+| Power BI | `https://cdn.simpleicons.org/powerbi` |
+| Looker Studio | `https://www.google.com/s2/favicons?sz=64&domain=lookerstudio.google.com` |
+| R | `https://www.google.com/s2/favicons?sz=64&domain=r-project.org` |
+
+**Buat tools lain di masa depan** yang nggak ada di daftar ini: kalau tools-nya ada di [simpleicons.org](https://simpleicons.org), cari nama tools-nya di situ, klik, copy nama slug-nya, pakai format `https://cdn.simpleicons.org/NAMASLUG`. Kalau nggak ketemu di situ, pakai cara universal ini (jalan buat hampir semua tools/website): `https://www.google.com/s2/favicons?sz=64&domain=namawebsite.com` — tinggal ganti `namawebsite.com` sesuai website resmi tools-nya.
+
+
 ## Kategori Tools (sub_kategori)
 
 Kalau kamu mau tools di section Skills dikelompokkan (Programming, Data Analysis, Database, dst), tambah kolom `sub_kategori` di sheet Skills — isi cuma buat baris yang `kategori`-nya "Tools".
