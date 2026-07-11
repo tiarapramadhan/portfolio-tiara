@@ -1,17 +1,17 @@
 :root {
-  --pink-50: #F7F6F2;
-  --pink-100: #ECEAE3;
-  --pink-400: #17171B;
+  --pink-50: #ECEFFA;
+  --pink-100: #D8DBE8;
+  --pink-400: #121820;
   --pink-600: #000000;
-  --pink-800: #46454C;
-  --pink-900: #131217;
-  --lavender: #ECEAE3;
-  --lavender-dark: #55545C;
-  --mint: #ECEAE3;
-  --peach: #ECEAE3;
-  --ink: #131217;
+  --pink-800: #51565A;
+  --pink-900: #121820;
+  --lavender: #D8DBE8;
+  --lavender-dark: #7B7D7F;
+  --mint: #D8DBE8;
+  --peach: #D8DBE8;
+  --ink: #121820;
   --white: #FFFFFF;
-  --shadow: 0 1px 2px rgba(19, 18, 23, 0.04), 0 8px 24px rgba(19, 18, 23, 0.06);
+  --shadow: 0 1px 2px rgba(18, 24, 32, 0.05), 0 8px 24px rgba(18, 24, 32, 0.08);
   --radius-lg: 20px;
   --radius-md: 14px;
   --radius-sm: 10px;
@@ -244,6 +244,17 @@ main { position: relative; z-index: 1; }
   font-weight: 600;
   color: var(--pink-800);
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 64px;
+}
+.skill-tag img {
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
 }
 
 /* EXPERIENCE — tabs + card list */

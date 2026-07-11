@@ -169,6 +169,42 @@ function drawExperienceList() {
 }
 
 /* ============================================================
+   ICON MAPPING (khusus kategori Tools, pakai Simple Icons CDN)
+   ============================================================ */
+const TOOL_ICON_SLUGS = {
+  "python": "python",
+  "microsoft excel": "microsoftexcel",
+  "excel": "microsoftexcel",
+  "google sheets": "googlesheets",
+  "google colab": "googlecolab",
+  "google bigquery": "googlebigquery",
+  "bigquery": "googlebigquery",
+  "supabase": "supabase",
+  "postgresql": "postgresql",
+  "looker studio": "looker",
+  "figma": "figma",
+  "canva": "canva",
+  "google docs": "googledocs",
+  "microsoft word": "microsoftword",
+  "microsoft powerpoint": "microsoftpowerpoint",
+  "tableau": "tableau",
+  "power bi": "powerbi",
+  "r": "r",
+  "mysql": "mysql",
+  "jupyter": "jupyter",
+  "github": "github",
+  "git": "git",
+};
+
+function findToolIconUrl(name) {
+  const key = (name || "").toLowerCase();
+  for (const [needle, slug] of Object.entries(TOOL_ICON_SLUGS)) {
+    if (key.includes(needle)) return `https://cdn.simpleicons.org/${slug}`;
+  }
+  return null;
+}
+
+/* ============================================================
    SKILLS
    ============================================================ */
 async function renderSkills() {
@@ -186,6 +222,7 @@ async function renderSkills() {
     groups[cat].push(r);
   });
   Object.entries(groups).forEach(([cat, items]) => {
+    const isTools = cat.toLowerCase().includes("tool");
     const block = el(`
       <div>
         <p class="skill-category-title">${cat}</p>
@@ -195,7 +232,11 @@ async function renderSkills() {
     const tagsWrap = block.querySelector(".skill-tags");
     items.forEach(item => {
       const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
-      tagsWrap.appendChild(el(`<span class="skill-tag">${item.nama_skill}${level}</span>`));
+      const iconUrl = isTools ? findToolIconUrl(item.nama_skill) : null;
+      const iconHtml = iconUrl
+        ? `<img src="${iconUrl}" alt="" loading="lazy" onerror="this.remove()">`
+        : "";
+      tagsWrap.appendChild(el(`<span class="skill-tag">${iconHtml}<span>${item.nama_skill}${level}</span></span>`));
     });
     grid.appendChild(block);
   });
