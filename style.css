@@ -714,84 +714,54 @@ main { position: relative; z-index: 1; }
 }
 
 /* ============================================================
-   CONTACT
+   CONTACT — satu panel rounded, workspace scene (kiri) + form (kanan)
    ============================================================ */
+.contact-panel {
+  max-width: 1000px;
+  margin: 0 auto;
+  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
+  border: 1px solid var(--pink-100);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
 .contact-layout {
   display: flex;
-  gap: 28px;
-  flex-wrap: wrap;
-  max-width: 900px;
-  margin: 0 auto;
+  align-items: stretch;
 }
-.contact-info-card {
-  flex: 1 1 260px;
-  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
-  border: 1px solid var(--pink-100);
-  border-radius: var(--radius-md);
-  padding: 26px 28px;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-}
-#contact-canvas {
-  flex: 1;
-  width: 100%;
-  min-height: 140px;
-  margin-top: 20px;
-  border-radius: var(--radius-sm);
-  display: block;
-}
-.contact-block-title {
-  font-size: 12px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--lavender-dark);
-  margin: 0 0 14px;
-}
-.contact-info-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--pink-900);
-  padding: 10px 0;
-}
-.contact-info-icon {
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  background: var(--pink-100);
-  display: flex; align-items: center; justify-content: center;
-  flex-shrink: 0;
-  font-size: 14px;
-}
-.contact-socials {
-  display: flex;
-  gap: 10px;
-}
-.contact-socials a {
-  width: 38px; height: 38px;
-  border-radius: 50%;
-  background: var(--pink-100);
-  display: flex; align-items: center; justify-content: center;
-  color: var(--pink-900);
-  font-size: 14px;
-  font-weight: 700;
-  transition: transform 0.15s ease;
-}
-.contact-socials a:hover { transform: translateY(-3px); }
 
 .contact-form {
-  flex: 1 1 320px;
-  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
-  border: 1px solid var(--pink-100);
-  border-radius: var(--radius-md);
-  padding: 26px 28px;
-  box-shadow: var(--shadow);
+  flex: 0 0 60%;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  padding: 40px 44px;
+  border-left: 1px solid var(--pink-100);
+}
+.contact-form-heading {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  color: var(--pink-900);
+  margin: 0;
+}
+.contact-form-subheading {
+  font-size: 14px;
+  color: var(--pink-800);
+  margin: -8px 0 8px;
+  line-height: 1.6;
+}
+.cf-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.cf-label {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--lavender-dark);
 }
 .contact-form input,
 .contact-form textarea {
@@ -799,17 +769,38 @@ main { position: relative; z-index: 1; }
   background: var(--pink-50);
   border: 1px solid var(--pink-100);
   border-radius: var(--radius-sm);
-  padding: 12px 14px;
+  padding: 13px 15px;
   font-family: var(--font-body);
-  font-size: 14px;
+  font-size: 14.5px;
   color: var(--pink-900);
   resize: vertical;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 .contact-form input::placeholder,
 .contact-form textarea::placeholder { color: var(--lavender-dark); }
+.contact-form input:hover,
+.contact-form textarea:hover { border-color: var(--pink-800); }
 .contact-form input:focus,
-.contact-form textarea:focus { outline: none; border-color: var(--pink-800); }
-.contact-form .btn { align-self: flex-start; }
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--pink-400);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+}
+.cf-submit {
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+@media (max-width: 860px) {
+  .contact-layout { flex-direction: column; }
+  .contact-form {
+    flex: 1 1 auto;
+    border-left: none;
+    border-top: 1px solid var(--pink-100);
+    padding: 32px 26px;
+  }
+  .workspace-scene { flex: 1 1 auto !important; min-height: 320px !important; }
+}
 
 /* ============================================================
    FOOTER
@@ -878,91 +869,444 @@ main { position: relative; z-index: 1; }
 .related-list .linkable-item:hover { background: var(--pink-100); }
 
 /* ============================================================
-   CONTACT ILLUSTRATION — karakter animasi original (bukan replika karya lain)
+   WORKSPACE SCENE — placeholder murni HTML/CSS (belum ada gambar/animasi)
+   Semua elemen di bawah cuma "reserved space" pakai shape CSS sederhana,
+   siap diganti ilustrasi/SVG asli nanti tanpa ubah struktur.
    ============================================================ */
-.contact-illustration {
-  flex: 1 1 260px;
-  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
-  border: 1px solid var(--pink-100);
+.workspace-scene {
+  position: relative;
+  flex: 0 0 40%;
+  min-height: 520px;
+  background: var(--pink-50);
+  overflow: hidden;
+  --desk-h: 92px;
+}
+
+/* jendela */
+.ws-window {
+  position: absolute;
+  top: 26px;
+  left: 26px;
+  right: 26px;
+  height: 34%;
+  border: 2px solid var(--pink-100);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow);
-  padding: 20px 20px 24px;
+  background: var(--white);
+}
+.ws-window-cross-v {
+  position: absolute;
+  top: 0; bottom: 0; left: 50%;
+  width: 2px;
+  background: var(--pink-100);
+  transform: translateX(-50%);
+}
+.ws-window-cross-h {
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 2px;
+  background: var(--pink-100);
+  transform: translateY(-50%);
+}
+
+/* lampu meja */
+.ws-lamp {
+  position: absolute;
+  top: 10%;
+  right: 9%;
+  width: 60px;
+  height: 90px;
+}
+.ws-lamp-arm {
+  position: absolute;
+  top: 0; left: 50%;
+  width: 3px;
+  height: 64px;
+  background: var(--lavender-dark);
+  border-radius: 2px;
+  transform-origin: top center;
+  transform: translateX(-50%) rotate(18deg);
+}
+.ws-lamp-shade {
+  position: absolute;
+  top: 54px; left: 50%;
+  width: 42px;
+  height: 22px;
+  background: var(--pink-100);
+  border: 2px solid var(--lavender-dark);
+  border-radius: 4px 4px 14px 14px;
+  transform: translateX(-30%) rotate(18deg);
+}
+
+/* tanaman */
+.ws-plant {
+  position: absolute;
+  left: 6%;
+  bottom: var(--desk-h);
+  width: 64px;
+  height: 110px;
+}
+.ws-plant-pot {
+  position: absolute;
+  bottom: 0; left: 50%;
+  width: 48px; height: 34px;
+  background: var(--pink-100);
+  border: 2px solid var(--lavender-dark);
+  border-radius: 4px 4px 14px 14px;
+  transform: translateX(-50%);
+}
+.ws-plant-leaf {
+  position: absolute;
+  bottom: 28px; left: 50%;
+  width: 10px; height: 44px;
+  background: var(--lavender-dark);
+  border-radius: 50% 50% 50% 0;
+  opacity: 0.85;
+}
+.ws-plant-leaf.leaf-1 { transform: translateX(-24px) rotate(-30deg); }
+.ws-plant-leaf.leaf-2 { transform: translateX(-50%) rotate(0deg); height: 52px; }
+.ws-plant-leaf.leaf-3 { transform: translateX(14px) rotate(26deg); }
+
+/* placeholder karakter — akan diisi SVG/ilustrasi animasi nanti */
+.ws-character-placeholder {
+  position: absolute;
+  left: 50%;
+  bottom: var(--desk-h);
+  transform: translateX(-50%);
+  width: 44%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 10px;
+  border: 2px dashed var(--pink-100);
+  border-radius: var(--radius-lg) var(--radius-lg) 4px 4px;
 }
-.contact-illustration svg { width: 100%; max-width: 300px; height: auto; }
-.illustration-caption {
-  margin: 10px 0 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--pink-800);
-  text-align: center;
+.ws-character-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 2px solid var(--lavender-dark);
+  position: relative;
 }
-
-.desk, .desk-leg { fill: var(--pink-100); }
-.laptop-base { fill: var(--lavender-dark); }
-.laptop-screen { fill: #1b1b24; stroke: var(--pink-100); stroke-width: 2; }
-.screen-line { fill: #6b7280; }
-.shirt, .sleeve { fill: var(--pink-50); stroke: var(--pink-100); stroke-width: 2; }
-.neck, .hand { fill: #e8cdb0; }
-.collar { fill: #c23b3b; opacity: 0.85; }
-.face { fill: #e8cdb0; }
-.hair-back, .hair-front { fill: #1b1b24; }
-.glasses-ring { fill: none; stroke: #1b1b24; stroke-width: 3; }
-.glasses-bridge, .glasses-arm { stroke: #1b1b24; stroke-width: 2.5; fill: none; }
-.eye { fill: #1b1b24; }
-.blush { fill: #e3a9a0; opacity: 0.55; }
-.smile { fill: none; stroke: #1b1b24; stroke-width: 3; stroke-linecap: round; }
-.arrow-stroke { stroke: var(--lavender-dark); }
-.sparkle { fill: var(--lavender-dark); }
-
-/* animasi */
-.character-body {
-  transform-origin: center bottom;
-  animation: bodyBob 3s ease-in-out infinite;
+.ws-character-icon::after {
+  content: "";
+  position: absolute;
+  top: 58px;
+  left: 50%;
+  width: 84px;
+  height: 50px;
+  border: 2px solid var(--lavender-dark);
+  border-bottom: none;
+  border-radius: 40px 40px 0 0;
+  transform: translateX(-50%);
 }
-@keyframes bodyBob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+.ws-character-label {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lavender-dark);
+  margin-top: 56px;
 }
 
-.waving-arm {
-  transform-origin: 258px 322px;
-  animation: waveArm 1.8s ease-in-out infinite;
-}
-@keyframes waveArm {
-  0%, 100% { transform: rotate(0deg); }
-  25% { transform: rotate(-14deg); }
-  50% { transform: rotate(6deg); }
-  75% { transform: rotate(-10deg); }
-}
-
-.eyes {
-  transform-origin: 200px 197px;
-  animation: blinkEyes 4.5s ease-in-out infinite;
-}
-@keyframes blinkEyes {
-  0%, 92%, 100% { transform: scaleY(1); }
-  96% { transform: scaleY(0.1); }
+/* bantal leher */
+.ws-neck-pillow {
+  position: absolute;
+  right: 7%;
+  bottom: calc(var(--desk-h) + 6px);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 11px solid var(--pink-100);
 }
 
-.point-arrow { animation: arrowBounce 1.4s ease-in-out infinite; }
-@keyframes arrowBounce {
-  0%, 100% { transform: translateX(0); opacity: 0.55; }
-  50% { transform: translateX(10px); opacity: 1; }
+/* meja + barang-barang di atasnya */
+.ws-desk {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: var(--desk-h);
+  background: var(--pink-100);
+  border-top: 2px solid var(--lavender-dark);
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 18px;
+  padding: 0 20px;
 }
 
-.sparkle { transform-origin: center; animation: twinkle 2.4s ease-in-out infinite; }
-.sparkle-2 { animation-delay: 1.1s; }
-@keyframes twinkle {
-  0%, 100% { opacity: 0.2; transform: scale(0.8); }
-  50% { opacity: 1; transform: scale(1.1); }
+.ws-notebook {
+  width: 34px;
+  height: 44px;
+  background: var(--white);
+  border: 2px solid var(--lavender-dark);
+  border-left: 6px solid var(--lavender-dark);
+  border-radius: 3px;
+  transform: rotate(-6deg);
+  margin-bottom: 6px;
+}
+
+.ws-sticky-notes {
+  position: relative;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 6px;
+}
+.sticky {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  background: var(--white);
+  border: 2px solid var(--pink-100);
+  border-radius: 2px;
+}
+.sticky-1 { transform: rotate(-8deg); bottom: 2px; left: 0; }
+.sticky-2 { transform: rotate(6deg); bottom: 0; left: 4px; }
+
+.ws-laptop {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ws-laptop-screen {
+  width: 74px;
+  height: 50px;
+  background: #1b1b24;
+  border: 2px solid var(--lavender-dark);
+  border-radius: 5px 5px 1px 1px;
+}
+.ws-laptop-base {
+  width: 84px;
+  height: 7px;
+  background: var(--lavender-dark);
+  border-radius: 0 0 3px 3px;
+  margin-top: -1px;
+}
+
+.ws-matcha {
+  position: relative;
+  margin-bottom: 6px;
+}
+.ws-matcha-cup {
+  width: 24px;
+  height: 30px;
+  background: var(--white);
+  border: 2px solid var(--lavender-dark);
+  border-radius: 3px 3px 9px 9px;
+}
+.ws-matcha-straw {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  width: 3px;
+  height: 18px;
+  background: var(--lavender-dark);
+  border-radius: 2px;
+  transform: translateX(-50%) rotate(10deg);
+}
+
+.ws-water-bottle {
+  position: relative;
+  width: 20px;
+  height: 58px;
+  background: var(--white);
+  border: 2px solid var(--lavender-dark);
+  border-radius: 9px 9px 3px 3px;
+  margin-bottom: 2px;
+}
+.ws-water-bottle::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  width: 10px;
+  height: 7px;
+  background: var(--lavender-dark);
+  border-radius: 2px;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 1024px) and (min-width: 861px) {
+  .workspace-scene { flex-basis: 34%; }
+  .contact-form { flex-basis: 66%; }
+}
+@media (max-width: 640px) {
+  .ws-window { height: 30%; }
+  .ws-character-placeholder { width: 60%; }
+}
+
+/* ============================================================
+   THEME ARCHITECTURE — Morning/Night mode (day = light theme)
+   ============================================================ */
+[data-theme="day"] {
+  --pink-50: #EDEFF5;
+  --pink-100: #D7DAE3;
+  --pink-400: #15181F;
+  --pink-600: #000000;
+  --pink-800: #4B4F58;
+  --pink-900: #15181F;
+  --lavender: #D7DAE3;
+  --lavender-dark: #6B7280;
+  --mint: #D7DAE3;
+  --peach: #D7DAE3;
+  --ink: #15181F;
+  --white: #FFFFFF;
+  --shadow: 0 1px 2px rgba(18, 24, 32, 0.08), 0 8px 24px rgba(18, 24, 32, 0.10);
+}
+
+/* ============================================================
+   THEME TRANSITION — semua warna berubah halus (700ms) saat toggle
+   ============================================================ */
+body,
+.nav-inner, .nav-links a, .theme-toggle,
+.btn, .btn-primary, .btn-secondary,
+.exp-card, .project-card, .filter-sidebar, .filter-pill,
+.skill-tag, .skill-subgroup-toggle,
+.contact-panel, .contact-form, .contact-form input, .contact-form textarea,
+.modal, .footer, .badge, .hero-photo-frame, .empty-state, .dashboard-embed {
+  transition: background-color 0.7s ease, background 0.7s ease, border-color 0.7s ease,
+              box-shadow 0.7s ease, color 0.7s ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .character-body, .waving-arm, .eyes, .point-arrow, .sparkle {
-    animation: none !important;
+  body, .nav-inner, .nav-links a, .theme-toggle, .btn, .exp-card, .project-card,
+  .filter-sidebar, .filter-pill, .skill-tag, .contact-panel, .contact-form,
+  .modal, .footer, .badge, .hero-photo-frame, .empty-state, .dashboard-embed {
+    transition: none;
   }
+}
+
+/* ============================================================
+   THEME TOGGLE BUTTON
+   ============================================================ */
+.theme-toggle {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--pink-100);
+  color: var(--pink-900);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 6px;
+  transition: background-color 0.7s ease, transform 0.2s ease;
+}
+.theme-toggle:hover { transform: translateY(-2px) rotate(15deg); }
+
+/* ============================================================
+   ILLUSTRATION STAGE — crossfade siang/malam + ambient glow
+   ============================================================ */
+.illust-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 300px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  animation: illustBreathe 6s ease-in-out infinite;
+}
+@keyframes illustBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.012); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .illust-stage { animation: none; }
+}
+
+.illust-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.7s ease;
+}
+.illust-day { opacity: 0; }
+.illust-night { opacity: 1; }
+[data-theme="day"] .illust-day { opacity: 1; }
+[data-theme="day"] .illust-night { opacity: 0; }
+
+/* glow lampu meja — nyala lebih kuat pas malam */
+.illust-glow-lamp {
+  position: absolute;
+  right: 10%;
+  bottom: 26%;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 195, 110, 0.55), transparent 70%);
+  filter: blur(8px);
+  opacity: 0.35;
+  animation: glowPulse 3s ease-in-out infinite;
+  transition: opacity 0.7s ease;
+}
+[data-theme="day"] .illust-glow-lamp { opacity: 0.12; }
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.28; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.08); }
+}
+
+/* glow monitor — kedip halus kayak layar nyala */
+.illust-glow-monitor {
+  position: absolute;
+  right: 22%;
+  top: 40%;
+  width: 110px;
+  height: 70px;
+  border-radius: 40%;
+  background: radial-gradient(ellipse, rgba(120, 180, 255, 0.45), transparent 70%);
+  filter: blur(10px);
+  opacity: 0.3;
+  animation: monitorFlicker 2.6s ease-in-out infinite;
+  transition: opacity 0.7s ease;
+}
+[data-theme="day"] .illust-glow-monitor { opacity: 0.15; }
+@keyframes monitorFlicker {
+  0%, 100% { opacity: 0.22; }
+  45% { opacity: 0.4; }
+  50% { opacity: 0.18; }
+  55% { opacity: 0.38; }
+}
+
+/* mood hangat matahari — cuma kelihatan pas mode siang */
+.illust-glow-sun {
+  position: absolute;
+  left: 12%;
+  top: 15%;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 200, 120, 0.5), transparent 70%);
+  filter: blur(14px);
+  opacity: 0;
+  animation: glowPulse 4s ease-in-out infinite;
+  transition: opacity 0.7s ease;
+}
+[data-theme="day"] .illust-glow-sun { opacity: 0.55; }
+
+/* bintang berkedip — cuma kelihatan pas mode malam */
+.illust-stars {
+  position: absolute;
+  inset: 0;
+  opacity: 1;
+  transition: opacity 0.7s ease;
+  pointer-events: none;
+}
+[data-theme="day"] .illust-stars { opacity: 0; }
+.star-dot {
+  position: absolute;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  animation: starTwinkle 3s ease-in-out infinite;
+}
+@keyframes starTwinkle {
+  0%, 100% { opacity: 0.15; }
+  50% { opacity: 1; }
 }

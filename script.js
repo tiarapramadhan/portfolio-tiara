@@ -100,6 +100,28 @@ async function renderProfile() {
 
   if (p.foto_url) document.getElementById("hero-photo").src = p.foto_url;
 
+  // ilustrasi workspace siang/malam
+  const dayImg = document.getElementById("illust-day");
+  const nightImg = document.getElementById("illust-night");
+  if (dayImg && p.illustration_pagi_url && !p.illustration_pagi_url.startsWith("ISI:")) {
+    dayImg.src = p.illustration_pagi_url;
+  }
+  if (nightImg && p.illustration_malam_url && !p.illustration_malam_url.startsWith("ISI:")) {
+    nightImg.src = p.illustration_malam_url;
+  }
+  const starsWrap = document.getElementById("illust-stars");
+  if (starsWrap && !starsWrap.dataset.built) {
+    for (let i = 0; i < 18; i++) {
+      const star = document.createElement("span");
+      star.className = "star-dot";
+      star.style.top = `${Math.random() * 45}%`;
+      star.style.left = `${Math.random() * 95}%`;
+      star.style.animationDelay = `${(Math.random() * 3).toFixed(2)}s`;
+      starsWrap.appendChild(star);
+    }
+    starsWrap.dataset.built = "true";
+  }
+
   const cv = document.getElementById("hero-cv");
   if (p.link_cv) cv.href = p.link_cv; else cv.style.display = "none";
 
@@ -678,101 +700,36 @@ document.addEventListener("keydown", (e) => {
 });
 
 /* ============================================================
-   CONTACT CANVAS — animasi network titik-titik, reaktif ke mouse
+   THEME TOGGLE — day/night, tersimpan di localStorage
    ============================================================ */
-function initContactCanvas() {
-  const canvas = document.getElementById("contact-canvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
-  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function initThemeToggle() {
+  const toggle = document.getElementById("theme-toggle");
+  const icon = document.getElementById("theme-toggle-icon");
+  if (!toggle) return;
 
-  const styles = getComputedStyle(document.documentElement);
-  const dotColor = styles.getPropertyValue("--pink-800").trim() || "#9DA3A9";
-  const lineColor = styles.getPropertyValue("--pink-100").trim() || "#434952";
-
-  let width, height, points;
-  const mouse = { x: -9999, y: -9999 };
-  const POINT_COUNT = 26;
-  const LINK_DIST = 110;
-
-  function resize() {
-    width = canvas.clientWidth;
-    height = canvas.clientHeight;
-    canvas.width = width * devicePixelRatio;
-    canvas.height = height * devicePixelRatio;
-    ctx.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
-  }
-
-  function makePoints() {
-    points = Array.from({ length: POINT_COUNT }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.35,
-    }));
-  }
-
-  function step() {
-    ctx.clearRect(0, 0, width, height);
-
-    points.forEach(p => {
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < 0 || p.x > width) p.vx *= -1;
-      if (p.y < 0 || p.y > height) p.vy *= -1;
-    });
-
-    for (let i = 0; i < points.length; i++) {
-      for (let j = i + 1; j < points.length; j++) {
-        const dx = points[i].x - points[j].x, dy = points[i].y - points[j].y;
-        const dist = Math.hypot(dx, dy);
-        if (dist < LINK_DIST) {
-          ctx.strokeStyle = lineColor;
-          ctx.globalAlpha = 1 - dist / LINK_DIST;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(points[i].x, points[i].y);
-          ctx.lineTo(points[j].x, points[j].y);
-          ctx.stroke();
-        }
-      }
-      // garis ke posisi mouse — efek "connecting"
-      const dxm = points[i].x - mouse.x, dym = points[i].y - mouse.y;
-      const distm = Math.hypot(dxm, dym);
-      if (distm < LINK_DIST * 1.4) {
-        ctx.strokeStyle = dotColor;
-        ctx.globalAlpha = (1 - distm / (LINK_DIST * 1.4)) * 0.8;
-        ctx.lineWidth = 1.2;
-        ctx.beginPath();
-        ctx.moveTo(points[i].x, points[i].y);
-        ctx.lineTo(mouse.x, mouse.y);
-        ctx.stroke();
-      }
+  function applyTheme(theme) {
+    if (theme === "day") {
+      document.documentElement.setAttribute("data-theme", "day");
+      icon.textContent = "☀️";
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+      icon.textContent = "🌙";
     }
-
-    ctx.globalAlpha = 1;
-    points.forEach(p => {
-      ctx.fillStyle = dotColor;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, 2.2, 0, Math.PI * 2);
-      ctx.fill();
-    });
-
-    if (!reduceMotion) requestAnimationFrame(step);
   }
 
-  canvas.addEventListener("mousemove", (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
-  canvas.addEventListener("mouseleave", () => { mouse.x = -9999; mouse.y = -9999; });
+  const saved = localStorage.getItem("theme");
+  const systemPrefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+  applyTheme(saved || (systemPrefersLight ? "day" : "night"));
 
-  resize();
-  makePoints();
-  step();
-  window.addEventListener("resize", () => { resize(); makePoints(); if (reduceMotion) step(); });
+  toggle.addEventListener("click", () => {
+    const isDay = document.documentElement.getAttribute("data-theme") === "day";
+    const next = isDay ? "night" : "day";
+    applyTheme(next);
+    localStorage.setItem("theme", next);
+  });
 }
-initContactCanvas();
+initThemeToggle();
+
 function initScrollSpy() {
   const navLinks = document.querySelectorAll(".nav-links a");
   const sections = Array.from(navLinks)

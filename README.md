@@ -159,3 +159,22 @@ Contoh: kalau project "Analisis Kesehatan Mental" pakai EDA, isi kolom `tools`-n
 Excel, Pivot Table, Data Cleaning, Exploratory Data Analysis (EDA), Data Visualization
 ```
 Biar pas orang klik "Exploratory Data Analysis (EDA)" di section Skills, project ini otomatis muncul di daftar "Dipakai di project".
+
+## Update — Dark/Light mode toggle + ilustrasi siang/malam
+
+Toggle mode terang/gelap sekarang ada di navbar (icon ☀️/🌙). Pilihan tersimpan otomatis (localStorage), jadi kalau user balik lagi ke web-nya, mode terakhir yang dipilih tetap kepakai.
+
+### Sheet Profile — 2 kolom baru
+| Kolom | Isinya |
+|---|---|
+| `illustration_pagi_url` | Link gambar ilustrasi versi siang (upload ke imgbb dulu) |
+| `illustration_malam_url` | Link gambar ilustrasi versi malam |
+
+Begitu link ini keisi, ilustrasi di section Contact otomatis:
+- Crossfade halus (700ms) pas toggle mode di-klik
+- Ada efek glow lampu meja & monitor (lebih nyala pas mode malam)
+- Ada cahaya hangat matahari (mode siang) dan bintang berkedip (mode malam)
+- Background, navbar, tombol, teks, dan shadow di seluruh web ikut transisi warna halus barengan
+
+### Catatan jujur soal batasan
+Karena ilustrasinya gambar PNG datar (bukan per-elemen/vektor), efek "tanaman bergerak" nggak bisa diisolasi cuma ke tanamannya — yang ada sekarang seluruh ilustrasi punya gerakan "napas" sangat halus (scale naik-turun dikit) biar tetap kerasa hidup tanpa terlihat aneh.
