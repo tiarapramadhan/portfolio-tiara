@@ -109,6 +109,7 @@ async function renderProfile() {
   if (dayFrames.length || nightFrames.length) {
     SPRITE.day = dayFrames;
     SPRITE.night = nightFrames;
+    [...dayFrames, ...nightFrames].forEach(url => { const pre = new Image(); pre.src = url; });
     if (dayImg && dayFrames.length) dayImg.src = dayFrames[0];
     if (nightImg && nightFrames.length) nightImg.src = nightFrames[0];
     initSpriteObserver();
