@@ -728,15 +728,13 @@ main { position: relative; z-index: 1; }
 .contact-layout {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
+  align-items: stretch;
   flex-wrap: wrap;
 }
 
 .workspace-scene {
   flex: 1 1 56%;
   min-width: 300px;
-  align-self: flex-start;
-  height: auto;
 }
 
 .contact-form {
@@ -883,7 +881,6 @@ main { position: relative; z-index: 1; }
 .workspace-scene {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 9;
   background: var(--pink-50);
   overflow: hidden;
 }
