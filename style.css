@@ -727,16 +727,18 @@ main { position: relative; z-index: 1; }
 }
 .contact-layout {
   display: flex;
+  flex-direction: column;
   align-items: stretch;
 }
 
 .contact-form {
-  flex: 0 0 60%;
+  flex: none;
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
   padding: 40px 44px;
-  border-left: 1px solid var(--pink-100);
+  border-top: 1px solid var(--pink-100);
 }
 .contact-form-heading {
   font-family: var(--font-display);
@@ -792,14 +794,9 @@ main { position: relative; z-index: 1; }
 }
 
 @media (max-width: 860px) {
-  .contact-layout { flex-direction: column; }
   .contact-form {
-    flex: 1 1 auto;
-    border-left: none;
-    border-top: 1px solid var(--pink-100);
     padding: 32px 26px;
   }
-  .workspace-scene { flex: 1 1 auto !important; min-height: 320px !important; }
 }
 
 /* ============================================================
@@ -875,11 +872,10 @@ main { position: relative; z-index: 1; }
    ============================================================ */
 .workspace-scene {
   position: relative;
-  flex: 0 0 40%;
-  min-height: 520px;
+  width: 100%;
+  aspect-ratio: 16 / 9;
   background: var(--pink-50);
   overflow: hidden;
-  --desk-h: 92px;
 }
 
 /* jendela */
@@ -1127,15 +1123,6 @@ main { position: relative; z-index: 1; }
   transform: translateX(-50%);
 }
 
-@media (max-width: 1024px) and (min-width: 861px) {
-  .workspace-scene { flex-basis: 34%; }
-  .contact-form { flex-basis: 66%; }
-}
-@media (max-width: 640px) {
-  .ws-window { height: 30%; }
-  .ws-character-placeholder { width: 60%; }
-}
-
 /* ============================================================
    THEME ARCHITECTURE — Morning/Night mode (day = light theme)
    ============================================================ */
@@ -1223,7 +1210,8 @@ body,
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  background: var(--pink-50);
   transition: opacity 0.7s ease;
 }
 .illust-day { opacity: 0; }

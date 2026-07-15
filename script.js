@@ -103,12 +103,25 @@ async function renderProfile() {
   // ilustrasi workspace siang/malam
   const dayImg = document.getElementById("illust-day");
   const nightImg = document.getElementById("illust-night");
-  if (dayImg && p.illustration_pagi_url && !p.illustration_pagi_url.startsWith("ISI:")) {
-    dayImg.src = p.illustration_pagi_url;
+  const dayFrames = splitTags(p.illustration_pagi_frames);
+  const nightFrames = splitTags(p.illustration_malam_frames);
+
+  if (dayFrames.length || nightFrames.length) {
+    SPRITE.day = dayFrames;
+    SPRITE.night = nightFrames;
+    if (dayImg && dayFrames.length) dayImg.src = dayFrames[0];
+    if (nightImg && nightFrames.length) nightImg.src = nightFrames[0];
+    initSpriteObserver();
+  } else {
+    // fallback: 1 gambar statis per mode (kalau frame belum diisi)
+    if (dayImg && p.illustration_pagi_url && !p.illustration_pagi_url.startsWith("ISI:")) {
+      dayImg.src = p.illustration_pagi_url;
+    }
+    if (nightImg && p.illustration_malam_url && !p.illustration_malam_url.startsWith("ISI:")) {
+      nightImg.src = p.illustration_malam_url;
+    }
   }
-  if (nightImg && p.illustration_malam_url && !p.illustration_malam_url.startsWith("ISI:")) {
-    nightImg.src = p.illustration_malam_url;
-  }
+
   const starsWrap = document.getElementById("illust-stars");
   if (starsWrap && !starsWrap.dataset.built) {
     for (let i = 0; i < 18; i++) {
@@ -698,6 +711,56 @@ document.getElementById("modal-overlay").addEventListener("click", (e) => {
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") { closeModal(); closeToolModal(); closeExpModal(); }
 });
+
+/* ============================================================
+   SPRITE SEQUENCE — 6 frame pose per mode, loop, mulai pas discroll masuk
+   ============================================================ */
+const SPRITE = { day: [], night: [], index: 0, timer: null, playing: false, observed: false };
+const FRAME_DURATIONS = [1300, 450, 550, 600, 650, 1500]; // ms per frame F1..F6 (idle lama, transisi cepat, pose akhir lama)
+const reduceMotionSprite = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function tickSprite() {
+  const dayImg = document.getElementById("illust-day");
+  const nightImg = document.getElementById("illust-night");
+  if (SPRITE.day.length) dayImg.src = SPRITE.day[SPRITE.index % SPRITE.day.length];
+  if (SPRITE.night.length) nightImg.src = SPRITE.night[SPRITE.index % SPRITE.night.length];
+  const duration = FRAME_DURATIONS[SPRITE.index % FRAME_DURATIONS.length] || 500;
+  SPRITE.index++;
+  SPRITE.timer = setTimeout(tickSprite, duration);
+}
+
+function startSprite() {
+  if (SPRITE.playing || (!SPRITE.day.length && !SPRITE.night.length)) return;
+  if (reduceMotionSprite) {
+    // statis di pose "senyum & dadah" (frame index 2), nggak looping
+    const dayImg = document.getElementById("illust-day");
+    const nightImg = document.getElementById("illust-night");
+    if (SPRITE.day.length) dayImg.src = SPRITE.day[Math.min(2, SPRITE.day.length - 1)];
+    if (SPRITE.night.length) nightImg.src = SPRITE.night[Math.min(2, SPRITE.night.length - 1)];
+    return;
+  }
+  SPRITE.playing = true;
+  SPRITE.index = 0;
+  tickSprite();
+}
+
+function stopSprite() {
+  SPRITE.playing = false;
+  clearTimeout(SPRITE.timer);
+}
+
+function initSpriteObserver() {
+  if (SPRITE.observed) return;
+  SPRITE.observed = true;
+  const stage = document.getElementById("illust-day")?.closest(".illust-stage");
+  if (!stage) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) startSprite(); else stopSprite();
+    });
+  }, { threshold: 0.35 });
+  observer.observe(stage);
+}
 
 /* ============================================================
    THEME TOGGLE — day/night, tersimpan di localStorage

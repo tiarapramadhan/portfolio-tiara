@@ -178,3 +178,26 @@ Begitu link ini keisi, ilustrasi di section Contact otomatis:
 
 ### Catatan jujur soal batasan
 Karena ilustrasinya gambar PNG datar (bukan per-elemen/vektor), efek "tanaman bergerak" nggak bisa diisolasi cuma ke tanamannya — yang ada sekarang seluruh ilustrasi punya gerakan "napas" sangat halus (scale naik-turun dikit) biar tetap kerasa hidup tanpa terlihat aneh.
+
+## Update — 6-frame pose sequence + layout landscape 16:9
+
+### Sheet Profile — 2 kolom baru (buat sequence 6 frame)
+| Kolom | Isinya |
+|---|---|
+| `illustration_pagi_frames` | 6 link frame Pagi F1-F6, dipisah koma, **urutan harus sesuai**: F1 (natap PC/fokus), F2 (noleh ke viewer), F3 (angkat tangan sapa), F4 (senyum+masih sapa), F5 (nunjuk viewer), F6 (nunjuk ke form) |
+| `illustration_malam_frames` | Sama, tapi 6 link frame Malam F1-F6 |
+
+Contoh isi `illustration_pagi_frames`:
+```
+https://i.ibb.co/xxx/pagi-f1.png, https://i.ibb.co/xxx/pagi-f2.png, https://i.ibb.co/xxx/pagi-f3.png, https://i.ibb.co/xxx/pagi-f4.png, https://i.ibb.co/xxx/pagi-f5.png, https://i.ibb.co/xxx/pagi-f6.png
+```
+
+Kolom lama `illustration_pagi_url` / `illustration_malam_url` (1 gambar statis) tetap didukung sebagai fallback kalau kolom frame ini kosong — tapi kalau frame udah diisi, itu yang dipakai (looping otomatis).
+
+### Perilaku animasinya
+- Animasi **mulai jalan otomatis pas section Contact ke-scroll masuk layar** (bukan langsung dari awal buka web), dan **berhenti kalau di-scroll keluar** (hemat resource)
+- Loop: F1 (diem agak lama, fokus ngoding) → F2 → F3 → F4 → F5 → F6 (nunjuk ke form, ditahan agak lama) → balik ke F1
+- Kalau browser/OS user pakai setting "reduce motion", animasi otomatis nggak looping — cuma nampilin 1 pose statis (F3, lagi senyum & sapa) biar tetap aksesibel
+
+### Layout landscape 16:9
+Ilustrasi sekarang di atas (lebar penuh, rasio 16:9), form di bawahnya — bukan sisi-sisian lagi. Gambar dipasang pakai `object-fit: contain`, jadi **nggak ada crop sama sekali** — asal frame kamu emang didesain rasio 16:9, bakal pas persis tanpa distorsi atau terpotong.
