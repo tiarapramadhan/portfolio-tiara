@@ -22,6 +22,117 @@ const CONFIG = {
   ENABLE_GITHUB_AUTO_SECTION: false,
 };
 
+let CURRENT_LANG = localStorage.getItem("lang") || "id";
+
+/* ============================================================
+   I18N — dictionary teks statis UI
+   ============================================================ */
+const I18N = {
+  id: {
+    nav_home: "Home", nav_skills: "Skills", nav_experience: "Experience", nav_projects: "Projects", nav_contact: "Contact",
+    hero_greeting: "Hi, aku",
+    hero_badge: "Terbuka untuk kolaborasi",
+    hero_cta_projects: "Lihat project",
+    hero_cta_cv: "Download CV",
+    skills_eyebrow: "kemampuan", skills_title: "Skills", skills_tools_heading: "Tools",
+    experience_eyebrow: "perjalanan", experience_title: "Pengalaman",
+    projects_eyebrow: "karya", projects_title: "Portfolio",
+    contact_eyebrow: "kontak", contact_title: "Contact Me",
+    cf_heading: "Say hello",
+    cf_subheading: "Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.",
+    cf_label_name: "Nama", cf_placeholder_name: "Nama kamu",
+    cf_label_email: "Email", cf_placeholder_email: "Email kamu (biar aku bisa balas)",
+    cf_label_message: "Pesan", cf_placeholder_message: "Tulis pesan kamu di sini...",
+    cf_submit: "Send Message",
+    footer_rights: "Seluruh hak cipta dilindungi.",
+    modal_files_title: "File terkait", modal_dashboard_title: "Dashboard",
+    modal_related_title_default: "Terkait", modal_github_btn: "Lihat di GitHub",
+    modal_related_dikerjakan: "Dikerjakan selama",
+    exp_modal_did_title: "Yang dilakukan", exp_modal_tools_title: "Tools yang dipakai",
+    exp_modal_projects_label_project: "Project selama menjabat di posisi ini",
+    exp_modal_projects_label_achievement: "Prestasi selama di sini",
+    tool_modal_projects_title: "Dipakai di project", tool_modal_experience_title: "Dipakai di pengalaman",
+    label_all: "Semua",
+    empty_skills: "Belum ada data skills.",
+    empty_experience: "Belum ada data pengalaman.",
+    empty_experience_category: "Belum ada data di kategori ini.",
+    empty_projects: "Belum ada project. Isi sheet Projects dulu ya ✦",
+    empty_projects_category: "Belum ada project di kategori ini. Coming soon ✦",
+    tool_no_projects: "Belum ada project yang tercatat",
+    tool_no_experience: "Belum ada pengalaman yang tercatat",
+    lang_switch_label: "EN",
+  },
+  en: {
+    nav_home: "Home", nav_skills: "Skills", nav_experience: "Experience", nav_projects: "Projects", nav_contact: "Contact",
+    hero_greeting: "Hi, I'm",
+    hero_badge: "Open to collaboration",
+    hero_cta_projects: "View projects",
+    hero_cta_cv: "Download CV",
+    skills_eyebrow: "skills", skills_title: "Skills", skills_tools_heading: "Tools",
+    experience_eyebrow: "journey", experience_title: "Experience",
+    projects_eyebrow: "work", projects_title: "Portfolio",
+    contact_eyebrow: "contact", contact_title: "Contact Me",
+    cf_heading: "Say hello",
+    cf_subheading: "Have a project, want to collaborate, or just want to chat about data? Fill out this form.",
+    cf_label_name: "Name", cf_placeholder_name: "Your name",
+    cf_label_email: "Email", cf_placeholder_email: "Your email (so I can reply)",
+    cf_label_message: "Message", cf_placeholder_message: "Write your message here...",
+    cf_submit: "Send Message",
+    footer_rights: "All rights reserved.",
+    modal_files_title: "Related files", modal_dashboard_title: "Dashboard",
+    modal_related_title_default: "Related", modal_github_btn: "View on GitHub",
+    modal_related_dikerjakan: "Worked on during",
+    exp_modal_did_title: "What I did", exp_modal_tools_title: "Tools used",
+    exp_modal_projects_label_project: "Projects during this role",
+    exp_modal_projects_label_achievement: "Achievements during this time",
+    tool_modal_projects_title: "Used in projects", tool_modal_experience_title: "Used in experience",
+    label_all: "All",
+    empty_skills: "No skills data yet.",
+    empty_experience: "No experience data yet.",
+    empty_experience_category: "No data in this category yet.",
+    empty_projects: "No projects yet. Fill in the Projects sheet first ✦",
+    empty_projects_category: "No projects in this category yet. Coming soon ✦",
+    tool_no_projects: "No projects recorded yet",
+    tool_no_experience: "No experience recorded yet",
+    lang_switch_label: "ID",
+  },
+};
+
+function t(key) {
+  return (I18N[CURRENT_LANG] && I18N[CURRENT_LANG][key]) || I18N.id[key] || key;
+}
+
+// ambil field _en kalau lagi mode EN dan isinya ada, else fallback ke field aslinya
+function pick(row, field) {
+  if (CURRENT_LANG === "en") {
+    const enVal = row[field + "_en"];
+    if (enVal && enVal.trim()) return enVal;
+  }
+  return row[field] || "";
+}
+
+// translate label pendek yang umum dipakai (tipe experience, status project)
+const LABEL_MAP_EN = {
+  "magang": "Internship", "organisasi": "Organization", "pendidikan": "Education",
+  "kerja": "Work", "selesai": "Completed", "coming soon": "Coming Soon",
+};
+function translateLabel(value) {
+  if (CURRENT_LANG !== "en" || !value) return value;
+  return LABEL_MAP_EN[value.toLowerCase().trim()] || value;
+}
+
+function applyStaticI18n() {
+  document.querySelectorAll("[data-i18n]").forEach(node => {
+    node.textContent = t(node.dataset.i18n);
+  });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach(node => {
+    node.setAttribute("placeholder", t(node.dataset.i18nPlaceholder));
+  });
+  document.documentElement.lang = CURRENT_LANG;
+  const langText = document.getElementById("lang-toggle-text");
+  if (langText) langText.textContent = t("lang_switch_label");
+}
+
 /* ============================================================
    CSV PARSER (menangani koma & kutip di dalam sel)
    ============================================================ */
@@ -91,12 +202,12 @@ async function renderProfile() {
   const p = rows[0];
 
   document.getElementById("hero-name").textContent = p.nama || "—";
-  document.getElementById("hero-tagline").textContent = p.tagline || "";
-  document.getElementById("hero-bio").textContent = p.bio || "";
+  document.getElementById("hero-tagline").textContent = pick(p, "tagline");
+  document.getElementById("hero-bio").textContent = pick(p, "bio");
   document.getElementById("footer-name").textContent = p.nama || "—";
   document.getElementById("footer-year").textContent = new Date().getFullYear();
   document.getElementById("footer-logo-name").textContent = p.nama || "Portfolio";
-  document.getElementById("footer-tagline").textContent = p.tagline || "";
+  document.getElementById("footer-tagline").textContent = pick(p, "tagline");
 
   if (p.foto_url) document.getElementById("hero-photo").src = p.foto_url;
 
@@ -183,7 +294,7 @@ async function renderExperience() {
 
   if (!ALL_EXPERIENCE.length) {
     tabsWrap.innerHTML = "";
-    list.innerHTML = `<div class="empty-state">Belum ada data pengalaman.</div>`;
+    list.innerHTML = `<div class="empty-state">${t("empty_experience")}</div>`;
     return;
   }
 
@@ -192,7 +303,8 @@ async function renderExperience() {
 
   tabsWrap.innerHTML = "";
   tipes.forEach(tipe => {
-    const btn = el(`<button class="filter-pill ${tipe === ACTIVE_EXP_TAB ? "active" : ""}">${tipe}</button>`);
+    const label = tipe === "Semua" ? t("label_all") : translateLabel(tipe);
+    const btn = el(`<button class="filter-pill ${tipe === ACTIVE_EXP_TAB ? "active" : ""}">${label}</button>`);
     btn.addEventListener("click", () => {
       ACTIVE_EXP_TAB = tipe;
       document.querySelectorAll("#exp-tabs .filter-pill").forEach(b => b.classList.remove("active"));
@@ -213,7 +325,7 @@ function drawExperienceList() {
     : ALL_EXPERIENCE.filter(r => r.tipe === ACTIVE_EXP_TAB);
 
   if (!filtered.length) {
-    list.appendChild(el(`<div class="empty-state">Belum ada data di kategori ini.</div>`));
+    list.appendChild(el(`<div class="empty-state">${t("empty_experience_category")}</div>`));
     return;
   }
 
@@ -223,7 +335,7 @@ function drawExperienceList() {
     const initial = (row.institusi || row.posisi || "?").trim().slice(0, 1).toUpperCase();
     const logoHtml = hasLogo ? `<img src="${row.logo_url}" alt="">` : initial;
 
-    const bullets = (row.deskripsi || "")
+    const bullets = pick(row, "deskripsi")
       .split("\n")
       .map(s => s.trim())
       .filter(Boolean);
@@ -239,7 +351,7 @@ function drawExperienceList() {
             </div>
             <p class="exp-institusi">${row.institusi || ""}</p>
           </div>
-          ${row.tipe ? `<span class="exp-badge">${row.tipe}</span>` : ""}
+          ${row.tipe ? `<span class="exp-badge">${translateLabel(row.tipe)}</span>` : ""}
         </div>
         <hr class="exp-divider">
         <ul class="exp-bullets">
@@ -281,21 +393,21 @@ function openExpModal(row) {
   const hasImage = row.gambar_url && !row.gambar_url.startsWith("ISI:");
   document.getElementById("exp-modal-cover").innerHTML = hasImage
     ? `<img src="${row.gambar_url}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : "";
-  document.getElementById("exp-modal-badge").textContent = row.tipe || "";
+  document.getElementById("exp-modal-badge").textContent = translateLabel(row.tipe) || "";
   document.getElementById("exp-modal-title").textContent = row.posisi || "";
   document.getElementById("exp-modal-date").textContent =
     `${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}`;
   document.getElementById("exp-modal-institusi").textContent = row.institusi || "";
 
-  const bullets = (row.deskripsi || "").split("\n").map(s => s.trim()).filter(Boolean);
+  const bullets = pick(row, "deskripsi").split("\n").map(s => s.trim()).filter(Boolean);
   document.getElementById("exp-modal-bullets").innerHTML = bullets.map(b => `<li>${b}</li>`).join("");
 
   const toolsBlock = document.getElementById("exp-modal-tools-block");
   const toolsWrap = document.getElementById("exp-modal-tools");
   const tools = splitTags(row.tools);
   if (tools.length) {
-    toolsWrap.innerHTML = tools.map(t =>
-      `<span class="skill-tag clickable small" data-tool="${t}">${toolIconOrFallback(t, findToolIconUrl(t))}<span>${t}</span></span>`
+    toolsWrap.innerHTML = tools.map(toolName =>
+      `<span class="skill-tag clickable small" data-tool="${toolName}">${toolIconOrFallback(toolName, findToolIconUrl(toolName))}<span>${toolName}</span></span>`
     ).join("");
     toolsWrap.querySelectorAll("[data-tool]").forEach(node => {
       node.addEventListener("click", () => openToolModal(node.dataset.tool));
@@ -307,8 +419,8 @@ function openExpModal(row) {
 
   const isPendidikan = (row.tipe || "").toLowerCase().includes("pendidikan");
   document.getElementById("exp-modal-projects-label").textContent = isPendidikan
-    ? "Prestasi selama di sini"
-    : "Project selama menjabat di posisi ini";
+    ? t("exp_modal_projects_label_achievement")
+    : t("exp_modal_projects_label_project");
 
   const projBlock = document.getElementById("exp-modal-projects-block");
   const projWrap = document.getElementById("exp-modal-projects");
@@ -404,7 +516,7 @@ async function renderSkills() {
   const panel = document.getElementById("skills-panel");
 
   if (!rows.length) {
-    staticWrap.innerHTML = `<div class="empty-state">Belum ada data skills.</div>`;
+    staticWrap.innerHTML = `<div class="empty-state">${t("empty_skills")}</div>`;
     sidebar.innerHTML = "";
     panel.innerHTML = "";
     return;
@@ -449,7 +561,8 @@ async function renderSkills() {
 
   sidebar.innerHTML = "";
   ["Semua", ...groupOrder].forEach(group => {
-    const btn = el(`<button class="filter-pill ${group === ACTIVE_SKILL_GROUP ? "active" : ""}">${group}</button>`);
+    const label = group === "Semua" ? t("label_all") : group;
+    const btn = el(`<button class="filter-pill ${group === ACTIVE_SKILL_GROUP ? "active" : ""}">${label}</button>`);
     btn.addEventListener("click", () => {
       ACTIVE_SKILL_GROUP = group;
       document.querySelectorAll("#skills-filter-bar .filter-pill").forEach(b => b.classList.remove("active"));
@@ -524,7 +637,7 @@ async function renderProjects() {
   if (!ALL_PROJECTS.length) {
     document.getElementById("filter-bar").innerHTML = "";
     document.getElementById("projects-grid").innerHTML =
-      `<div class="empty-state">Belum ada project. Isi sheet Projects dulu ya ✦</div>`;
+      `<div class="empty-state">${t("empty_projects")}</div>`;
     return;
   }
 
@@ -534,7 +647,8 @@ async function renderProjects() {
   const filterBar = document.getElementById("filter-bar");
   filterBar.innerHTML = "";
   categories.forEach(cat => {
-    const btn = el(`<button class="filter-pill ${cat === ACTIVE_FILTER ? "active" : ""}">${cat}</button>`);
+    const label = cat === "Semua" ? t("label_all") : cat;
+    const btn = el(`<button class="filter-pill ${cat === ACTIVE_FILTER ? "active" : ""}">${label}</button>`);
     btn.addEventListener("click", () => {
       ACTIVE_FILTER = cat;
       document.querySelectorAll(".filter-pill").forEach(b => b.classList.remove("active"));
@@ -555,7 +669,7 @@ function drawProjectsGrid() {
     : ALL_PROJECTS.filter(p => splitTags(p.kategori).includes(ACTIVE_FILTER));
 
   if (!filtered.length) {
-    grid.appendChild(el(`<div class="empty-state">Belum ada project di kategori ini. Coming soon ✦</div>`));
+    grid.appendChild(el(`<div class="empty-state">${t("empty_projects_category")}</div>`));
     return;
   }
 
@@ -567,11 +681,11 @@ function drawProjectsGrid() {
       <button class="project-card">
         <div class="project-cover">${cover}</div>
         <div class="project-info">
-          <span class="project-status">${p.status || "Selesai"}</span>
+          <span class="project-status">${translateLabel(p.status) || translateLabel("Selesai")}</span>
           <p class="project-name">${p.nama_project || "Untitled"}</p>
-          <p class="project-desc">${p.deskripsi_singkat || ""}</p>
+          <p class="project-desc">${pick(p, "deskripsi_singkat")}</p>
           <div class="project-tags">
-            ${splitTags(p.tools).slice(0, 3).map(t => `<span class="project-tag">${t}</span>`).join("")}
+            ${splitTags(p.tools).slice(0, 3).map(tool => `<span class="project-tag">${tool}</span>`).join("")}
           </div>
         </div>
       </button>
@@ -619,7 +733,7 @@ function openToolModal(toolName) {
   const projList = document.getElementById("tool-modal-projects");
   projList.innerHTML = matchedProjects.length
     ? matchedProjects.map(p => `<li data-project-id="${p.id}" class="linkable-item">📁 ${p.nama_project}</li>`).join("")
-    : `<li class="muted-item">Belum ada project yang tercatat</li>`;
+    : `<li class="muted-item">${t("tool_no_projects")}</li>`;
   projList.querySelectorAll("[data-project-id]").forEach(node => {
     node.addEventListener("click", () => {
       const proj = ALL_PROJECTS.find(p => p.id === node.dataset.projectId);
@@ -631,7 +745,7 @@ function openToolModal(toolName) {
   const expList = document.getElementById("tool-modal-experience");
   expList.innerHTML = matchedExp.length
     ? matchedExp.map(r => `<li>💼 ${r.posisi} · ${r.institusi || ""}</li>`).join("")
-    : `<li class="muted-item">Belum ada pengalaman yang tercatat</li>`;
+    : `<li class="muted-item">${t("tool_no_experience")}</li>`;
 
   document.getElementById("tool-modal-overlay").classList.add("open");
 }
@@ -645,18 +759,18 @@ document.getElementById("tool-modal-overlay").addEventListener("click", (e) => {
   if (e.target.id === "tool-modal-overlay") closeToolModal();
 });
 function openModal(p) {
-  document.getElementById("modal-status").textContent = p.status || "Selesai";
+  document.getElementById("modal-status").textContent = translateLabel(p.status) || translateLabel("Selesai");
   document.getElementById("modal-title").textContent = p.nama_project || "";
-  document.getElementById("modal-desc").textContent = p.deskripsi_lengkap || p.deskripsi_singkat || "";
+  document.getElementById("modal-desc").textContent = pick(p, "deskripsi_lengkap") || pick(p, "deskripsi_singkat");
 
   const cover = document.getElementById("modal-cover");
   cover.innerHTML = (p.cover_image_url && !p.cover_image_url.startsWith("ISI:"))
     ? `<img src="${p.cover_image_url}" alt="${p.nama_project}">` : "";
 
   const tools = document.getElementById("modal-tools");
-  tools.innerHTML = splitTags(p.tools).map(t => {
-    const iconHtml = toolIconOrFallback(t, findToolIconUrl(t));
-    return `<span class="skill-tag">${iconHtml}<span>${t}</span></span>`;
+  tools.innerHTML = splitTags(p.tools).map(toolName => {
+    const iconHtml = toolIconOrFallback(toolName, findToolIconUrl(toolName));
+    return `<span class="skill-tag">${iconHtml}<span>${toolName}</span></span>`;
   }).join("");
 
   const filesBlock = document.getElementById("modal-files-block");
@@ -690,7 +804,7 @@ function openModal(p) {
   const relatedWrap = document.getElementById("modal-related");
   const relatedExp = ALL_EXPERIENCE.filter(r => splitTags(r.project_terkait).includes(p.id));
   if (relatedExp.length) {
-    document.getElementById("modal-related-title").textContent = "Dikerjakan selama";
+    document.getElementById("modal-related-title").textContent = t("modal_related_dikerjakan");
     relatedWrap.innerHTML = relatedExp.map(r => `<div class="linkable-item">💼 ${r.posisi} · ${r.institusi || ""}</div>`).join("");
     relatedBlock.style.display = "block";
   } else {
@@ -762,6 +876,30 @@ function initSpriteObserver() {
   }, { threshold: 0.35 });
   observer.observe(stage);
 }
+
+/* ============================================================
+   LANGUAGE TOGGLE — ID/EN, tersimpan di localStorage
+   ============================================================ */
+function applyLanguage(lang) {
+  CURRENT_LANG = lang;
+  localStorage.setItem("lang", lang);
+  applyStaticI18n();
+  // re-render bagian yang datanya udah kebaca, biar teks dinamis ikut ganti bahasa
+  renderProfile();
+  renderSkills();
+  renderExperience();
+  renderProjects();
+}
+
+function initLangToggle() {
+  const toggle = document.getElementById("lang-toggle");
+  if (!toggle) return;
+  applyStaticI18n();
+  toggle.addEventListener("click", () => {
+    applyLanguage(CURRENT_LANG === "id" ? "en" : "id");
+  });
+}
+initLangToggle();
 
 /* ============================================================
    THEME TOGGLE — day/night, tersimpan di localStorage

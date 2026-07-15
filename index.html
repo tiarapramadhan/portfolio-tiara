@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=9">
+<link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -16,12 +16,15 @@
   <div class="nav-inner">
     <a href="#home" class="nav-logo">Portfolio</a>
     <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#skills">Skills</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
+      <a href="#home" data-i18n="nav_home">Home</a>
+      <a href="#skills" data-i18n="nav_skills">Skills</a>
+      <a href="#experience" data-i18n="nav_experience">Experience</a>
+      <a href="#projects" data-i18n="nav_projects">Projects</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
     </div>
+    <button id="lang-toggle" class="lang-toggle" aria-label="Switch language">
+      <span id="lang-toggle-text">EN</span>
+    </button>
     <button id="theme-toggle" class="theme-toggle" aria-label="Ganti mode terang/gelap">
       <span id="theme-toggle-icon">🌙</span>
     </button>
@@ -33,13 +36,13 @@
   <!-- HERO -->
   <section id="home" class="section hero">
     <div class="hero-text">
-      <span class="badge" id="hero-badge">Terbuka untuk kolaborasi</span>
-      <h1 class="hero-title">Hi, aku <span id="hero-name">—</span></h1>
+      <span class="badge" id="hero-badge" data-i18n="hero_badge">Terbuka untuk kolaborasi</span>
+      <h1 class="hero-title"><span data-i18n="hero_greeting">Hi, aku</span> <span id="hero-name">—</span></h1>
       <p class="hero-tagline" id="hero-tagline">memuat…</p>
       <p class="hero-bio" id="hero-bio"></p>
       <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">Lihat project</a>
-        <a href="#" id="hero-cv" class="btn btn-secondary" target="_blank" rel="noopener">Download CV</a>
+        <a href="#projects" class="btn btn-primary" data-i18n="hero_cta_projects">Lihat project</a>
+        <a href="#" id="hero-cv" class="btn btn-secondary" target="_blank" rel="noopener" data-i18n="hero_cta_cv">Download CV</a>
       </div>
       <div class="hero-socials" id="hero-socials"></div>
     </div>
@@ -52,9 +55,9 @@
 
   <!-- SKILLS -->
   <section id="skills" class="section">
-    <h2 class="section-title center"><span class="eyebrow">kemampuan</span>Skills</h2>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="skills_eyebrow">kemampuan</span><span data-i18n="skills_title">Skills</span></h2>
     <div id="skills-static"></div>
-    <p class="skills-tools-heading">Tools</p>
+    <p class="skills-tools-heading" data-i18n="skills_tools_heading">Tools</p>
     <div class="projects-layout">
       <aside class="filter-sidebar" id="skills-filter-bar"></aside>
       <div class="content-panel" id="skills-panel"></div>
@@ -63,7 +66,7 @@
 
   <!-- EXPERIENCE -->
   <section id="experience" class="section">
-    <h2 class="section-title center"><span class="eyebrow">perjalanan</span>Pengalaman</h2>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="experience_eyebrow">perjalanan</span><span data-i18n="experience_title">Pengalaman</span></h2>
     <div class="projects-layout">
       <aside class="filter-sidebar" id="exp-tabs"></aside>
       <div class="content-panel exp-list" id="exp-list"></div>
@@ -72,7 +75,7 @@
 
   <!-- PROJECTS -->
   <section id="projects" class="section">
-    <h2 class="section-title center"><span class="eyebrow">karya</span>Portfolio</h2>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="projects_eyebrow">karya</span><span data-i18n="projects_title">Portfolio</span></h2>
     <div class="projects-layout">
       <aside class="filter-sidebar" id="filter-bar"></aside>
       <div class="projects-grid" id="projects-grid"></div>
@@ -81,7 +84,7 @@
 
   <!-- CONTACT -->
   <section id="contact" class="section">
-    <h2 class="section-title center"><span class="eyebrow">kontak</span>Contact Me</h2>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="contact_eyebrow">kontak</span><span data-i18n="contact_title">Contact Me</span></h2>
 
     <div class="contact-panel">
       <div class="contact-layout">
@@ -100,25 +103,25 @@
 
         <!-- FORM — struktur & ID tidak diubah, cuma styling -->
         <form class="contact-form" id="contact-form">
-          <p class="contact-form-heading">Say hello</p>
-          <p class="contact-form-subheading">Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.</p>
+          <p class="contact-form-heading" data-i18n="cf_heading">Say hello</p>
+          <p class="contact-form-subheading" data-i18n="cf_subheading">Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.</p>
 
           <label class="cf-field">
-            <span class="cf-label">Nama</span>
-            <input type="text" id="cf-name" placeholder="Nama kamu" required>
+            <span class="cf-label" data-i18n="cf_label_name">Nama</span>
+            <input type="text" id="cf-name" placeholder="Nama kamu" data-i18n-placeholder="cf_placeholder_name" required>
           </label>
 
           <label class="cf-field">
-            <span class="cf-label">Email</span>
-            <input type="email" id="cf-email" placeholder="Email kamu (biar aku bisa balas)" required>
+            <span class="cf-label" data-i18n="cf_label_email">Email</span>
+            <input type="email" id="cf-email" placeholder="Email kamu (biar aku bisa balas)" data-i18n-placeholder="cf_placeholder_email" required>
           </label>
 
           <label class="cf-field">
-            <span class="cf-label">Pesan</span>
-            <textarea id="cf-message" placeholder="Tulis pesan kamu di sini..." rows="5" required></textarea>
+            <span class="cf-label" data-i18n="cf_label_message">Pesan</span>
+            <textarea id="cf-message" placeholder="Tulis pesan kamu di sini..." data-i18n-placeholder="cf_placeholder_message" rows="5" required></textarea>
           </label>
 
-          <button type="submit" class="btn btn-primary cf-submit">Send Message</button>
+          <button type="submit" class="btn btn-primary cf-submit" data-i18n="cf_submit">Send Message</button>
         </form>
 
       </div>
@@ -134,15 +137,15 @@
       <p class="footer-tag" id="footer-tagline">Portfolio</p>
     </div>
     <nav class="footer-nav">
-      <a href="#home">Home</a>
-      <a href="#skills">Skills</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
+      <a href="#home" data-i18n="nav_home">Home</a>
+      <a href="#skills" data-i18n="nav_skills">Skills</a>
+      <a href="#experience" data-i18n="nav_experience">Experience</a>
+      <a href="#projects" data-i18n="nav_projects">Projects</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
     </nav>
     <div class="footer-socials" id="footer-socials"></div>
   </div>
-  <p class="footer-copyright">© <span id="footer-year"></span> <span id="footer-name">—</span>. All rights reserved.</p>
+  <p class="footer-copyright">© <span id="footer-year"></span> <span id="footer-name">—</span>. <span data-i18n="footer_rights">All rights reserved.</span></p>
 </footer>
 
 <!-- PROJECT DETAIL MODAL -->
@@ -157,21 +160,21 @@
       <p class="modal-desc" id="modal-desc"></p>
 
       <div class="modal-block" id="modal-files-block">
-        <p class="modal-block-title">File terkait</p>
+        <p class="modal-block-title" data-i18n="modal_files_title">File terkait</p>
         <ul class="file-list" id="modal-files"></ul>
       </div>
 
       <div class="modal-block" id="modal-dashboard-block">
-        <p class="modal-block-title">Dashboard</p>
+        <p class="modal-block-title" data-i18n="modal_dashboard_title">Dashboard</p>
         <div class="dashboard-embed" id="modal-dashboard"></div>
       </div>
 
       <div class="modal-block" id="modal-related-block">
-        <p class="modal-block-title" id="modal-related-title">Terkait</p>
+        <p class="modal-block-title" id="modal-related-title" data-i18n="modal_related_title_default">Terkait</p>
         <div class="related-list" id="modal-related"></div>
       </div>
 
-      <a href="#" id="modal-github" class="btn btn-primary" target="_blank" rel="noopener">Lihat di GitHub</a>
+      <a href="#" id="modal-github" class="btn btn-primary" target="_blank" rel="noopener" data-i18n="modal_github_btn">Lihat di GitHub</a>
     </div>
   </div>
 </div>
@@ -188,12 +191,12 @@
       <p class="exp-modal-line muted" id="exp-modal-institusi"></p>
 
       <hr class="exp-divider">
-      <p class="modal-block-title">Yang dilakukan</p>
+      <p class="modal-block-title" data-i18n="exp_modal_did_title">Yang dilakukan</p>
       <ul class="exp-bullets" id="exp-modal-bullets"></ul>
 
       <div id="exp-modal-tools-block">
         <hr class="exp-divider">
-        <p class="modal-block-title">Tools yang dipakai</p>
+        <p class="modal-block-title" data-i18n="exp_modal_tools_title">Tools yang dipakai</p>
         <div class="exp-tools" id="exp-modal-tools"></div>
       </div>
 
@@ -213,17 +216,17 @@
     <div class="modal-body">
       <h3 id="tool-modal-title"></h3>
       <div class="modal-block">
-        <p class="modal-block-title">Dipakai di project</p>
+        <p class="modal-block-title" data-i18n="tool_modal_projects_title">Dipakai di project</p>
         <ul class="file-list linkable" id="tool-modal-projects"></ul>
       </div>
       <div class="modal-block">
-        <p class="modal-block-title">Dipakai di pengalaman</p>
+        <p class="modal-block-title" data-i18n="tool_modal_experience_title">Dipakai di pengalaman</p>
         <ul class="file-list" id="tool-modal-experience"></ul>
       </div>
     </div>
   </div>
 </div>
 
-<script src="script.js?v=9"></script>
+<script src="script.js?v=10"></script>
 </body>
 </html>

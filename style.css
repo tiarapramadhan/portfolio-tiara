@@ -1174,6 +1174,26 @@ body,
 /* ============================================================
    THEME TOGGLE BUTTON
    ============================================================ */
+.lang-toggle {
+  min-width: 38px;
+  height: 38px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: none;
+  background: var(--pink-100);
+  color: var(--pink-900);
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-left: 6px;
+  transition: background-color 0.7s ease, transform 0.2s ease;
+}
+.lang-toggle:hover { transform: translateY(-2px); }
+
 .theme-toggle {
   width: 38px;
   height: 38px;

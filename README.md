@@ -201,3 +201,33 @@ Kolom lama `illustration_pagi_url` / `illustration_malam_url` (1 gambar statis) 
 
 ### Layout landscape 16:9
 Ilustrasi sekarang di atas (lebar penuh, rasio 16:9), form di bawahnya — bukan sisi-sisian lagi. Gambar dipasang pakai `object-fit: contain`, jadi **nggak ada crop sama sekali** — asal frame kamu emang didesain rasio 16:9, bakal pas persis tanpa distorsi atau terpotong.
+
+## Update — Bahasa ID/EN
+
+Toggle bahasa (ID/EN) sekarang ada di navbar, sebelah tombol dark/light mode. Semua teks UI (menu, judul section, label form, dll) otomatis translate. Pilihan bahasa juga tersimpan (localStorage).
+
+### Sheet Profile — 2 kolom baru (opsional)
+| Kolom | Isinya |
+|---|---|
+| `tagline_en` | Versi Inggris dari `tagline` |
+| `bio_en` | Versi Inggris dari `bio` |
+
+### Sheet Experience — 1 kolom baru (opsional)
+| Kolom | Isinya |
+|---|---|
+| `deskripsi_en` | Versi Inggris dari `deskripsi` (pakai Alt+Enter juga buat bullet points, sama kayak `deskripsi`) |
+
+### Sheet Projects — 2 kolom baru (opsional)
+| Kolom | Isinya |
+|---|---|
+| `deskripsi_singkat_en` | Versi Inggris dari `deskripsi_singkat` |
+| `deskripsi_lengkap_en` | Versi Inggris dari `deskripsi_lengkap` |
+
+### Yang TIDAK perlu diterjemahin (udah otomatis)
+- **Nama tools & skill** (Python, Excel, "Basic Data Analysis", dll) — udah dalam bahasa Inggris dari awal, nggak perlu kolom tambahan
+- **Kategori project** (Data Analyst, Data Scientist, dll) — sama, udah istilah Inggris standar
+- **Nama institusi/perusahaan** — nama tetap sama di kedua bahasa (nggak ada yang perlu diterjemahin)
+- **Tipe pengalaman** (Magang/Organisasi/Pendidikan) & **status project** (Selesai) — otomatis translate ke Internship/Organization/Education/Completed tanpa kolom tambahan
+
+### Catatan penting
+Kalau kolom `_en` di atas kamu **kosongin**, sistem otomatis fallback nampilin versi Indonesia-nya — jadi nggak akan ada teks kosong/error, aman buat diisi pelan-pelan/nyicil. Prioritasin isi `bio_en` dan `tagline_en` dulu (paling keliatan di hero), baru nyusul deskripsi project & pengalaman.
