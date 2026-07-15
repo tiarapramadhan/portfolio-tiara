@@ -735,6 +735,8 @@ main { position: relative; z-index: 1; }
 .workspace-scene {
   flex: 1 1 56%;
   min-width: 300px;
+  align-self: flex-start;
+  height: auto;
 }
 
 .contact-form {
