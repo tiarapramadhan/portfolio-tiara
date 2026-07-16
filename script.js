@@ -25,33 +25,58 @@ const CONFIG = {
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
 
 /* ============================================================
-   I18N — dictionary teks statis UI
+   I18N — dictionary teks statis UI (nav, judul, form, label, dll)
+   ============================================================
+   Cara edit: cari key-nya (misal cf_heading), ganti nilainya
+   (yang di dalam tanda kutip " ") sesuai kata-kata yang kamu mau.
+   Jangan ubah nama key di sebelah kiri titik dua (:), itu dipakai
+   kode buat manggil teksnya — cukup ubah teks di kanan aja.
    ============================================================ */
 const I18N = {
+
+  /* ------------------------------------------------------------
+     BLOK INI = teks yang TAMPIL kalau mode BAHASA INDONESIA aktif
+     ------------------------------------------------------------ */
   id: {
-    nav_home: "Home", nav_skills: "Skills", nav_experience: "Experience", nav_projects: "Projects", nav_contact: "Contact",
+    nav_home: "Home",
+    nav_skills: "Skills",
+    nav_experience: "Experience",
+    nav_projects: "Projects",
+    nav_contact: "Contact",
     hero_greeting: "Hi, aku",
     hero_badge: "Terbuka untuk kolaborasi",
     hero_cta_projects: "Lihat project",
     hero_cta_cv: "Download CV",
-    skills_eyebrow: "kemampuan", skills_title: "Skills", skills_tools_heading: "Tools",
-    experience_eyebrow: "perjalanan", experience_title: "Pengalaman",
-    projects_eyebrow: "karya", projects_title: "Portfolio",
-    contact_eyebrow: "kontak", contact_title: "Contact Me",
+    skills_eyebrow: "kemampuan",
+    skills_title: "Skills",
+    skills_tools_heading: "Tech Stack",
+    experience_eyebrow: "perjalanan",
+    experience_title: "Pengalaman",
+    projects_eyebrow: "karya",
+    projects_title: "Portfolio",
+    contact_eyebrow: "kontak",
+    contact_title: "Contact Me",
     cf_heading: "Say hello",
     cf_subheading: "Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.",
-    cf_label_name: "Nama", cf_placeholder_name: "Nama kamu",
-    cf_label_email: "Email", cf_placeholder_email: "Email kamu (biar aku bisa balas)",
-    cf_label_message: "Pesan", cf_placeholder_message: "Tulis pesan kamu di sini...",
+    cf_label_name: "Nama",
+    cf_placeholder_name: "Nama kamu",
+    cf_label_email: "Email",
+    cf_placeholder_email: "Email kamu (biar aku bisa balas)",
+    cf_label_message: "Pesan",
+    cf_placeholder_message: "Tulis pesan kamu di sini...",
     cf_submit: "Send Message",
     footer_rights: "Seluruh hak cipta dilindungi.",
-    modal_files_title: "File terkait", modal_dashboard_title: "Dashboard",
-    modal_related_title_default: "Terkait", modal_github_btn: "Lihat di GitHub",
+    modal_files_title: "File terkait",
+    modal_dashboard_title: "Dashboard",
+    modal_related_title_default: "Terkait",
+    modal_github_btn: "Lihat di GitHub",
     modal_related_dikerjakan: "Dikerjakan selama",
-    exp_modal_did_title: "Yang dilakukan", exp_modal_tools_title: "Tools yang dipakai",
+    exp_modal_did_title: "Yang dilakukan",
+    exp_modal_tools_title: "Tools yang dipakai",
     exp_modal_projects_label_project: "Project selama menjabat di posisi ini",
     exp_modal_projects_label_achievement: "Prestasi selama di sini",
-    tool_modal_projects_title: "Dipakai di project", tool_modal_experience_title: "Dipakai di pengalaman",
+    tool_modal_projects_title: "Dipakai di project",
+    tool_modal_experience_title: "Dipakai di pengalaman",
     label_all: "Semua",
     empty_skills: "Belum ada data skills.",
     empty_experience: "Belum ada data pengalaman.",
@@ -60,33 +85,54 @@ const I18N = {
     empty_projects_category: "Belum ada project di kategori ini. Coming soon ✦",
     tool_no_projects: "Belum ada project yang tercatat",
     tool_no_experience: "Belum ada pengalaman yang tercatat",
-    lang_switch_label: "EN",
-    theme_dark_label: "Gelap", theme_light_label: "Terang",
+    lang_switch_label: "Indonesia",   // teks di tombol toggle bahasa pas mode ID lagi aktif
+    theme_dark_label: "Gelap",        // teks di sebelah icon 🌙 pas mode gelap aktif
+    theme_light_label: "Terang",      // teks di sebelah icon ☀️ pas mode terang aktif
   },
+
+  /* ------------------------------------------------------------
+     BLOK INI = teks yang TAMPIL kalau mode ENGLISH aktif
+     ------------------------------------------------------------ */
   en: {
-    nav_home: "Home", nav_skills: "Skills", nav_experience: "Experience", nav_projects: "Projects", nav_contact: "Contact",
+    nav_home: "Home",
+    nav_skills: "Skills",
+    nav_experience: "Experience",
+    nav_projects: "Projects",
+    nav_contact: "Contact",
     hero_greeting: "Hi, I'm",
     hero_badge: "Open to collaboration",
     hero_cta_projects: "View projects",
     hero_cta_cv: "Download CV",
-    skills_eyebrow: "skills", skills_title: "Skills", skills_tools_heading: "Tools",
-    experience_eyebrow: "journey", experience_title: "Experience",
-    projects_eyebrow: "work", projects_title: "Portfolio",
-    contact_eyebrow: "contact", contact_title: "Contact Me",
+    skills_eyebrow: "skills",
+    skills_title: "Skills",
+    skills_tools_heading: "Tech Stack",
+    experience_eyebrow: "journey",
+    experience_title: "Experience",
+    projects_eyebrow: "work",
+    projects_title: "Portfolio",
+    contact_eyebrow: "contact",
+    contact_title: "Contact Me",
     cf_heading: "Say hello",
     cf_subheading: "Have a project, want to collaborate, or just want to chat about data? Fill out this form.",
-    cf_label_name: "Name", cf_placeholder_name: "Your name",
-    cf_label_email: "Email", cf_placeholder_email: "Your email (so I can reply)",
-    cf_label_message: "Message", cf_placeholder_message: "Write your message here...",
+    cf_label_name: "Name",
+    cf_placeholder_name: "Your name",
+    cf_label_email: "Email",
+    cf_placeholder_email: "Your email (so I can reply)",
+    cf_label_message: "Message",
+    cf_placeholder_message: "Write your message here...",
     cf_submit: "Send Message",
     footer_rights: "All rights reserved.",
-    modal_files_title: "Related files", modal_dashboard_title: "Dashboard",
-    modal_related_title_default: "Related", modal_github_btn: "View on GitHub",
+    modal_files_title: "Related files",
+    modal_dashboard_title: "Dashboard",
+    modal_related_title_default: "Related",
+    modal_github_btn: "View on GitHub",
     modal_related_dikerjakan: "Worked on during",
-    exp_modal_did_title: "What I did", exp_modal_tools_title: "Tools used",
+    exp_modal_did_title: "What I did",
+    exp_modal_tools_title: "Tools used",
     exp_modal_projects_label_project: "Projects during this role",
     exp_modal_projects_label_achievement: "Achievements during this time",
-    tool_modal_projects_title: "Used in projects", tool_modal_experience_title: "Used in experience",
+    tool_modal_projects_title: "Used in projects",
+    tool_modal_experience_title: "Used in experience",
     label_all: "All",
     empty_skills: "No skills data yet.",
     empty_experience: "No experience data yet.",
@@ -95,8 +141,9 @@ const I18N = {
     empty_projects_category: "No projects in this category yet. Coming soon ✦",
     tool_no_projects: "No projects recorded yet",
     tool_no_experience: "No experience recorded yet",
-    lang_switch_label: "ID",
-    theme_dark_label: "Dark", theme_light_label: "Light",
+    lang_switch_label: "English",     // teks di tombol toggle bahasa pas mode EN lagi aktif
+    theme_dark_label: "Dark",         // teks di sebelah icon 🌙 pas mode gelap aktif
+    theme_light_label: "Light",       // teks di sebelah icon ☀️ pas mode terang aktif
   },
 };
 
@@ -105,6 +152,11 @@ function t(key) {
 }
 
 // ambil field _en kalau lagi mode EN dan isinya ada, else fallback ke field aslinya
+// Ini BUKAN dictionary teks — ini buat konten yang datang dari Google Sheet
+// (bio, deskripsi project, deskripsi pengalaman). Kalau mode EN aktif, dia nyari
+// kolom "namakolom_en" di sheet (misal bio_en, deskripsi_en). Kalau kolom itu
+// kosong/belum diisi, otomatis balik pakai teks Indonesia biasa (nggak error).
+// Edit teks EN-nya di GOOGLE SHEET langsung, bukan di file ini.
 function pick(row, field) {
   if (CURRENT_LANG === "en") {
     const enVal = row[field + "_en"];

@@ -61,12 +61,14 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 999px;
   padding: 10px 12px;
   display: flex;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 18px;
   box-shadow: var(--shadow);
   max-width: 92vw;
   overflow-x: auto;
 }
+.nav-inner > * { flex-shrink: 0; }
 .nav-logo {
   font-family: var(--font-display);
   font-weight: 600;
@@ -1190,6 +1192,7 @@ body,
   gap: 6px;
   justify-content: center;
   flex-shrink: 0;
+  white-space: nowrap;
   margin-left: 6px;
   transition: background-color 0.7s ease, transform 0.2s ease;
 }
@@ -1209,6 +1212,7 @@ body,
   align-items: center;
   gap: 6px;
   flex-shrink: 0;
+  white-space: nowrap;
   margin-left: 6px;
   transition: background-color 0.7s ease, transform 0.2s ease;
 }
