@@ -49,69 +49,69 @@ const I18N = {
   nav_contact:    { id: "Kontak",    en: "Contact" },
 
   // ini bagian translate sapaan pembuka di Hero ("Hi, aku {nama}" / "Hi, I'm {nama}")
-  hero_greeting: { id: "Hi, aku", en: "Hi, I'm" },
+  hero_greeting: { id: "Halo, saya", en: "Hi, I'm" },
 
   // ini bagian translate badge kecil di atas nama (Hero)
-  hero_badge: { id: "Terbuka untuk kolaborasi", en: "Open to collaboration" },
+  hero_badge: { id: "Terbuka untuk Peluang Baru", en: "Open to New Opportunities" },
 
   // ini bagian translate 2 tombol CTA di Hero
-  hero_cta_projects: { id: "Lihat project", en: "View projects" },
-  hero_cta_cv:       { id: "Download CV",   en: "Download CV" },
+  hero_cta_projects: { id: "Lihat Proyek", en: "View Projects" },
+  hero_cta_cv:       { id: "Unduh CV",   en: "Download CV" },
 
   // ini bagian translate judul-judul section (eyebrow = teks kecil di atas judul besar)
-  skills_eyebrow:     { id: "kemampuan", en: "skills" },
+  skills_eyebrow:     { id: "teknologi", en: "technologies" },
   skills_title:       { id: "Skills",    en: "Skills" },
   skills_tools_heading: { id: "Tech Stack", en: "Tech Stack" },
   experience_eyebrow: { id: "perjalanan", en: "journey" },
   experience_title:   { id: "Pengalaman", en: "Experience" },
-  projects_eyebrow:   { id: "karya",      en: "work" },
-  projects_title:      { id: "Portfolio", en: "Portfolio" },
+  projects_eyebrow:   { id: "proyek",      en: "projects" },
+  projects_title:      { id: "Proyek Pilihan", en: "Featured Projects" },
   contact_eyebrow:     { id: "kontak",    en: "contact" },
-  contact_title:       { id: "Contact Me", en: "Contact Me" },
+  contact_title:       { id: "Mari Terhubung", en: "Let's Connect" },
 
   // ini bagian translate isi form Contact (judul, subjudul, label, placeholder, tombol)
-  cf_heading:    { id: "Say hello", en: "Say hello" },
+  cf_heading:    { id: "Hubungi Saya", en: "Get in Touch" },
   cf_subheading: {
-    id: "Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.",
-    en: "Have a project, want to collaborate, or just want to chat about data? Fill out this form.",
+    id: "Tertarik bekerja sama atau punya peluang yang cocok? Saya akan senang mendengar dari Anda.",
+    en: "Interested in working together or have an opportunity in mind? I'd love to hear from you.",
   },
   cf_label_name:        { id: "Nama", en: "Name" },
-  cf_placeholder_name:  { id: "Nama kamu", en: "Your name" },
+  cf_placeholder_name:  { id: "Masukkan nama Anda", en: "Enter your name" },
   cf_label_email:       { id: "Email", en: "Email" },
-  cf_placeholder_email: { id: "Email kamu (biar aku bisa balas)", en: "Your email (so I can reply)" },
+  cf_placeholder_email: { id: "Masukkan alamat email Anda", en: "Enter your email address" },
   cf_label_message:     { id: "Pesan", en: "Message" },
-  cf_placeholder_message: { id: "Tulis pesan kamu di sini...", en: "Write your message here..." },
-  cf_submit: { id: "Send Message", en: "Send Message" },
+  cf_placeholder_message: { id: "Tulis pesan Anda di sini...", en: "Write your message here..." },
+  cf_submit: { id: "Kirim Pesan", en: "Send Message" },
 
   // ini bagian translate baris copyright di footer paling bawah
   footer_rights: { id: "Seluruh hak cipta dilindungi.", en: "All rights reserved." },
 
   // ini bagian translate label-label di dalam popup detail Project
-  modal_files_title:         { id: "File terkait", en: "Related files" },
+  modal_files_title:         { id: "File Pendukung", en: "Supporting Files" },
   modal_dashboard_title:     { id: "Dashboard", en: "Dashboard" },
   modal_related_title_default: { id: "Terkait", en: "Related" },
   modal_github_btn:          { id: "Lihat di GitHub", en: "View on GitHub" },
-  modal_related_dikerjakan:  { id: "Dikerjakan selama", en: "Worked on during" },
+  modal_related_dikerjakan:  { id: "Periode", en: "Duration" },
 
   // ini bagian translate label-label di dalam popup detail Experience
-  exp_modal_did_title:   { id: "Yang dilakukan", en: "What I did" },
-  exp_modal_tools_title: { id: "Tools yang dipakai", en: "Tools used" },
-  exp_modal_projects_label_project:     { id: "Project selama menjabat di posisi ini", en: "Projects during this role" },
-  exp_modal_projects_label_achievement: { id: "Prestasi selama di sini", en: "Achievements during this time" },
+  exp_modal_did_title:   { id: "Tanggung Jawab", en: "Responsibilities" },
+  exp_modal_tools_title: { id: "Tech Stack", en: "Tech Stack" },
+  exp_modal_projects_label_project:     { id: "Proyek Terkait", en: "Related Projects" },
+  exp_modal_projects_label_achievement: { id: "Pencapaian", en: "Achievements" },
 
   // ini bagian translate label di popup "tools dipakai di mana aja" (cross-reference)
-  tool_modal_projects_title:   { id: "Dipakai di project", en: "Used in projects" },
-  tool_modal_experience_title: { id: "Dipakai di pengalaman", en: "Used in experience" },
+  tool_modal_projects_title:   { id: "Proyek", en: "Projects" },
+  tool_modal_experience_title: { id: "Pengalaman", en: "Experience" },
 
   // ini bagian translate tombol filter "Semua" (di Skills/Experience/Projects)
   label_all: { id: "Semua", en: "All" },
 
   // ini bagian translate pesan-pesan "belum ada data" (empty state)
-  empty_skills:             { id: "Belum ada data skills.", en: "No skills data yet." },
-  empty_experience:         { id: "Belum ada data pengalaman.", en: "No experience data yet." },
-  empty_experience_category: { id: "Belum ada data di kategori ini.", en: "No data in this category yet." },
-  empty_projects:           { id: "Belum ada project. Isi sheet Projects dulu ya ✦", en: "No projects yet. Fill in the Projects sheet first ✦" },
-  empty_projects_category:  { id: "Belum ada project di kategori ini. Coming soon ✦", en: "No projects in this category yet. Coming soon ✦" },
+  empty_skills:             { id: "Belum ada data.", en: "No data available." },
+  empty_experience:         { id: "Belum ada data pengalaman.", en: "No experience available." },
+  empty_experience_category: { id: "Belum ada data pada kategori ini.", en: "No entries in this category." },
+  empty_projects:           { id: "Belum ada proyek yang tersedia.", en: "No projects available." },
+  empty_projects_category:  { id: "Belum ada proyek pada kategori ini.", en: "No projects in this category." },
   tool_no_projects:         { id: "Belum ada project yang tercatat", en: "No projects recorded yet" },
   tool_no_experience:       { id: "Belum ada pengalaman yang tercatat", en: "No experience recorded yet" },
 
@@ -143,8 +143,8 @@ function pick(row, field) {
 
 // translate label pendek yang umum dipakai (tipe experience, status project)
 const LABEL_MAP_EN = {
-  "magang": "Internship", "organisasi": "Organization", "pendidikan": "Education",
-  "kerja": "Work", "selesai": "Completed", "coming soon": "Coming Soon",
+  "Magang": "Internship", "Organisasi": "Organization", "Pendidikan": "Education",
+  "Kerja": "Work Experience", "Selesai": "Completed", "berjalan": "In Progress", "Aktif": "Active", "Coming soon": "Coming soon",
 };
 function translateLabel(value) {
   if (CURRENT_LANG !== "en" || !value) return value;
