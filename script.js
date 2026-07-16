@@ -27,128 +27,104 @@ let CURRENT_LANG = localStorage.getItem("lang") || "en";
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
    ============================================================
-   Cara edit: cari key-nya (misal cf_heading), ganti nilainya
-   (yang di dalam tanda kutip " ") sesuai kata-kata yang kamu mau.
-   Jangan ubah nama key di sebelah kiri titik dua (:), itu dipakai
-   kode buat manggil teksnya — cukup ubah teks di kanan aja.
+   FORMAT-NYA: tiap "kata/kalimat" punya 2 baris — satu "id:" (versi
+   Indonesia), satu "en:" (versi Inggris) — ditaruh nempel biar
+   gampang dibandingin & diedit.
+
+   CARA EDIT: cari teks yang mau diubah, ganti kalimat yang ada di
+   DALAM tanda kutip " " sesudah "id:" atau "en:". JANGAN ubah nama
+   key di paling kiri (misal cf_heading) — itu "alamat" yang dipanggil
+   kode, kalau diubah nanti teksnya nggak nongol.
+
+   Tiap kelompok dikasih komentar "// ini bagian translate ..." biar
+   kamu tau itu dipakai buat apa.
    ============================================================ */
 const I18N = {
 
-  /* ------------------------------------------------------------
-     BLOK INI = teks yang TAMPIL kalau mode BAHASA INDONESIA aktif
-     ------------------------------------------------------------ */
-  id: {
-    nav_home: "Home",
-    nav_skills: "Skills",
-    nav_experience: "Experience",
-    nav_projects: "Projects",
-    nav_contact: "Contact",
-    hero_greeting: "Hi, aku",
-    hero_badge: "Terbuka untuk kolaborasi",
-    hero_cta_projects: "Lihat project",
-    hero_cta_cv: "Download CV",
-    skills_eyebrow: "kemampuan",
-    skills_title: "Skills",
-    skills_tools_heading: "Tech Stack",
-    experience_eyebrow: "perjalanan",
-    experience_title: "Pengalaman",
-    projects_eyebrow: "karya",
-    projects_title: "Portfolio",
-    contact_eyebrow: "kontak",
-    contact_title: "Contact Me",
-    cf_heading: "Say hello",
-    cf_subheading: "Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.",
-    cf_label_name: "Nama",
-    cf_placeholder_name: "Nama kamu",
-    cf_label_email: "Email",
-    cf_placeholder_email: "Email kamu (biar aku bisa balas)",
-    cf_label_message: "Pesan",
-    cf_placeholder_message: "Tulis pesan kamu di sini...",
-    cf_submit: "Send Message",
-    footer_rights: "Seluruh hak cipta dilindungi.",
-    modal_files_title: "File terkait",
-    modal_dashboard_title: "Dashboard",
-    modal_related_title_default: "Terkait",
-    modal_github_btn: "Lihat di GitHub",
-    modal_related_dikerjakan: "Dikerjakan selama",
-    exp_modal_did_title: "Yang dilakukan",
-    exp_modal_tools_title: "Tools yang dipakai",
-    exp_modal_projects_label_project: "Project selama menjabat di posisi ini",
-    exp_modal_projects_label_achievement: "Prestasi selama di sini",
-    tool_modal_projects_title: "Dipakai di project",
-    tool_modal_experience_title: "Dipakai di pengalaman",
-    label_all: "Semua",
-    empty_skills: "Belum ada data skills.",
-    empty_experience: "Belum ada data pengalaman.",
-    empty_experience_category: "Belum ada data di kategori ini.",
-    empty_projects: "Belum ada project. Isi sheet Projects dulu ya ✦",
-    empty_projects_category: "Belum ada project di kategori ini. Coming soon ✦",
-    tool_no_projects: "Belum ada project yang tercatat",
-    tool_no_experience: "Belum ada pengalaman yang tercatat",
-    lang_switch_label: "Indonesia",   // teks di tombol toggle bahasa pas mode ID lagi aktif
-    theme_dark_label: "Gelap",        // teks di sebelah icon 🌙 pas mode gelap aktif
-    theme_light_label: "Terang",      // teks di sebelah icon ☀️ pas mode terang aktif
-  },
+  // ini bagian translate menu navbar (Home/Skills/dst) — biasanya sama aja di 2 bahasa, sesuaikan aja
+  nav_home:       { id: "Home",       en: "Home" },
+  nav_skills:     { id: "Skills",     en: "Skills" },
+  nav_experience: { id: "Experience", en: "Experience" },
+  nav_projects:   { id: "Projects",   en: "Projects" },
+  nav_contact:    { id: "Contact",    en: "Contact" },
 
-  /* ------------------------------------------------------------
-     BLOK INI = teks yang TAMPIL kalau mode ENGLISH aktif
-     ------------------------------------------------------------ */
-  en: {
-    nav_home: "Home",
-    nav_skills: "Skills",
-    nav_experience: "Experience",
-    nav_projects: "Projects",
-    nav_contact: "Contact",
-    hero_greeting: "Hi, I'm",
-    hero_badge: "Open to collaboration",
-    hero_cta_projects: "View projects",
-    hero_cta_cv: "Download CV",
-    skills_eyebrow: "skills",
-    skills_title: "Skills",
-    skills_tools_heading: "Tech Stack",
-    experience_eyebrow: "journey",
-    experience_title: "Experience",
-    projects_eyebrow: "work",
-    projects_title: "Portfolio",
-    contact_eyebrow: "contact",
-    contact_title: "Contact Me",
-    cf_heading: "Say hello",
-    cf_subheading: "Have a project, want to collaborate, or just want to chat about data? Fill out this form.",
-    cf_label_name: "Name",
-    cf_placeholder_name: "Your name",
-    cf_label_email: "Email",
-    cf_placeholder_email: "Your email (so I can reply)",
-    cf_label_message: "Message",
-    cf_placeholder_message: "Write your message here...",
-    cf_submit: "Send Message",
-    footer_rights: "All rights reserved.",
-    modal_files_title: "Related files",
-    modal_dashboard_title: "Dashboard",
-    modal_related_title_default: "Related",
-    modal_github_btn: "View on GitHub",
-    modal_related_dikerjakan: "Worked on during",
-    exp_modal_did_title: "What I did",
-    exp_modal_tools_title: "Tools used",
-    exp_modal_projects_label_project: "Projects during this role",
-    exp_modal_projects_label_achievement: "Achievements during this time",
-    tool_modal_projects_title: "Used in projects",
-    tool_modal_experience_title: "Used in experience",
-    label_all: "All",
-    empty_skills: "No skills data yet.",
-    empty_experience: "No experience data yet.",
-    empty_experience_category: "No data in this category yet.",
-    empty_projects: "No projects yet. Fill in the Projects sheet first ✦",
-    empty_projects_category: "No projects in this category yet. Coming soon ✦",
-    tool_no_projects: "No projects recorded yet",
-    tool_no_experience: "No experience recorded yet",
-    lang_switch_label: "English",     // teks di tombol toggle bahasa pas mode EN lagi aktif
-    theme_dark_label: "Dark",         // teks di sebelah icon 🌙 pas mode gelap aktif
-    theme_light_label: "Light",       // teks di sebelah icon ☀️ pas mode terang aktif
+  // ini bagian translate sapaan pembuka di Hero ("Hi, aku {nama}" / "Hi, I'm {nama}")
+  hero_greeting: { id: "Hi, aku", en: "Hi, I'm" },
+
+  // ini bagian translate badge kecil di atas nama (Hero)
+  hero_badge: { id: "Terbuka untuk kolaborasi", en: "Open to collaboration" },
+
+  // ini bagian translate 2 tombol CTA di Hero
+  hero_cta_projects: { id: "Lihat project", en: "View projects" },
+  hero_cta_cv:       { id: "Download CV",   en: "Download CV" },
+
+  // ini bagian translate judul-judul section (eyebrow = teks kecil di atas judul besar)
+  skills_eyebrow:     { id: "kemampuan", en: "skills" },
+  skills_title:       { id: "Skills",    en: "Skills" },
+  skills_tools_heading: { id: "Tech Stack", en: "Tech Stack" },
+  experience_eyebrow: { id: "perjalanan", en: "journey" },
+  experience_title:   { id: "Pengalaman", en: "Experience" },
+  projects_eyebrow:   { id: "karya",      en: "work" },
+  projects_title:      { id: "Portfolio", en: "Portfolio" },
+  contact_eyebrow:     { id: "kontak",    en: "contact" },
+  contact_title:       { id: "Contact Me", en: "Contact Me" },
+
+  // ini bagian translate isi form Contact (judul, subjudul, label, placeholder, tombol)
+  cf_heading:    { id: "Say hello", en: "Say hello" },
+  cf_subheading: {
+    id: "Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.",
+    en: "Have a project, want to collaborate, or just want to chat about data? Fill out this form.",
   },
+  cf_label_name:        { id: "Nama", en: "Name" },
+  cf_placeholder_name:  { id: "Nama kamu", en: "Your name" },
+  cf_label_email:       { id: "Email", en: "Email" },
+  cf_placeholder_email: { id: "Email kamu (biar aku bisa balas)", en: "Your email (so I can reply)" },
+  cf_label_message:     { id: "Pesan", en: "Message" },
+  cf_placeholder_message: { id: "Tulis pesan kamu di sini...", en: "Write your message here..." },
+  cf_submit: { id: "Send Message", en: "Send Message" },
+
+  // ini bagian translate baris copyright di footer paling bawah
+  footer_rights: { id: "Seluruh hak cipta dilindungi.", en: "All rights reserved." },
+
+  // ini bagian translate label-label di dalam popup detail Project
+  modal_files_title:         { id: "File terkait", en: "Related files" },
+  modal_dashboard_title:     { id: "Dashboard", en: "Dashboard" },
+  modal_related_title_default: { id: "Terkait", en: "Related" },
+  modal_github_btn:          { id: "Lihat di GitHub", en: "View on GitHub" },
+  modal_related_dikerjakan:  { id: "Dikerjakan selama", en: "Worked on during" },
+
+  // ini bagian translate label-label di dalam popup detail Experience
+  exp_modal_did_title:   { id: "Yang dilakukan", en: "What I did" },
+  exp_modal_tools_title: { id: "Tools yang dipakai", en: "Tools used" },
+  exp_modal_projects_label_project:     { id: "Project selama menjabat di posisi ini", en: "Projects during this role" },
+  exp_modal_projects_label_achievement: { id: "Prestasi selama di sini", en: "Achievements during this time" },
+
+  // ini bagian translate label di popup "tools dipakai di mana aja" (cross-reference)
+  tool_modal_projects_title:   { id: "Dipakai di project", en: "Used in projects" },
+  tool_modal_experience_title: { id: "Dipakai di pengalaman", en: "Used in experience" },
+
+  // ini bagian translate tombol filter "Semua" (di Skills/Experience/Projects)
+  label_all: { id: "Semua", en: "All" },
+
+  // ini bagian translate pesan-pesan "belum ada data" (empty state)
+  empty_skills:             { id: "Belum ada data skills.", en: "No skills data yet." },
+  empty_experience:         { id: "Belum ada data pengalaman.", en: "No experience data yet." },
+  empty_experience_category: { id: "Belum ada data di kategori ini.", en: "No data in this category yet." },
+  empty_projects:           { id: "Belum ada project. Isi sheet Projects dulu ya ✦", en: "No projects yet. Fill in the Projects sheet first ✦" },
+  empty_projects_category:  { id: "Belum ada project di kategori ini. Coming soon ✦", en: "No projects in this category yet. Coming soon ✦" },
+  tool_no_projects:         { id: "Belum ada project yang tercatat", en: "No projects recorded yet" },
+  tool_no_experience:       { id: "Belum ada pengalaman yang tercatat", en: "No experience recorded yet" },
+
+  // ini bagian translate tombol toggle bahasa & tombol toggle tema di navbar
+  lang_switch_label: { id: "Indonesia", en: "English" }, // teks yg tampil sesuai bahasa yg LAGI aktif
+  theme_dark_label:  { id: "Gelap",     en: "Dark" },
+  theme_light_label: { id: "Terang",    en: "Light" },
 };
 
 function t(key) {
-  return (I18N[CURRENT_LANG] && I18N[CURRENT_LANG][key]) || I18N.id[key] || key;
+  const entry = I18N[key];
+  if (!entry) return key;
+  return entry[CURRENT_LANG] || entry.id || key;
 }
 
 // ambil field _en kalau lagi mode EN dan isinya ada, else fallback ke field aslinya
@@ -250,6 +226,24 @@ function el(html) {
 /* ============================================================
    PROFILE
    ============================================================ */
+// helper: cek apakah value dari sheet itu masih placeholder ("ISI: ...") atau beneran udah diisi
+function isFilled(value) {
+  return !!(value && value.trim() && !value.trim().toUpperCase().startsWith("ISI:"));
+}
+
+// pastiin link selalu punya https:// di depan — kalau kolom sheet cuma diisi
+// "linkedin.com/in/xxx" tanpa https://, browser nganggep itu link internal (404).
+function normalizeUrl(url) {
+  if (!url) return "";
+  url = url.trim();
+  if (!/^https?:\/\//i.test(url)) return "https://" + url;
+  return url;
+}
+
+function socialIconLink(url, slug, label) {
+  return `<a href="${url}" target="_blank" rel="noopener" aria-label="${label}"><img src="https://cdn.simpleicons.org/${slug}/ffffff" alt="" width="16" height="16" onerror="this.parentElement.textContent='${label.slice(0,2).toUpperCase()}'"></a>`;
+}
+
 async function renderProfile() {
   const rows = await fetchCSV(CONFIG.PROFILE_CSV_URL);
   if (!rows.length) return;
@@ -302,29 +296,36 @@ async function renderProfile() {
   }
 
   const cv = document.getElementById("hero-cv");
-  if (p.link_cv) cv.href = p.link_cv; else cv.style.display = "none";
+  if (isFilled(p.link_cv)) cv.href = normalizeUrl(p.link_cv); else cv.style.display = "none";
 
-  // hero socials
+  // hero socials — LinkedIn, GitHub, WhatsApp pakai logo asli (Simple Icons), Email pakai icon amplop
+  const waDigits = (p.wa_number || "").replace(/[^0-9]/g, "");
   const heroSocials = document.getElementById("hero-socials");
   heroSocials.innerHTML = "";
-  if (p.link_linkedin) heroSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
-  if (p.link_github) heroSocials.appendChild(el(`<a href="${p.link_github}" target="_blank" rel="noopener" aria-label="GitHub">gh</a>`));
-  if (p.wa_number) heroSocials.appendChild(el(`<a href="https://wa.me/${p.wa_number.replace(/[^0-9]/g,"")}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`));
-  if (p.email) heroSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+  if (isFilled(p.link_linkedin)) heroSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_linkedin), "linkedin", "LinkedIn")));
+  if (isFilled(p.link_github)) heroSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_github), "github", "GitHub")));
+  if (isFilled(p.wa_number) && waDigits) heroSocials.appendChild(el(socialIconLink(`https://wa.me/${waDigits}`, "whatsapp", "WhatsApp")));
+  if (isFilled(p.email)) heroSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
 
-  // footer socials
+  // footer socials — sama persis kayak hero socials
   const footerSocials = document.getElementById("footer-socials");
   footerSocials.innerHTML = "";
-  if (p.link_linkedin) footerSocials.appendChild(el(`<a href="${p.link_linkedin}" target="_blank" rel="noopener" aria-label="LinkedIn">in</a>`));
-  if (p.link_github) footerSocials.appendChild(el(`<a href="${p.link_github}" target="_blank" rel="noopener" aria-label="GitHub">gh</a>`));
-  if (p.wa_number) footerSocials.appendChild(el(`<a href="https://wa.me/${p.wa_number.replace(/[^0-9]/g,"")}" target="_blank" rel="noopener" aria-label="WhatsApp">wa</a>`));
-  if (p.email) footerSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+  if (isFilled(p.link_linkedin)) footerSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_linkedin), "linkedin", "LinkedIn")));
+  if (isFilled(p.link_github)) footerSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_github), "github", "GitHub")));
+  if (isFilled(p.wa_number) && waDigits) footerSocials.appendChild(el(socialIconLink(`https://wa.me/${waDigits}`, "whatsapp", "WhatsApp")));
+  if (isFilled(p.email)) footerSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
 
   // contact form -> buka email client dengan pesan udah keisi (nggak butuh backend)
+  // catatan: preventDefault SELALU dipanggil duluan, jadi form nggak akan reload halaman
+  // meskipun email belum keisi di sheet Profile (biar nggak berasa "form cuma pajangan")
   const form = document.getElementById("contact-form");
-  if (form && p.email) {
+  if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
+      if (!isFilled(p.email)) {
+        alert("Form belum bisa kirim: kolom 'email' di sheet Profile belum diisi pemilik web ini.");
+        return;
+      }
       const name = document.getElementById("cf-name").value;
       const fromEmail = document.getElementById("cf-email").value;
       const message = document.getElementById("cf-message").value;

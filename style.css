@@ -61,12 +61,12 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 999px;
   padding: 10px 12px;
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 18px;
+  justify-content: center;
+  gap: 10px 18px;
   box-shadow: var(--shadow);
-  max-width: 92vw;
-  overflow-x: auto;
+  max-width: 95vw;
 }
 .nav-inner > * { flex-shrink: 0; }
 .nav-logo {
@@ -597,6 +597,7 @@ main { position: relative; z-index: 1; }
   .nav-links { gap: 0; }
   .section { padding: 50px 18px; }
   .hero { min-height: auto; padding-top: 90px; }
+  .nav-inner { border-radius: 24px; }
 }
 
 /* editorial crispness: thin border alongside soft shadow on card surfaces */

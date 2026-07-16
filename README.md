@@ -231,3 +231,30 @@ Toggle bahasa (ID/EN) sekarang ada di navbar, sebelah tombol dark/light mode. Se
 
 ### Catatan penting
 Kalau kolom `_en` di atas kamu **kosongin**, sistem otomatis fallback nampilin versi Indonesia-nya — jadi nggak akan ada teks kosong/error, aman buat diisi pelan-pelan/nyicil. Prioritasin isi `bio_en` dan `tagline_en` dulu (paling keliatan di hero), baru nyusul deskripsi project & pengalaman.
+
+## ✅ CHECKLIST FINAL — audit sheet kamu sekarang
+
+Bug LinkedIn 404, WA nggak nyambung, form nggak jalan — itu semua kemungkinan besar karena kolom sheet masih ada placeholder "ISI: ..." yang belum diganti. Sekarang kode udah otomatis skip placeholder ini (nggak akan render link rusak), tapi biar FITUR-nya beneran nyala, cek satu-satu ini di sheet Profile:
+
+| Kolom | Wajib diisi beneran (bukan "ISI: ...") | Efek kalau kosong |
+|---|---|---|
+| `email` | ✅ **Wajib**, ini yang bikin form Contact & icon amplop jalan | Form cuma nampilin alert "belum bisa kirim", icon amplop hilang |
+| `link_linkedin` | Isi **URL LENGKAP** (boleh tanpa https://, kode otomatis nambahin) | Icon LinkedIn nggak muncul |
+| `link_github` | Isi URL profil GitHub kamu | Icon GitHub nggak muncul |
+| `wa_number` | **Cuma angka**, format `62812xxxxxxx` (kode negara, tanpa 0 di depan, tanpa spasi/strip) | Icon WA nggak muncul |
+| `link_cv` | URL Google Drive/PDF CV kamu | Tombol "Download CV" otomatis disembunyikan |
+| `foto_url`, `nama`, `tagline`, `bio` | Sesuai yang udah kamu isi sebelumnya | — |
+
+**Cara cek cepat**: buka tiap cell di atas, pastikan isinya BUKAN teks yang diawali "ISI:" — kalau masih ada tulisan itu, ganti dengan data asli kamu.
+
+## Ringkasan sheet Profile lengkap (semua kolom yang sekarang dipakai)
+
+```
+nama | foto_url | tagline | bio | link_linkedin | link_cv | email
+tagline_en | bio_en
+link_github | wa_number
+illustration_pagi_url | illustration_malam_url
+illustration_pagi_frames | illustration_malam_frames
+```
+
+Kalau ada salah satu kolom di atas yang belum ada di sheet-mu, tambahin dulu — sisanya (yang kolom `_frames` atau `_en`) boleh dikosongin kalau belum sempet diisi, sistemnya udah otomatis fallback.
