@@ -42,11 +42,11 @@ let CURRENT_LANG = localStorage.getItem("lang") || "en";
 const I18N = {
 
   // ini bagian translate menu navbar (Home/Skills/dst) — biasanya sama aja di 2 bahasa, sesuaikan aja
-  nav_home:       { id: "Home",       en: "Home" },
-  nav_skills:     { id: "Skills",     en: "Skills" },
-  nav_experience: { id: "Experience", en: "Experience" },
-  nav_projects:   { id: "Projects",   en: "Projects" },
-  nav_contact:    { id: "Contact",    en: "Contact" },
+  nav_home:       { id: "Beranda",       en: "Home" },
+  nav_skills:     { id: "Keahlian",     en: "Skills" },
+  nav_experience: { id: "Pengalaman", en: "Experience" },
+  nav_projects:   { id: "Proyek",   en: "Projects" },
+  nav_contact:    { id: "Kontak",    en: "Contact" },
 
   // ini bagian translate sapaan pembuka di Hero ("Hi, aku {nama}" / "Hi, I'm {nama}")
   hero_greeting: { id: "Hi, aku", en: "Hi, I'm" },
