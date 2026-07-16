@@ -22,7 +22,7 @@ const CONFIG = {
   ENABLE_GITHUB_AUTO_SECTION: false,
 };
 
-let CURRENT_LANG = localStorage.getItem("lang") || "id";
+let CURRENT_LANG = localStorage.getItem("lang") || "en";
 
 /* ============================================================
    I18N — dictionary teks statis UI
@@ -61,6 +61,7 @@ const I18N = {
     tool_no_projects: "Belum ada project yang tercatat",
     tool_no_experience: "Belum ada pengalaman yang tercatat",
     lang_switch_label: "EN",
+    theme_dark_label: "Gelap", theme_light_label: "Terang",
   },
   en: {
     nav_home: "Home", nav_skills: "Skills", nav_experience: "Experience", nav_projects: "Projects", nav_contact: "Contact",
@@ -95,6 +96,7 @@ const I18N = {
     tool_no_projects: "No projects recorded yet",
     tool_no_experience: "No experience recorded yet",
     lang_switch_label: "ID",
+    theme_dark_label: "Dark", theme_light_label: "Light",
   },
 };
 
@@ -884,6 +886,7 @@ function applyLanguage(lang) {
   CURRENT_LANG = lang;
   localStorage.setItem("lang", lang);
   applyStaticI18n();
+  if (window.__refreshThemeLabel) window.__refreshThemeLabel();
   // re-render bagian yang datanya udah kebaca, biar teks dinamis ikut ganti bahasa
   renderProfile();
   renderSkills();
@@ -907,21 +910,23 @@ initLangToggle();
 function initThemeToggle() {
   const toggle = document.getElementById("theme-toggle");
   const icon = document.getElementById("theme-toggle-icon");
+  const label = document.getElementById("theme-toggle-text");
   if (!toggle) return;
 
   function applyTheme(theme) {
     if (theme === "day") {
       document.documentElement.setAttribute("data-theme", "day");
       icon.textContent = "☀️";
+      if (label) label.textContent = t("theme_light_label");
     } else {
       document.documentElement.removeAttribute("data-theme");
       icon.textContent = "🌙";
+      if (label) label.textContent = t("theme_dark_label");
     }
   }
 
   const saved = localStorage.getItem("theme");
-  const systemPrefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
-  applyTheme(saved || (systemPrefersLight ? "day" : "night"));
+  applyTheme(saved || "night"); // default: dark mode
 
   toggle.addEventListener("click", () => {
     const isDay = document.documentElement.getAttribute("data-theme") === "day";
@@ -929,6 +934,12 @@ function initThemeToggle() {
     applyTheme(next);
     localStorage.setItem("theme", next);
   });
+
+  // expose biar bisa dipanggil ulang pas ganti bahasa
+  window.__refreshThemeLabel = () => {
+    const isDay = document.documentElement.getAttribute("data-theme") === "day";
+    if (label) label.textContent = t(isDay ? "theme_light_label" : "theme_dark_label");
+  };
 }
 initThemeToggle();
 
