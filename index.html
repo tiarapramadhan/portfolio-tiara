@@ -8,13 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=14">
+<link rel="stylesheet" href="style.css?v=15">
 </head>
 <body>
 
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
-    <a href="#home" class="nav-logo">Portfolio</a>
+    <a href="#home" class="nav-logo" data-i18n="nav_logo">Portfolio</a>
     <div class="nav-links">
       <a href="#home" data-i18n="nav_home">Home</a>
       <a href="#skills" data-i18n="nav_skills">Skills</a>
@@ -190,9 +190,17 @@
       <p class="exp-modal-line" id="exp-modal-date"></p>
       <p class="exp-modal-line muted" id="exp-modal-institusi"></p>
 
-      <hr class="exp-divider">
-      <p class="modal-block-title" data-i18n="exp_modal_did_title">Yang dilakukan</p>
-      <ul class="exp-bullets" id="exp-modal-bullets"></ul>
+      <div id="exp-modal-did-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_modal_did_title">Yang dilakukan</p>
+        <ul class="exp-bullets" id="exp-modal-bullets"></ul>
+      </div>
+
+      <div id="exp-modal-achievements-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_achievements_title">Pencapaian</p>
+        <ul class="exp-bullets" id="exp-modal-achievements"></ul>
+      </div>
 
       <div id="exp-modal-tools-block">
         <hr class="exp-divider">
@@ -215,18 +223,19 @@
     <button class="modal-close" id="tool-modal-close" aria-label="Tutup">✕</button>
     <div class="modal-body">
       <h3 id="tool-modal-title"></h3>
-      <div class="modal-block">
+      <p class="empty-state" id="tool-modal-empty" style="display:none;"></p>
+      <div class="modal-block" id="tool-modal-projects-block">
         <p class="modal-block-title" data-i18n="tool_modal_projects_title">Dipakai di project</p>
         <ul class="file-list linkable" id="tool-modal-projects"></ul>
       </div>
-      <div class="modal-block">
+      <div class="modal-block" id="tool-modal-experience-block">
         <p class="modal-block-title" data-i18n="tool_modal_experience_title">Dipakai di pengalaman</p>
-        <ul class="file-list" id="tool-modal-experience"></ul>
+        <ul class="file-list linkable" id="tool-modal-experience"></ul>
       </div>
     </div>
   </div>
 </div>
 
-<script src="script.js?v=14"></script>
+<script src="script.js?v=15"></script>
 </body>
 </html>

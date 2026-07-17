@@ -258,3 +258,51 @@ illustration_pagi_frames | illustration_malam_frames
 ```
 
 Kalau ada salah satu kolom di atas yang belum ada di sheet-mu, tambahin dulu — sisanya (yang kolom `_frames` atau `_en`) boleh dikosongin kalau belum sempet diisi, sistemnya udah otomatis fallback.
+
+## Update — perbaikan besar (8 bug/request)
+
+1. **Logo LinkedIn & icon email** — sekarang pakai warna asli brand (bukan dipaksa putih), jadi kontras di tema gelap MAUPUN terang. Icon email diganti SVG proper (bukan emoji kekecilan)
+2. **Icon ilang di tema terang** — fixed, akar masalahnya sama kayak nomor 1
+3. **Layout footer** — sekarang grid 3 kolom seimbang: nama+tagline (kiri), menu (tengah), social icons (kanan)
+4. **Tombol Download CV error** — kode udah dirapihin buat handle link Google Drive dengan format yang lebih konsisten. **Kalau masih error**: cek setting share Google Drive-nya, harus **"Anyone with the link"** (bukan "Restricted") — ini penyebab paling umum
+5. **Popup cross-reference skill** — sekarang section "Dipakai di project"/"Dipakai di pengalaman" otomatis **hilang total** kalau kosong (nggak nampilin "belum ada" lagi), dan entry pengalaman sekarang **bisa diklik** juga (buka detail pengalaman itu), sama kayak entry project
+6. **Bug translate tipe/status nggak jalan** — ketemu akarnya: fungsi pembanding di kode itu case-sensitive, jadi "Magang" (huruf besar) di sheet nggak ketemu sama key "magang" di LABEL_MAP_EN. **Sekarang udah fixed** (dibikin nggak peduli besar/kecil huruf). Kalau nanti nambah tipe/status baru, tinggal tambah baris baru di `LABEL_MAP_EN` (di `script.js`), formatnya:
+   ```javascript
+   "tipe-baru-kamu": "Translation In English",
+   ```
+7. **Tanggung Jawab vs Pencapaian dipisah** — sekarang ada 2 section terpisah di kartu & popup Experience. Kolom **baru**: `pencapaian` (dan opsional `pencapaian_en`) di sheet Experience — isinya pakai Alt+Enter buat bullet, sama kayak `deskripsi`. Kalau kosong, section "Pencapaian" otomatis nggak muncul (misal buat entry Pendidikan yang nggak punya "pencapaian kerja")
+8. **Logo navbar "Portfolio"/"Portofolio"** — sekarang ikut translate otomatis sesuai bahasa aktif
+
+## ✅ CHECKLIST FINAL PALING BARU — sheet Profile
+
+Kolom yang WAJIB ada isinya asli (bukan "ISI: ..."):
+```
+nama, tagline, bio, email
+```
+Kolom social (opsional, tapi isi biar nggak kosong):
+```
+link_linkedin, link_github, wa_number, link_cv
+```
+Kolom terjemahan (opsional):
+```
+tagline_en, bio_en
+```
+Kolom ilustrasi Contact (opsional):
+```
+illustration_pagi_url, illustration_malam_url
+illustration_pagi_frames, illustration_malam_frames
+```
+
+## ✅ CHECKLIST FINAL — sheet Experience (kolom baru: `pencapaian`)
+
+```
+posisi, institusi, tanggal_mulai, tanggal_selesai, deskripsi, tipe
+tools, gambar_url, project_terkait, logo_url
+deskripsi_en
+pencapaian, pencapaian_en   <-- BARU
+```
+
+## ✅ CHECKLIST FINAL — sheet Skills & Projects (nggak ada kolom baru kali ini)
+
+Skills: `nama_skill, kategori, level (opsional), sub_kategori, icon_url, icon_emoji`
+Projects: `id, nama_project, kategori, status, deskripsi_singkat, deskripsi_lengkap, cover_image_url, link_github, link_dashboard, tools, file_list, tanggal, deskripsi_singkat_en, deskripsi_lengkap_en`

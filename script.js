@@ -95,6 +95,7 @@ const I18N = {
 
   // ini bagian translate label-label di dalam popup detail Experience
   exp_modal_did_title:   { id: "Tanggung Jawab", en: "Responsibilities" },
+  exp_achievements_title: { id: "Pencapaian", en: "Achievements" },
   exp_modal_tools_title: { id: "Tech Stack", en: "Tech Stack" },
   exp_modal_projects_label_project:     { id: "Proyek Terkait", en: "Related Projects" },
   exp_modal_projects_label_achievement: { id: "Pencapaian", en: "Achievements" },
@@ -114,6 +115,7 @@ const I18N = {
   empty_projects_category:  { id: "Belum ada proyek pada kategori ini.", en: "No projects in this category." },
   tool_no_projects:         { id: "Belum ada project yang tercatat", en: "No projects recorded yet" },
   tool_no_experience:       { id: "Belum ada pengalaman yang tercatat", en: "No experience recorded yet" },
+  tool_no_data:             { id: "Belum ada project atau pengalaman yang tercatat pakai skill ini.", en: "No projects or experience recorded using this skill yet." },
 
   // ini bagian translate tombol toggle bahasa & tombol toggle tema di navbar
   lang_switch_label: { id: "Indonesia", en: "English" }, // teks yg tampil sesuai bahasa yg LAGI aktif
@@ -142,9 +144,18 @@ function pick(row, field) {
 }
 
 // translate label pendek yang umum dipakai (tipe experience, status project)
+// PENTING: kunci di bawah ini dicocokkan TANPA peduli huruf besar/kecil,
+// jadi mau kamu tulis "Magang", "magang", atau "MAGANG" di sheet, tetap ke-translate.
+// Tambah baris baru di sini kalau kamu nambah tipe/status baru di sheet.
 const LABEL_MAP_EN = {
-  "Magang": "Internship", "Organisasi": "Organization", "Pendidikan": "Education",
-  "Kerja": "Work Experience", "Selesai": "Completed", "berjalan": "In Progress", "Aktif": "Active", "Coming soon": "Coming soon",
+  "magang": "Internship",
+  "organisasi": "Organization",
+  "pendidikan": "Education",
+  "kerja": "Work Experience",
+  "selesai": "Completed",
+  "berjalan": "In Progress",
+  "aktif": "Active",
+  "coming soon": "Coming soon",
 };
 function translateLabel(value) {
   if (CURRENT_LANG !== "en" || !value) return value;
@@ -233,16 +244,28 @@ function isFilled(value) {
 
 // pastiin link selalu punya https:// di depan — kalau kolom sheet cuma diisi
 // "linkedin.com/in/xxx" tanpa https://, browser nganggep itu link internal (404).
+// Khusus link Google Drive, juga dirapihin ke format /view standar.
 function normalizeUrl(url) {
   if (!url) return "";
   url = url.trim();
-  if (!/^https?:\/\//i.test(url)) return "https://" + url;
+  if (!/^https?:\/\//i.test(url)) url = "https://" + url;
+  // rapihin link Google Drive ke format .../file/d/FILE_ID/view standar
+  const driveMatch = url.match(/drive\.google\.com\/file\/d\/([^/]+)/);
+  if (driveMatch) return `https://drive.google.com/file/d/${driveMatch[1]}/view`;
   return url;
 }
 
 function socialIconLink(url, slug, label) {
-  return `<a href="${url}" target="_blank" rel="noopener" aria-label="${label}"><img src="https://cdn.simpleicons.org/${slug}/ffffff" alt="" width="16" height="16" onerror="this.parentElement.textContent='${label.slice(0,2).toUpperCase()}'"></a>`;
+  // pakai warna asli brand (bukan dipaksa putih) — biar tetep keliatan jelas
+  // baik di tema gelap MAUPUN terang, karena warna brand (biru LinkedIn,
+  // ijo WhatsApp, dll) kontras di kedua tema, sedangkan putih polos
+  // ilang/nge-blend kalau background-nya juga terang.
+  return `<a href="${url}" target="_blank" rel="noopener" aria-label="${label}"><img src="https://cdn.simpleicons.org/${slug}" alt="" width="18" height="18" onerror="this.parentElement.textContent='${label.slice(0,2).toUpperCase()}'"></a>`;
 }
+
+// icon email pakai SVG asli (bukan emoji ✉ yang suka kekecilan/beda-beda tampilannya
+// tergantung OS) — ukurannya disamain sama icon-icon lain (18x18)
+const EMAIL_SVG_ICON = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 6.5C3 5.67157 3.67157 5 4.5 5H19.5C20.3284 5 21 5.67157 21 6.5V17.5C21 18.3284 20.3284 19 19.5 19H4.5C3.67157 19 3 18.3284 3 17.5V6.5Z" stroke="currentColor" stroke-width="1.7"/><path d="M4 6.5L12 13L20 6.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
 
 async function renderProfile() {
   const rows = await fetchCSV(CONFIG.PROFILE_CSV_URL);
@@ -305,7 +328,7 @@ async function renderProfile() {
   if (isFilled(p.link_linkedin)) heroSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_linkedin), "linkedin", "LinkedIn")));
   if (isFilled(p.link_github)) heroSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_github), "github", "GitHub")));
   if (isFilled(p.wa_number) && waDigits) heroSocials.appendChild(el(socialIconLink(`https://wa.me/${waDigits}`, "whatsapp", "WhatsApp")));
-  if (isFilled(p.email)) heroSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+  if (isFilled(p.email)) heroSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">${EMAIL_SVG_ICON}</a>`));
 
   // footer socials — sama persis kayak hero socials
   const footerSocials = document.getElementById("footer-socials");
@@ -313,7 +336,7 @@ async function renderProfile() {
   if (isFilled(p.link_linkedin)) footerSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_linkedin), "linkedin", "LinkedIn")));
   if (isFilled(p.link_github)) footerSocials.appendChild(el(socialIconLink(normalizeUrl(p.link_github), "github", "GitHub")));
   if (isFilled(p.wa_number) && waDigits) footerSocials.appendChild(el(socialIconLink(`https://wa.me/${waDigits}`, "whatsapp", "WhatsApp")));
-  if (isFilled(p.email)) footerSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">✉</a>`));
+  if (isFilled(p.email)) footerSocials.appendChild(el(`<a href="mailto:${p.email}" aria-label="Email">${EMAIL_SVG_ICON}</a>`));
 
   // contact form -> buka email client dengan pesan udah keisi (nggak butuh backend)
   // catatan: preventDefault SELALU dipanggil duluan, jadi form nggak akan reload halaman
@@ -395,6 +418,11 @@ function drawExperienceList() {
       .map(s => s.trim())
       .filter(Boolean);
 
+    const achievements = pick(row, "pencapaian")
+      .split("\n")
+      .map(s => s.trim())
+      .filter(Boolean);
+
     const card = el(`
       <div class="exp-card">
         <div class="exp-card-header">
@@ -409,9 +437,14 @@ function drawExperienceList() {
           ${row.tipe ? `<span class="exp-badge">${translateLabel(row.tipe)}</span>` : ""}
         </div>
         <hr class="exp-divider">
-        <ul class="exp-bullets">
-          ${bullets.map(b => `<li>${b}</li>`).join("")}
-        </ul>
+        ${bullets.length ? `
+        <p class="exp-subheading">${t("exp_modal_did_title")}</p>
+        <ul class="exp-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>
+        ` : ""}
+        ${achievements.length ? `
+        <p class="exp-subheading">${t("exp_achievements_title")}</p>
+        <ul class="exp-bullets">${achievements.map(b => `<li>${b}</li>`).join("")}</ul>
+        ` : ""}
         ${hasImage ? `<div class="exp-cover"><img src="${row.gambar_url}" alt=""></div>` : ""}
         <div class="exp-tools"></div>
         <div class="exp-links"></div>
@@ -455,7 +488,22 @@ function openExpModal(row) {
   document.getElementById("exp-modal-institusi").textContent = row.institusi || "";
 
   const bullets = pick(row, "deskripsi").split("\n").map(s => s.trim()).filter(Boolean);
-  document.getElementById("exp-modal-bullets").innerHTML = bullets.map(b => `<li>${b}</li>`).join("");
+  const didBlock = document.getElementById("exp-modal-did-block");
+  if (bullets.length) {
+    document.getElementById("exp-modal-bullets").innerHTML = bullets.map(b => `<li>${b}</li>`).join("");
+    didBlock.style.display = "block";
+  } else {
+    didBlock.style.display = "none";
+  }
+
+  const achievements = pick(row, "pencapaian").split("\n").map(s => s.trim()).filter(Boolean);
+  const achievementsBlock = document.getElementById("exp-modal-achievements-block");
+  if (achievements.length) {
+    document.getElementById("exp-modal-achievements").innerHTML = achievements.map(b => `<li>${b}</li>`).join("");
+    achievementsBlock.style.display = "block";
+  } else {
+    achievementsBlock.style.display = "none";
+  }
 
   const toolsBlock = document.getElementById("exp-modal-tools-block");
   const toolsWrap = document.getElementById("exp-modal-tools");
@@ -782,25 +830,48 @@ function openToolModal(toolName) {
   document.getElementById("tool-modal-title").textContent = toolName;
 
   const needle = toolName.toLowerCase();
-  const matchedProjects = ALL_PROJECTS.filter(p => splitTags(p.tools).some(t => t.toLowerCase().includes(needle) || needle.includes(t.toLowerCase())));
-  const matchedExp = ALL_EXPERIENCE.filter(r => splitTags(r.tools).some(t => t.toLowerCase().includes(needle) || needle.includes(t.toLowerCase())));
+  const matchedProjects = ALL_PROJECTS.filter(p => splitTags(p.tools).some(tag => tag.toLowerCase().includes(needle) || needle.includes(tag.toLowerCase())));
+  const matchedExp = ALL_EXPERIENCE.filter(r => splitTags(r.tools).some(tag => tag.toLowerCase().includes(needle) || needle.includes(tag.toLowerCase())));
 
+  const projBlock = document.getElementById("tool-modal-projects-block");
   const projList = document.getElementById("tool-modal-projects");
-  projList.innerHTML = matchedProjects.length
-    ? matchedProjects.map(p => `<li data-project-id="${p.id}" class="linkable-item">📁 ${p.nama_project}</li>`).join("")
-    : `<li class="muted-item">${t("tool_no_projects")}</li>`;
-  projList.querySelectorAll("[data-project-id]").forEach(node => {
-    node.addEventListener("click", () => {
-      const proj = ALL_PROJECTS.find(p => p.id === node.dataset.projectId);
-      closeToolModal();
-      if (proj) openModal(proj);
+  if (matchedProjects.length) {
+    projList.innerHTML = matchedProjects.map(p => `<li data-project-id="${p.id}" class="linkable-item">📁 ${p.nama_project}</li>`).join("");
+    projList.querySelectorAll("[data-project-id]").forEach(node => {
+      node.addEventListener("click", () => {
+        const proj = ALL_PROJECTS.find(p => p.id === node.dataset.projectId);
+        closeToolModal();
+        if (proj) openModal(proj);
+      });
     });
-  });
+    projBlock.style.display = "block";
+  } else {
+    projBlock.style.display = "none";
+  }
 
+  const expBlock = document.getElementById("tool-modal-experience-block");
   const expList = document.getElementById("tool-modal-experience");
-  expList.innerHTML = matchedExp.length
-    ? matchedExp.map(r => `<li>💼 ${r.posisi} · ${r.institusi || ""}</li>`).join("")
-    : `<li class="muted-item">${t("tool_no_experience")}</li>`;
+  if (matchedExp.length) {
+    expList.innerHTML = matchedExp.map((r, i) => `<li data-exp-index="${i}" class="linkable-item">💼 ${r.posisi} · ${r.institusi || ""}</li>`).join("");
+    expList.querySelectorAll("[data-exp-index]").forEach(node => {
+      node.addEventListener("click", () => {
+        const row = matchedExp[Number(node.dataset.expIndex)];
+        closeToolModal();
+        if (row) openExpModal(row);
+      });
+    });
+    expBlock.style.display = "block";
+  } else {
+    expBlock.style.display = "none";
+  }
+
+  const emptyMsg = document.getElementById("tool-modal-empty");
+  if (!matchedProjects.length && !matchedExp.length) {
+    emptyMsg.textContent = t("tool_no_data");
+    emptyMsg.style.display = "block";
+  } else {
+    emptyMsg.style.display = "none";
+  }
 
   document.getElementById("tool-modal-overlay").classList.add("open");
 }
