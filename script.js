@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-17-r2"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-17-r3"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -153,19 +153,20 @@ function pick(row, field) {
 // bahasa yang lagi aktif. Tambah pasangan baru di LABEL_PAIRS kalau kamu
 // nambah tipe/status baru di sheet (misal "Freelance", "Volunteer", dll).
 const LABEL_PAIRS = [
-  { id: "Magang",      en: "Internship" },
-  { id: "Organisasi",  en: "Organization" },
-  { id: "Pendidikan",  en: "Education" },
-  { id: "Kerja",       en: "Work Experience" },
-  { id: "Selesai",     en: "Completed" },
-  { id: "Berjalan",    en: "In Progress" },
-  { id: "Aktif",       en: "Active" },
-  { id: "Coming Soon", en: "Coming Soon" },
+  { id: "Magang",      en: "Internship", synonyms: ["intern"] },
+  { id: "Organisasi",  en: "Organization", synonyms: ["organization"] },
+  { id: "Pendidikan",  en: "Education", synonyms: ["education"] },
+  { id: "Kerja",       en: "Work Experience", synonyms: ["full-time", "fulltime", "work"] },
+  { id: "Selesai",     en: "Completed", synonyms: ["complete", "done"] },
+  { id: "Berjalan",    en: "In Progress", synonyms: ["ongoing", "in progress"] },
+  { id: "Aktif",       en: "Active", synonyms: [] },
+  { id: "Coming Soon", en: "Coming Soon", synonyms: [] },
 ];
 const LABEL_LOOKUP = {};
 LABEL_PAIRS.forEach(pair => {
   LABEL_LOOKUP[pair.id.toLowerCase()] = pair;
   LABEL_LOOKUP[pair.en.toLowerCase()] = pair;
+  (pair.synonyms || []).forEach(syn => { LABEL_LOOKUP[syn.toLowerCase()] = pair; });
 });
 function translateLabel(value) {
   if (!value) return value;
