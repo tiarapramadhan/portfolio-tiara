@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-17-r4"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-17-r5"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -100,6 +100,7 @@ const I18N = {
   // ini bagian translate label-label di dalam popup detail Experience
   exp_modal_did_title:   { id: "Tanggung Jawab", en: "Responsibilities" },
   exp_achievements_title: { id: "Pencapaian", en: "Achievements" },
+  exp_documentation_title: { id: "Dokumentasi", en: "Documentation" },
   exp_modal_tools_title: { id: "Tech Stack", en: "Tech Stack" },
   exp_modal_projects_label_project:     { id: "Proyek Terkait", en: "Related Projects" },
   exp_modal_projects_label_achievement: { id: "Pencapaian", en: "Achievements" },
@@ -464,15 +465,12 @@ function drawExperienceList() {
           ${row.tipe ? `<span class="exp-badge">${translateLabel(row.tipe)}</span>` : ""}
         </div>
         <hr class="exp-divider">
-        ${bullets.length ? `
-        <p class="exp-subheading">${t("exp_modal_did_title")}</p>
-        <ul class="exp-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>
-        ` : ""}
-        ${achievements.length ? `
-        <p class="exp-subheading">${t("exp_achievements_title")}</p>
-        <ul class="exp-bullets">${achievements.map(b => `<li>${b}</li>`).join("")}</ul>
-        ` : ""}
-        ${hasImage ? `<div class="exp-cover"><img src="${row.gambar_url}" alt=""></div>` : ""}
+        <div class="exp-preview-row">
+          ${hasImage ? `<div class="exp-thumb"><img src="${row.gambar_url}" alt=""></div>` : ""}
+          <div class="exp-preview-window">
+            ${bullets.length ? `<ul class="exp-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
+          </div>
+        </div>
         <div class="exp-tools"></div>
         <div class="exp-links"></div>
       </div>
@@ -530,6 +528,16 @@ function openExpModal(row) {
     achievementsBlock.style.display = "block";
   } else {
     achievementsBlock.style.display = "none";
+  }
+
+  const docBlock = document.getElementById("exp-modal-documentation-block");
+  const docWrap = document.getElementById("exp-modal-documentation");
+  if (row.dokumentasi_url && !row.dokumentasi_url.startsWith("ISI:")) {
+    docWrap.innerHTML = `<iframe src="${normalizeUrl(row.dokumentasi_url)}" loading="lazy" allowfullscreen></iframe>`;
+    docBlock.style.display = "block";
+  } else {
+    docWrap.innerHTML = "";
+    docBlock.style.display = "none";
   }
 
   const toolsBlock = document.getElementById("exp-modal-tools-block");

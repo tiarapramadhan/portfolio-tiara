@@ -667,13 +667,34 @@ main { position: relative; z-index: 1; }
 }
 
 /* experience card additions */
-.exp-cover {
-  width: 100%;
-  height: 160px;
+.exp-preview-row {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.exp-thumb {
+  width: 64px;
+  height: 64px;
   border-radius: var(--radius-sm);
   overflow: hidden;
-  margin-top: 16px;
+  flex-shrink: 0;
+  border: 1px solid var(--pink-100);
 }
+.exp-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.exp-preview-window {
+  flex: 1;
+  min-width: 0;
+  max-height: 90px;
+  overflow-y: auto;
+  padding-right: 6px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-100) transparent;
+}
+.exp-preview-window::-webkit-scrollbar { width: 6px; }
+.exp-preview-window::-webkit-scrollbar-track { background: transparent; }
+.exp-preview-window::-webkit-scrollbar-thumb { background: var(--pink-100); border-radius: 999px; }
+.exp-preview-window .exp-bullets { margin: 0; padding-left: 16px; gap: 4px; }
+.exp-preview-window .exp-bullets li { font-size: 13px; }
 .exp-cover img { width: 100%; height: 100%; object-fit: cover; }
 .exp-tools {
   display: flex;

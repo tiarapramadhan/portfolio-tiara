@@ -306,3 +306,31 @@ pencapaian, pencapaian_en   <-- BARU
 
 Skills: `nama_skill, kategori, level (opsional), sub_kategori, icon_url, icon_emoji`
 Projects: `id, nama_project, kategori, status, deskripsi_singkat, deskripsi_lengkap, cover_image_url, link_github, link_dashboard, tools, file_list, tanggal, deskripsi_singkat_en, deskripsi_lengkap_en`
+
+## Update — kartu Experience jadi compact, foto & dokumentasi baru
+
+### Yang berubah di tampilan
+- **Kartu Experience** (list, sebelum diklik) sekarang jauh lebih ringkas:
+  - Kalau ada `gambar_url`, muncul thumbnail kecil (64x64px) di samping teks
+  - "Tanggung Jawab" sekarang jadi **jendela kecil bisa di-scroll** (max ~90px tinggi), nggak makan tempat kartu lagi
+  - "Pencapaian" nggak ditampilin di kartu (biar makin ringkas) — cuma muncul di modal detail
+- **Modal detail** (setelah diklik) tetap lengkap: foto ukuran penuh di atas, Tanggung Jawab & Pencapaian full, plus section baru **Dokumentasi**
+
+### Kolom baru di sheet Experience: `dokumentasi_url`
+Isinya link **embed** Canva (bukan link biasa) — dokumentasi/portofolio kerjaan kamu selama posisi itu. Muncul sebagai tampilan tertanam (bukan cuma tombol link) di dalam modal, kayak baca README langsung di web.
+
+**Cara dapetin link embed Canva:**
+1. Buka desain Canva kamu
+2. Klik **Share** → cari opsi **Embed**
+3. Copy link embed-nya (biasanya beda dari link share biasa, formatnya ada `/view?embed`)
+4. Tempel ke kolom `dokumentasi_url`
+
+Kolom ini **opsional** — kosongin aja kalau nggak ada dokumentasinya, section "Dokumentasi" otomatis nggak muncul di modal.
+
+### Ringkasan sheet Experience final (semua kolom sampai saat ini)
+```
+posisi, institusi, tanggal_mulai, tanggal_selesai, deskripsi, tipe
+tools, gambar_url, project_terkait, logo_url
+deskripsi_en, pencapaian, pencapaian_en
+dokumentasi_url   <-- BARU
+```
