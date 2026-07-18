@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-17-r3"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-17-r4"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -587,6 +587,7 @@ document.getElementById("exp-modal-overlay").addEventListener("click", (e) => {
    Prioritas: 1) icon_url dari sheet Skills, 2) tebakan Simple Icons, 3) badge inisial
    ============================================================ */
 let TOOL_ICON_MAP = {}; // diisi otomatis dari kolom icon_url di sheet Skills
+let HARD_SKILL_PROJECT_MAP = {}; // diisi dari kolom hard_skill_relevan di sheet Skills (nama_skill -> [nama project])
 
 const TOOL_ICON_SLUGS = {
   "python": "python",
@@ -663,7 +664,12 @@ async function renderSkills() {
       }
       toolItems.push({ ...r, isTools: true, group: r.sub_kategori || "Lainnya" });
     } else {
-      staticItems.push({ ...r, isTools: false, isHard: (r.kategori || "").toLowerCase().includes("hard"), group: r.kategori || "Lainnya" });
+      // "isHard" sekarang ngenalin "Hard Skill" ATAU "Technical Skills" (fleksibel nama kategorinya)
+      const isHard = /hard|technical/i.test(r.kategori || "");
+      if (isHard && r.hard_skill_relevan && r.hard_skill_relevan.trim()) {
+        HARD_SKILL_PROJECT_MAP[r.nama_skill.toLowerCase().trim()] = splitTags(r.hard_skill_relevan);
+      }
+      staticItems.push({ ...r, isTools: false, isHard, group: r.kategori || "Lainnya" });
     }
   });
 
@@ -722,7 +728,10 @@ function renderSkillTagCard(item) {
   const level = item["level (opsional)"] ? ` · ${item["level (opsional)"]}` : "";
   const iconHtml = resolveSkillIcon(item);
   const clickable = item.isTools || item.isHard;
-  const tag = el(`<span class="skill-tag${clickable ? " clickable" : ""}">${iconHtml}<span>${item.nama_skill}${level}</span></span>`);
+  // kolom "eng" di sheet Skills isinya versi Indonesia (nama_skill sendiri udah default Inggris)
+  // jadi kalau mode ID aktif dan "eng" keisi, tampilin itu; selain itu tampilin nama_skill apa adanya
+  const displayName = (CURRENT_LANG === "id" && item.eng && item.eng.trim()) ? item.eng : item.nama_skill;
+  const tag = el(`<span class="skill-tag${clickable ? " clickable" : ""}">${iconHtml}<span>${displayName}${level}</span></span>`);
   if (clickable) {
     tag.addEventListener("click", () => openToolModal(item.nama_skill));
   }
@@ -857,7 +866,18 @@ function openToolModal(toolName) {
   document.getElementById("tool-modal-title").textContent = toolName;
 
   const needle = toolName.toLowerCase();
-  const matchedProjects = ALL_PROJECTS.filter(p => splitTags(p.tools).some(tag => tag.toLowerCase().includes(needle) || needle.includes(tag.toLowerCase())));
+  const relevantNames = HARD_SKILL_PROJECT_MAP[needle];
+
+  let matchedProjects;
+  if (relevantNames && relevantNames.length) {
+    // pakai kolom hard_skill_relevan -> cocokin persis sama nama_project
+    matchedProjects = ALL_PROJECTS.filter(p =>
+      relevantNames.some(name => name.toLowerCase().trim() === (p.nama_project || "").toLowerCase().trim())
+    );
+  } else {
+    // fallback: cari di kolom "tools" (buat item Tools yang punya icon, bukan Hard Skill)
+    matchedProjects = ALL_PROJECTS.filter(p => splitTags(p.tools).some(tag => tag.toLowerCase().includes(needle) || needle.includes(tag.toLowerCase())));
+  }
   const matchedExp = ALL_EXPERIENCE.filter(r => splitTags(r.tools).some(tag => tag.toLowerCase().includes(needle) || needle.includes(tag.toLowerCase())));
 
   const projBlock = document.getElementById("tool-modal-projects-block");
