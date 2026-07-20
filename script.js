@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-17-r5"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-17-r6"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -101,6 +101,7 @@ const I18N = {
   exp_modal_did_title:   { id: "Tanggung Jawab", en: "Responsibilities" },
   exp_achievements_title: { id: "Pencapaian", en: "Achievements" },
   exp_documentation_title: { id: "Dokumentasi", en: "Documentation" },
+  exp_view_detail_hint: { id: "Lihat detail", en: "View details" },
   exp_modal_tools_title: { id: "Tech Stack", en: "Tech Stack" },
   exp_modal_projects_label_project:     { id: "Proyek Terkait", en: "Related Projects" },
   exp_modal_projects_label_achievement: { id: "Pencapaian", en: "Achievements" },
@@ -473,6 +474,7 @@ function drawExperienceList() {
         </div>
         <div class="exp-tools"></div>
         <div class="exp-links"></div>
+        <div class="exp-click-hint"><span>${t("exp_view_detail_hint")}</span><span class="exp-click-hint-arrow">→</span></div>
       </div>
     `);
 
@@ -834,6 +836,7 @@ function drawProjectsGrid() {
           <div class="project-tags">
             ${splitTags(p.tools).slice(0, 3).map(tool => `<span class="project-tag">${tool}</span>`).join("")}
           </div>
+          <div class="exp-click-hint"><span>${t("exp_view_detail_hint")}</span><span class="exp-click-hint-arrow">→</span></div>
         </div>
       </button>
     `);

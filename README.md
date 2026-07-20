@@ -1,4 +1,4 @@
-# Portfolio Kamu — Panduan Setup
+# Portfolio Kamu — Panduan Setup (Tanpa Coding)
 
 Situs ini otomatis ambil data dari Google Sheet kamu. Nggak perlu install apapun di laptop — semua bisa lewat browser.
 

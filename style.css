@@ -703,6 +703,23 @@ main { position: relative; z-index: 1; }
   margin-top: 14px;
 }
 .exp-links { margin-top: 14px; }
+.exp-click-hint {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--pink-100);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--lavender-dark);
+}
+.exp-click-hint-arrow { transition: transform 0.2s ease; }
+.exp-card:hover .exp-click-hint-arrow,
+.project-card:hover .exp-click-hint-arrow { transform: translateX(4px); }
+.exp-card:hover .exp-click-hint,
+.project-card:hover .exp-click-hint { color: var(--pink-800); }
 .exp-project-link {
   background: transparent;
   border: 1px solid var(--pink-100);
