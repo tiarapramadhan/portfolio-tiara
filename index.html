@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=20">
+<link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
 
@@ -148,6 +148,12 @@
   <p class="footer-copyright">© <span id="footer-year"></span> <span id="footer-name">—</span>. <span data-i18n="footer_rights">All rights reserved.</span></p>
 </footer>
 
+<!-- MUSIK LOFI — floating button, opt-in, nggak autoplay -->
+<button id="music-toggle" class="music-toggle" aria-label="Play/pause background music" style="display:none;">
+  <span id="music-toggle-icon">🎵</span>
+</button>
+<audio id="lofi-audio" loop preload="none"></audio>
+
 <!-- PROJECT DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
@@ -242,6 +248,6 @@
   </div>
 </div>
 
-<script src="script.js?v=20"></script>
+<script src="script.js?v=21"></script>
 </body>
 </html>

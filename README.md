@@ -334,3 +334,19 @@ tools, gambar_url, project_terkait, logo_url
 deskripsi_en, pencapaian, pencapaian_en
 dokumentasi_url   <-- BARU
 ```
+
+## Update — musik lofi opt-in (floating button)
+
+Ada tombol musik kecil melayang di pojok kanan bawah — **cuma muncul kalau kamu isi link musiknya**, dan **nggak autoplay** (user harus klik sendiri). Pas lagi main, ada animasi pulse halus di tombolnya biar tau statusnya "lagi puter".
+
+### Sheet Profile — 1 kolom baru: `lofi_url`
+
+Isinya **link file audio langsung** (format `.mp3` atau `.ogg`), BUKAN link YouTube/Spotify (itu nggak bisa langsung diputer di web biasa).
+
+**Cara dapetin file MP3 yang boleh dipakai gratis:**
+1. Buka [Pixabay Music](https://pixabay.com/music/search/lofi/) (gratis, royalty-free, nggak perlu kredit)
+2. Cari "lofi", download file MP3-nya
+3. Upload ke **imgbb nggak bisa buat audio** — pakai **Google Drive** aja: upload MP3, klik kanan → Share → "Anyone with the link", copy link share-nya
+4. Convert ke direct link pakai format sama kayak foto: `https://drive.google.com/uc?export=view&id=FILE_ID`
+
+Kolom ini **opsional total** — kosongin, tombolnya otomatis nggak muncul sama sekali.

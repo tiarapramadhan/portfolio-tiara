@@ -1392,3 +1392,40 @@ body,
   0%, 100% { opacity: 0.15; }
   50% { opacity: 1; }
 }
+
+/* ============================================================
+   MUSIC TOGGLE — floating button, opt-in (nggak autoplay)
+   ============================================================ */
+.music-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: none;
+  background: linear-gradient(155deg, var(--white) 0%, var(--pink-100) 220%);
+  color: var(--pink-900);
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow);
+  transition: background-color 0.7s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.music-toggle:hover { transform: translateY(-3px) scale(1.05); }
+.music-toggle.playing {
+  animation: musicPulse 2.4s ease-in-out infinite;
+}
+@keyframes musicPulse {
+  0%, 100% { box-shadow: var(--shadow); }
+  50% { box-shadow: var(--shadow), 0 0 0 8px rgba(122, 122, 122, 0.12); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-toggle.playing { animation: none; }
+}
+@media (max-width: 640px) {
+  .music-toggle { bottom: 16px; right: 16px; width: 46px; height: 46px; font-size: 17px; }
+}

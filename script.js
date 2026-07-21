@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-17-r6"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-17-r7"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -348,6 +348,11 @@ async function renderProfile() {
     console.log("[Portfolio] Link CV yang dipakai:", cv.href); // buka DevTools (F12) > Console buat cek link ini kalau CV masih error
   } else {
     cv.style.display = "none";
+  }
+
+  if (!window.__musicToggleInit) {
+    window.__musicToggleInit = true;
+    initMusicToggle(p.lofi_url);
   }
 
   // hero socials — LinkedIn, GitHub, WhatsApp pakai logo asli (Simple Icons), Email pakai icon amplop
@@ -1089,6 +1094,37 @@ initLangToggle();
 /* ============================================================
    THEME TOGGLE — day/night, tersimpan di localStorage
    ============================================================ */
+/* ============================================================
+   MUSIC TOGGLE — floating button, opt-in, nggak autoplay
+   ============================================================ */
+function initMusicToggle(lofiUrl) {
+  const btn = document.getElementById("music-toggle");
+  const icon = document.getElementById("music-toggle-icon");
+  const audio = document.getElementById("lofi-audio");
+  if (!btn || !isFilled(lofiUrl)) return; // sembunyi total kalau kolom lofi_url kosong
+
+  audio.src = lofiUrl;
+  audio.volume = 0.35; // volume sedang, nggak kaget pas pertama nyala
+  btn.style.display = "flex";
+
+  let playing = false;
+  function updateIcon() {
+    icon.textContent = playing ? "🎶" : "🎵";
+    btn.classList.toggle("playing", playing);
+  }
+
+  btn.addEventListener("click", () => {
+    if (playing) {
+      audio.pause();
+      playing = false;
+    } else {
+      audio.play().catch(() => {}); // kalau browser tetep block, diemin aja nggak error
+      playing = true;
+    }
+    updateIcon();
+  });
+}
+
 function initThemeToggle() {
   const toggle = document.getElementById("theme-toggle");
   const icon = document.getElementById("theme-toggle-icon");
