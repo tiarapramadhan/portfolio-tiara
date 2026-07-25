@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-25-r8"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-25-r9"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -1117,6 +1117,37 @@ initLangToggle();
 /* ============================================================
    MUSIC TOGGLE — floating button, opt-in, nggak autoplay
    ============================================================ */
+/* ============================================================
+   HERO PHOTO TILT — foto "ketarik" ngikutin kursor, smooth
+   ============================================================ */
+function initPhotoTilt() {
+  const art = document.querySelector(".hero-art");
+  const frame = document.getElementById("hero-photo-frame");
+  const glow = document.querySelector(".hero-photo-glow");
+  if (!art || !frame) return;
+  if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+  const MAX_TILT = 12; // derajat maksimal miring
+  const MAX_GLOW_SHIFT = 16; // px geser glow di belakang
+
+  art.addEventListener("mousemove", (e) => {
+    const rect = frame.getBoundingClientRect();
+    const relX = (e.clientX - (rect.left + rect.width / 2)) / (rect.width / 2);
+    const relY = (e.clientY - (rect.top + rect.height / 2)) / (rect.height / 2);
+    const clampX = Math.max(-1, Math.min(1, relX));
+    const clampY = Math.max(-1, Math.min(1, relY));
+
+    frame.style.transform = `rotateY(${(clampX * MAX_TILT).toFixed(2)}deg) rotateX(${(-clampY * MAX_TILT).toFixed(2)}deg) scale(1.04)`;
+    if (glow) glow.style.transform = `translate(${(clampX * MAX_GLOW_SHIFT).toFixed(1)}px, ${(clampY * MAX_GLOW_SHIFT).toFixed(1)}px) scale(1.1)`;
+  });
+
+  art.addEventListener("mouseleave", () => {
+    frame.style.transform = "";
+    if (glow) glow.style.transform = "";
+  });
+}
+initPhotoTilt();
+
 function initMusicToggle(lofiUrl) {
   const btn = document.getElementById("music-toggle");
   const icon = document.getElementById("music-toggle-icon");
