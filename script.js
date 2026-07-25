@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-17-r7"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-25-r8"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -141,6 +141,26 @@ function t(key) {
 // kolom "namakolom_en" di sheet (misal bio_en, deskripsi_en). Kalau kolom itu
 // kosong/belum diisi, otomatis balik pakai teks Indonesia biasa (nggak error).
 // Edit teks EN-nya di GOOGLE SHEET langsung, bukan di file ini.
+// translate nama bulan dalam teks tanggal (otomatis, nggak butuh kolom baru di sheet)
+// contoh: "Januari 2026 – Juni 2026" (ID) <-> "January 2026 – June 2026" (EN)
+const MONTH_PAIRS = [
+  { id: "Januari", en: "January" }, { id: "Februari", en: "February" }, { id: "Maret", en: "March" },
+  { id: "April", en: "April" }, { id: "Mei", en: "May" }, { id: "Juni", en: "June" },
+  { id: "Juli", en: "July" }, { id: "Agustus", en: "August" }, { id: "September", en: "September" },
+  { id: "Oktober", en: "October" }, { id: "November", en: "November" }, { id: "Desember", en: "December" },
+  { id: "Sekarang", en: "Present" },
+];
+function translateDate(str) {
+  if (!str) return str;
+  let result = str;
+  MONTH_PAIRS.forEach(pair => {
+    const from = CURRENT_LANG === "en" ? pair.id : pair.en;
+    const to = CURRENT_LANG === "en" ? pair.en : pair.id;
+    result = result.replace(new RegExp(`\\b${from}\\b`, "gi"), to);
+  });
+  return result;
+}
+
 function pick(row, field) {
   if (CURRENT_LANG === "en") {
     const enVal = row[field + "_en"];
@@ -464,7 +484,7 @@ function drawExperienceList() {
           <div class="exp-heading">
             <div class="exp-title-row">
               <span class="exp-role">${row.posisi || ""}</span>
-              <span class="exp-date">${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}</span>
+              <span class="exp-date">${translateDate(row.tanggal_mulai || "")}${row.tanggal_selesai ? " – " + translateDate(row.tanggal_selesai) : ""}</span>
             </div>
             <p class="exp-institusi">${row.institusi || ""}</p>
           </div>
@@ -516,7 +536,7 @@ function openExpModal(row) {
   document.getElementById("exp-modal-badge").textContent = translateLabel(row.tipe) || "";
   document.getElementById("exp-modal-title").textContent = row.posisi || "";
   document.getElementById("exp-modal-date").textContent =
-    `${row.tanggal_mulai || ""}${row.tanggal_selesai ? " – " + row.tanggal_selesai : ""}`;
+    `${translateDate(row.tanggal_mulai || "")}${row.tanggal_selesai ? " – " + translateDate(row.tanggal_selesai) : ""}`;
   document.getElementById("exp-modal-institusi").textContent = row.institusi || "";
 
   const bullets = pick(row, "deskripsi").split("\n").map(s => s.trim()).filter(Boolean);
