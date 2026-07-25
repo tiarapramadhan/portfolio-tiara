@@ -7,27 +7,27 @@
 <meta name="description" content="Portfolio data science">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css?v=22">
 </head>
 <body>
 
-<!-- decorative blobs -->
-<div class="bg-blob blob-1" aria-hidden="true"></div>
-<div class="bg-blob blob-2" aria-hidden="true"></div>
-<div class="bg-blob blob-3" aria-hidden="true"></div>
-
 <nav class="navbar" id="navbar">
   <div class="nav-inner">
-    <a href="#home" class="nav-logo">✦ porto</a>
+    <a href="#home" class="nav-logo" data-i18n="nav_logo">Portfolio</a>
     <div class="nav-links">
-      <a href="#home">Home</a>
-      <a href="#about">About</a>
-      <a href="#skills">Skills</a>
-      <a href="#experience">Experience</a>
-      <a href="#projects">Projects</a>
-      <a href="#contact">Contact</a>
+      <a href="#home" data-i18n="nav_home">Home</a>
+      <a href="#skills" data-i18n="nav_skills">Skills</a>
+      <a href="#experience" data-i18n="nav_experience">Experience</a>
+      <a href="#projects" data-i18n="nav_projects">Projects</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
     </div>
+    <button id="lang-toggle" class="lang-toggle" aria-label="Switch language">
+      <span class="lang-icon">🌐</span><span id="lang-toggle-text">EN</span>
+    </button>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch dark/light mode">
+      <span id="theme-toggle-icon">🌙</span><span id="theme-toggle-text">Dark</span>
+    </button>
   </div>
 </nav>
 
@@ -36,13 +36,13 @@
   <!-- HERO -->
   <section id="home" class="section hero">
     <div class="hero-text">
-      <span class="badge" id="hero-badge">✧ terbuka untuk kolaborasi</span>
-      <h1 class="hero-title">Hi, aku <span id="hero-name">—</span></h1>
+      <span class="badge" id="hero-badge" data-i18n="hero_badge">Terbuka untuk kolaborasi</span>
+      <h1 class="hero-title"><span data-i18n="hero_greeting">Hi, aku</span> <span id="hero-name">—</span></h1>
       <p class="hero-tagline" id="hero-tagline">memuat…</p>
       <p class="hero-bio" id="hero-bio"></p>
       <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">Lihat project</a>
-        <a href="#" id="hero-cv" class="btn btn-secondary" target="_blank" rel="noopener">Download CV</a>
+        <a href="#projects" class="btn btn-primary" data-i18n="hero_cta_projects">Lihat project</a>
+        <a href="#" id="hero-cv" class="btn btn-secondary" target="_blank" rel="noopener" data-i18n="hero_cta_cv">Download CV</a>
       </div>
       <div class="hero-socials" id="hero-socials"></div>
     </div>
@@ -50,48 +50,109 @@
       <div class="hero-photo-frame">
         <img id="hero-photo" src="" alt="Foto profil" />
       </div>
-      <span class="sticker sticker-star">✦</span>
-      <span class="sticker sticker-heart">◈</span>
     </div>
-  </section>
-
-  <!-- ABOUT -->
-  <section id="about" class="section">
-    <h2 class="section-title"><span class="eyebrow">tentang</span>Kenalan yuk</h2>
-    <p class="about-text" id="about-bio">memuat data…</p>
   </section>
 
   <!-- SKILLS -->
   <section id="skills" class="section">
-    <h2 class="section-title"><span class="eyebrow">kemampuan</span>Skills &amp; Tools</h2>
-    <div class="skills-grid" id="skills-grid"></div>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="skills_eyebrow">kemampuan</span><span data-i18n="skills_title">Skills</span></h2>
+    <div id="skills-static"></div>
+    <p class="skills-tools-heading" data-i18n="skills_tools_heading">Tech Stack</p>
+    <div class="projects-layout">
+      <aside class="filter-sidebar" id="skills-filter-bar"></aside>
+      <div class="content-panel" id="skills-panel"></div>
+    </div>
   </section>
 
   <!-- EXPERIENCE -->
   <section id="experience" class="section">
-    <h2 class="section-title"><span class="eyebrow">perjalanan</span>Pengalaman</h2>
-    <div class="timeline" id="timeline"></div>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="experience_eyebrow">perjalanan</span><span data-i18n="experience_title">Pengalaman</span></h2>
+    <div class="projects-layout">
+      <aside class="filter-sidebar" id="exp-tabs"></aside>
+      <div class="content-panel exp-list" id="exp-list"></div>
+    </div>
   </section>
 
   <!-- PROJECTS -->
   <section id="projects" class="section">
-    <h2 class="section-title"><span class="eyebrow">karya</span>Projects</h2>
-    <div class="filter-bar" id="filter-bar"></div>
-    <div class="projects-grid" id="projects-grid"></div>
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="projects_eyebrow">karya</span><span data-i18n="projects_title">Portfolio</span></h2>
+    <div class="projects-layout">
+      <aside class="filter-sidebar" id="filter-bar"></aside>
+      <div class="projects-grid" id="projects-grid"></div>
+    </div>
   </section>
 
   <!-- CONTACT -->
-  <section id="contact" class="section contact-section">
-    <h2 class="section-title"><span class="eyebrow">kontak</span>Yuk terhubung</h2>
-    <p class="contact-sub">Terbuka untuk kolaborasi, magang, atau ngobrol soal data.</p>
-    <a href="#" id="contact-email" class="btn btn-primary">Kirim email</a>
+  <section id="contact" class="section">
+    <h2 class="section-title center"><span class="eyebrow" data-i18n="contact_eyebrow">kontak</span><span data-i18n="contact_title">Contact Me</span></h2>
+
+    <div class="contact-panel">
+      <div class="contact-layout">
+
+        <!-- WORKSPACE SCENE — sekarang pakai ilustrasi asli (crossfade siang/malam) -->
+        <div class="workspace-scene" aria-hidden="true">
+          <div class="illust-stage">
+            <img src="" id="illust-day" class="illust-img illust-day" alt="">
+            <img src="" id="illust-night" class="illust-img illust-night" alt="">
+            <div class="illust-glow illust-glow-lamp"></div>
+            <div class="illust-glow illust-glow-monitor"></div>
+            <div class="illust-glow illust-glow-sun"></div>
+            <div class="illust-stars" id="illust-stars"></div>
+          </div>
+        </div>
+
+        <!-- FORM — struktur & ID tidak diubah, cuma styling -->
+        <form class="contact-form" id="contact-form">
+          <p class="contact-form-heading" data-i18n="cf_heading">Say hello</p>
+          <p class="contact-form-subheading" data-i18n="cf_subheading">Punya project, kolaborasi, atau sekadar mau ngobrol soal data? Isi form ini.</p>
+
+          <label class="cf-field">
+            <span class="cf-label" data-i18n="cf_label_name">Nama</span>
+            <input type="text" id="cf-name" placeholder="Nama kamu" data-i18n-placeholder="cf_placeholder_name" required>
+          </label>
+
+          <label class="cf-field">
+            <span class="cf-label" data-i18n="cf_label_email">Email</span>
+            <input type="email" id="cf-email" placeholder="Email kamu (biar aku bisa balas)" data-i18n-placeholder="cf_placeholder_email" required>
+          </label>
+
+          <label class="cf-field">
+            <span class="cf-label" data-i18n="cf_label_message">Pesan</span>
+            <textarea id="cf-message" placeholder="Tulis pesan kamu di sini..." data-i18n-placeholder="cf_placeholder_message" rows="5" required></textarea>
+          </label>
+
+          <button type="submit" class="btn btn-primary cf-submit" data-i18n="cf_submit">Send Message</button>
+        </form>
+
+      </div>
+    </div>
   </section>
 
 </main>
 
 <footer class="footer">
-  <p>Dibuat dengan ✦ oleh <span id="footer-name">—</span> · <span id="footer-year"></span></p>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <p class="footer-logo" id="footer-logo-name">—</p>
+      <p class="footer-tag" id="footer-tagline">Portfolio</p>
+    </div>
+    <nav class="footer-nav">
+      <a href="#home" data-i18n="nav_home">Home</a>
+      <a href="#skills" data-i18n="nav_skills">Skills</a>
+      <a href="#experience" data-i18n="nav_experience">Experience</a>
+      <a href="#projects" data-i18n="nav_projects">Projects</a>
+      <a href="#contact" data-i18n="nav_contact">Contact</a>
+    </nav>
+    <div class="footer-socials" id="footer-socials"></div>
+  </div>
+  <p class="footer-copyright">© <span id="footer-year"></span> <span id="footer-name">—</span>. <span data-i18n="footer_rights">All rights reserved.</span></p>
 </footer>
+
+<!-- MUSIK LOFI — floating button, opt-in, nggak autoplay -->
+<button id="music-toggle" class="music-toggle" aria-label="Play/pause background music" style="display:none;">
+  <span id="music-toggle-icon">🎵</span>
+</button>
+<audio id="lofi-audio" loop preload="none"></audio>
 
 <!-- PROJECT DETAIL MODAL -->
 <div class="modal-overlay" id="modal-overlay">
@@ -105,20 +166,88 @@
       <p class="modal-desc" id="modal-desc"></p>
 
       <div class="modal-block" id="modal-files-block">
-        <p class="modal-block-title">File terkait</p>
+        <p class="modal-block-title" data-i18n="modal_files_title">File terkait</p>
         <ul class="file-list" id="modal-files"></ul>
       </div>
 
       <div class="modal-block" id="modal-dashboard-block">
-        <p class="modal-block-title">Dashboard</p>
+        <p class="modal-block-title" data-i18n="modal_dashboard_title">Dashboard</p>
         <div class="dashboard-embed" id="modal-dashboard"></div>
       </div>
 
-      <a href="#" id="modal-github" class="btn btn-primary" target="_blank" rel="noopener">Lihat di GitHub</a>
+      <div class="modal-block" id="modal-related-block">
+        <p class="modal-block-title" id="modal-related-title" data-i18n="modal_related_title_default">Terkait</p>
+        <div class="related-list" id="modal-related"></div>
+      </div>
+
+      <a href="#" id="modal-github" class="btn btn-primary" target="_blank" rel="noopener" data-i18n="modal_github_btn">Lihat di GitHub</a>
     </div>
   </div>
 </div>
 
-<script src="script.js"></script>
+<!-- EXPERIENCE DETAIL MODAL -->
+<div class="modal-overlay" id="exp-modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exp-modal-title">
+    <button class="modal-close" id="exp-modal-close" aria-label="Tutup">✕</button>
+    <div class="modal-cover" id="exp-modal-cover"></div>
+    <div class="modal-body">
+      <span class="modal-status" id="exp-modal-badge"></span>
+      <h3 id="exp-modal-title"></h3>
+      <p class="exp-modal-line" id="exp-modal-date"></p>
+      <p class="exp-modal-line muted" id="exp-modal-institusi"></p>
+
+      <div id="exp-modal-did-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_modal_did_title">Yang dilakukan</p>
+        <ul class="exp-bullets" id="exp-modal-bullets"></ul>
+      </div>
+
+      <div id="exp-modal-achievements-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_achievements_title">Pencapaian</p>
+        <ul class="exp-bullets" id="exp-modal-achievements"></ul>
+      </div>
+
+      <div id="exp-modal-documentation-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_documentation_title">Dokumentasi</p>
+        <div class="dashboard-embed" id="exp-modal-documentation"></div>
+      </div>
+
+      <div id="exp-modal-tools-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_modal_tools_title">Tools yang dipakai</p>
+        <div class="exp-tools" id="exp-modal-tools"></div>
+      </div>
+
+      <div id="exp-modal-projects-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" id="exp-modal-projects-label">Project selama menjabat di posisi ini</p>
+        <ul class="file-list linkable" id="exp-modal-projects"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOOL CROSS-REFERENCE MODAL -->
+<div class="modal-overlay" id="tool-modal-overlay">
+  <div class="modal tool-modal" role="dialog" aria-modal="true" aria-labelledby="tool-modal-title">
+    <button class="modal-close" id="tool-modal-close" aria-label="Tutup">✕</button>
+    <div class="modal-body">
+      <h3 id="tool-modal-title"></h3>
+      <p class="empty-state" id="tool-modal-empty" style="display:none;"></p>
+      <div class="modal-block" id="tool-modal-projects-block">
+        <p class="modal-block-title" data-i18n="tool_modal_projects_title">Dipakai di project</p>
+        <ul class="file-list linkable" id="tool-modal-projects"></ul>
+      </div>
+      <div class="modal-block" id="tool-modal-experience-block">
+        <p class="modal-block-title" data-i18n="tool_modal_experience_title">Dipakai di pengalaman</p>
+        <ul class="file-list linkable" id="tool-modal-experience"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js?v=21"></script>
 </body>
 </html>
