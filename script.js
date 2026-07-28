@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-25-r9"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-25-r10"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -1123,12 +1123,12 @@ initLangToggle();
 function initPhotoTilt() {
   const art = document.querySelector(".hero-art");
   const frame = document.getElementById("hero-photo-frame");
-  const glow = document.querySelector(".hero-photo-glow");
+  const glowWrap = document.querySelector(".hero-glow-parallax");
   if (!art || !frame) return;
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
   const MAX_TILT = 12; // derajat maksimal miring
-  const MAX_GLOW_SHIFT = 16; // px geser glow di belakang
+  const MAX_GLOW_SHIFT = 20; // px geser glow di belakang
 
   art.addEventListener("mousemove", (e) => {
     const rect = frame.getBoundingClientRect();
@@ -1138,12 +1138,13 @@ function initPhotoTilt() {
     const clampY = Math.max(-1, Math.min(1, relY));
 
     frame.style.transform = `rotateY(${(clampX * MAX_TILT).toFixed(2)}deg) rotateX(${(-clampY * MAX_TILT).toFixed(2)}deg) scale(1.04)`;
-    if (glow) glow.style.transform = `translate(${(clampX * MAX_GLOW_SHIFT).toFixed(1)}px, ${(clampY * MAX_GLOW_SHIFT).toFixed(1)}px) scale(1.1)`;
+    // gerakin WRAPPER-nya (bukan glow itu sendiri) biar nggak bentrok sama animasi pulse-nya
+    if (glowWrap) glowWrap.style.transform = `translate(${(clampX * MAX_GLOW_SHIFT).toFixed(1)}px, ${(clampY * MAX_GLOW_SHIFT).toFixed(1)}px)`;
   });
 
   art.addEventListener("mouseleave", () => {
     frame.style.transform = "";
-    if (glow) glow.style.transform = "";
+    if (glowWrap) glowWrap.style.transform = "";
   });
 }
 initPhotoTilt();
