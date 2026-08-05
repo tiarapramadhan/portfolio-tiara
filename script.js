@@ -23,7 +23,7 @@ const CONFIG = {
 };
 
 let CURRENT_LANG = localStorage.getItem("lang") || "en";
-console.log("[Portfolio] script.js versi build: 2026-07-25-r10"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
+console.log("[Portfolio] script.js versi build: 2026-07-25-r11"); // ganti angka ini tiap update, biar gampang cek versi mana yg live
 
 /* ============================================================
    I18N — dictionary teks statis UI (nav, judul, form, label, dll)
@@ -93,6 +93,7 @@ const I18N = {
   // ini bagian translate label-label di dalam popup detail Project
   modal_files_title:         { id: "File Pendukung", en: "Supporting Files" },
   modal_dashboard_title:     { id: "Dashboard", en: "Dashboard" },
+  modal_dashboard_btn:       { id: "Lihat Dashboard Live ↗", en: "View Live Dashboard ↗" },
   modal_related_title_default: { id: "Terkait", en: "Related" },
   modal_github_btn:          { id: "Lihat di GitHub", en: "View on GitHub" },
   modal_related_dikerjakan:  { id: "Periode", en: "Duration" },
@@ -993,9 +994,9 @@ function openModal(p) {
   }
 
   const dashBlock = document.getElementById("modal-dashboard-block");
-  const dashWrap = document.getElementById("modal-dashboard");
-  if (p.link_dashboard && !p.link_dashboard.startsWith("ISI:")) {
-    dashWrap.innerHTML = `<iframe src="${p.link_dashboard}" loading="lazy" allowfullscreen></iframe>`;
+  const dashLink = document.getElementById("modal-dashboard-link");
+  if (isFilled(p.link_dashboard)) {
+    dashLink.href = normalizeUrl(p.link_dashboard);
     dashBlock.style.display = "block";
   } else {
     dashBlock.style.display = "none";
@@ -1025,7 +1026,6 @@ function openModal(p) {
 
 function closeModal() {
   document.getElementById("modal-overlay").classList.remove("open");
-  document.getElementById("modal-dashboard").innerHTML = "";
 }
 
 document.getElementById("modal-close").addEventListener("click", closeModal);
