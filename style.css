@@ -1573,3 +1573,104 @@ body,
   /* music toggle jangan nutupin konten paling bawah */
   .music-toggle { bottom: 14px; right: 14px; }
 }
+
+/* ============================================================
+   EXP THUMB — badge "+N" kalau foto lebih dari 1
+   ============================================================ */
+.exp-thumb { position: relative; }
+.exp-thumb-count {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  font-weight: 800;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+/* ============================================================
+   EXP GALLERY — grid semua foto di dalam modal
+   ============================================================ */
+.exp-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 6px;
+  padding: 8px;
+  height: auto !important;
+  max-height: 260px;
+  overflow-y: auto;
+}
+.exp-gallery-item {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: zoom-in;
+  transition: transform 0.15s ease;
+}
+.exp-gallery-item:hover { transform: scale(1.04); }
+.exp-gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ============================================================
+   LIGHTBOX — foto ngambang full-screen
+   ============================================================ */
+.lightbox-overlay {
+  background: rgba(0, 0, 0, 0.9);
+  flex-direction: column;
+}
+.lightbox-img {
+  max-width: 90vw;
+  max-height: 82vh;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.6);
+  animation: lightboxPop 0.2s ease;
+}
+@keyframes lightboxPop {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+.lightbox-close {
+  position: absolute;
+  top: 20px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+.lightbox-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 26px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s ease;
+}
+.lightbox-nav:hover { background: rgba(255, 255, 255, 0.25); }
+.lightbox-prev { left: 20px; }
+.lightbox-next { right: 20px; }
+.lightbox-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 13px;
+  font-weight: 700;
+}
+@media (max-width: 640px) {
+  .lightbox-nav { width: 40px; height: 40px; font-size: 20px; }
+  .lightbox-prev { left: 8px; }
+  .lightbox-next { right: 8px; }
+}

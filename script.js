@@ -463,7 +463,8 @@ function drawExperienceList() {
   }
 
   filtered.forEach(row => {
-    const hasImage = row.gambar_url && !row.gambar_url.startsWith("ISI:");
+    const images = splitTags(row.gambar_url).filter(u => !u.startsWith("ISI:"));
+    const hasImage = images.length > 0;
     const hasLogo = row.logo_url && !row.logo_url.startsWith("ISI:");
     const initial = (row.institusi || row.posisi || "?").trim().slice(0, 1).toUpperCase();
     const logoHtml = hasLogo ? `<img src="${row.logo_url}" alt="">` : initial;
@@ -493,7 +494,7 @@ function drawExperienceList() {
         </div>
         <hr class="exp-divider">
         <div class="exp-preview-row">
-          ${hasImage ? `<div class="exp-thumb"><img src="${row.gambar_url}" alt=""></div>` : ""}
+          ${hasImage ? `<div class="exp-thumb">${images.length > 1 ? `<span class="exp-thumb-count">+${images.length - 1}</span>` : ""}<img src="${images[0]}" alt=""></div>` : ""}
           <div class="exp-preview-window">
             ${bullets.length ? `<ul class="exp-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
           </div>
@@ -531,9 +532,23 @@ function drawExperienceList() {
    EXPERIENCE DETAIL MODAL
    ============================================================ */
 function openExpModal(row) {
-  const hasImage = row.gambar_url && !row.gambar_url.startsWith("ISI:");
-  document.getElementById("exp-modal-cover").innerHTML = hasImage
-    ? `<img src="${row.gambar_url}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">` : "";
+  const images = splitTags(row.gambar_url).filter(u => !u.startsWith("ISI:"));
+  const coverEl = document.getElementById("exp-modal-cover");
+  if (images.length === 1) {
+    coverEl.style.height = "220px";
+    coverEl.innerHTML = `<img src="${images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`;
+    coverEl.querySelector("img").addEventListener("click", () => openLightbox(images, 0));
+    coverEl.querySelector("img").style.cursor = "zoom-in";
+  } else if (images.length > 1) {
+    coverEl.style.height = "";
+    coverEl.innerHTML = images.map((url, i) => `<div class="exp-gallery-item" data-idx="${i}"><img src="${url}" alt=""></div>`).join("");
+    coverEl.querySelectorAll(".exp-gallery-item").forEach(node => {
+      node.addEventListener("click", () => openLightbox(images, Number(node.dataset.idx)));
+    });
+  } else {
+    coverEl.style.height = "0px";
+    coverEl.innerHTML = "";
+  }
   document.getElementById("exp-modal-badge").textContent = translateLabel(row.tipe) || "";
   document.getElementById("exp-modal-title").textContent = row.posisi || "";
   document.getElementById("exp-modal-date").textContent =
@@ -1120,6 +1135,52 @@ initLangToggle();
 /* ============================================================
    HERO PHOTO TILT — foto "ketarik" ngikutin kursor, smooth
    ============================================================ */
+/* ============================================================
+   LIGHTBOX — lihat foto full-screen, geser satu-satu (prev/next)
+   ============================================================ */
+const LIGHTBOX = { images: [], index: 0 };
+
+function updateLightboxImage() {
+  const img = document.getElementById("lightbox-img");
+  const counter = document.getElementById("lightbox-counter");
+  img.src = LIGHTBOX.images[LIGHTBOX.index];
+  counter.textContent = LIGHTBOX.images.length > 1 ? `${LIGHTBOX.index + 1} / ${LIGHTBOX.images.length}` : "";
+  const multi = LIGHTBOX.images.length > 1;
+  document.getElementById("lightbox-prev").style.display = multi ? "flex" : "none";
+  document.getElementById("lightbox-next").style.display = multi ? "flex" : "none";
+}
+
+function openLightbox(images, startIndex) {
+  if (!images || !images.length) return;
+  LIGHTBOX.images = images;
+  LIGHTBOX.index = startIndex || 0;
+  updateLightboxImage();
+  document.getElementById("lightbox-overlay").classList.add("open");
+}
+
+function closeLightbox() {
+  document.getElementById("lightbox-overlay").classList.remove("open");
+}
+
+function lightboxStep(dir) {
+  const len = LIGHTBOX.images.length;
+  LIGHTBOX.index = (LIGHTBOX.index + dir + len) % len;
+  updateLightboxImage();
+}
+
+document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+document.getElementById("lightbox-prev").addEventListener("click", () => lightboxStep(-1));
+document.getElementById("lightbox-next").addEventListener("click", () => lightboxStep(1));
+document.getElementById("lightbox-overlay").addEventListener("click", (e) => {
+  if (e.target.id === "lightbox-overlay") closeLightbox();
+});
+document.addEventListener("keydown", (e) => {
+  if (!document.getElementById("lightbox-overlay").classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") lightboxStep(-1);
+  if (e.key === "ArrowRight") lightboxStep(1);
+});
+
 function initPhotoTilt() {
   const art = document.querySelector(".hero-art");
   const frame = document.getElementById("hero-photo-frame");

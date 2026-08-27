@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css?v=26">
+<link rel="stylesheet" href="style.css?v=27">
 </head>
 <body>
 
@@ -198,7 +198,7 @@
 <div class="modal-overlay" id="exp-modal-overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exp-modal-title">
     <button class="modal-close" id="exp-modal-close" aria-label="Tutup">✕</button>
-    <div class="modal-cover" id="exp-modal-cover"></div>
+    <div class="modal-cover exp-gallery" id="exp-modal-cover"></div>
     <div class="modal-body">
       <span class="modal-status" id="exp-modal-badge"></span>
       <h3 id="exp-modal-title"></h3>
@@ -257,6 +257,15 @@
   </div>
 </div>
 
-<script src="script.js?v=26"></script>
+<!-- LIGHTBOX — lihat foto full-screen, geser satu-satu -->
+<div class="modal-overlay lightbox-overlay" id="lightbox-overlay">
+  <button class="modal-close lightbox-close" id="lightbox-close" aria-label="Tutup">✕</button>
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Sebelumnya">‹</button>
+  <img class="lightbox-img" id="lightbox-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Berikutnya">›</button>
+  <div class="lightbox-counter" id="lightbox-counter"></div>
+</div>
+
+<script src="script.js?v=27"></script>
 </body>
 </html>
