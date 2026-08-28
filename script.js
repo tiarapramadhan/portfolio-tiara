@@ -493,11 +493,9 @@ function drawExperienceList() {
           ${row.tipe ? `<span class="exp-badge">${translateLabel(row.tipe)}</span>` : ""}
         </div>
         <hr class="exp-divider">
-        <div class="exp-preview-row">
-          ${hasImage ? `<div class="exp-thumb">${images.length > 1 ? `<span class="exp-thumb-count">+${images.length - 1}</span>` : ""}<img src="${images[0]}" alt=""></div>` : ""}
-          <div class="exp-preview-window">
-            ${bullets.length ? `<ul class="exp-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
-          </div>
+        ${hasImage ? `<div class="exp-thumb-strip">${images.map(src => `<div class="exp-thumb-item"><img src="${src}" alt="" loading="lazy"></div>`).join("")}</div>` : ""}
+        <div class="exp-preview-window">
+          ${bullets.length ? `<ul class="exp-bullets">${bullets.map(b => `<li>${b}</li>`).join("")}</ul>` : ""}
         </div>
         <div class="exp-tools"></div>
         <div class="exp-links"></div>
