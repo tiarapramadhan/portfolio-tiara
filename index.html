@@ -198,7 +198,7 @@
 <div class="modal-overlay" id="exp-modal-overlay">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="exp-modal-title">
     <button class="modal-close" id="exp-modal-close" aria-label="Tutup">✕</button>
-    <div class="modal-cover exp-gallery" id="exp-modal-cover"></div>
+    <div class="modal-cover" id="exp-modal-cover"></div>
     <div class="modal-body">
       <span class="modal-status" id="exp-modal-badge"></span>
       <h3 id="exp-modal-title"></h3>
@@ -209,6 +209,12 @@
         <hr class="exp-divider">
         <p class="modal-block-title" data-i18n="exp_modal_did_title">Yang dilakukan</p>
         <ul class="exp-bullets" id="exp-modal-bullets"></ul>
+      </div>
+
+      <div id="exp-modal-gallery-block">
+        <hr class="exp-divider">
+        <p class="modal-block-title" data-i18n="exp_gallery_title">Dokumentasi Foto</p>
+        <div class="exp-gallery" id="exp-modal-gallery"></div>
       </div>
 
       <div id="exp-modal-achievements-block">
@@ -266,6 +272,6 @@
   <div class="lightbox-counter" id="lightbox-counter"></div>
 </div>
 
-<script src="script.js?v=28"></script>
+<script src="script.js?v=29"></script>
 </body>
 </html>

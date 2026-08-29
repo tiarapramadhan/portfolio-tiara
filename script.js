@@ -101,6 +101,7 @@ const I18N = {
   // ini bagian translate label-label di dalam popup detail Experience
   exp_modal_did_title:   { id: "Tanggung Jawab", en: "Responsibilities" },
   exp_achievements_title: { id: "Pencapaian", en: "Achievements" },
+  exp_gallery_title: { id: "Dokumentasi Foto", en: "Photo Documentation" },
   exp_documentation_title: { id: "Dokumentasi", en: "Documentation" },
   exp_view_detail_hint: { id: "Lihat detail", en: "View details" },
   exp_modal_tools_title: { id: "Tech Stack", en: "Tech Stack" },
@@ -532,21 +533,32 @@ function drawExperienceList() {
 function openExpModal(row) {
   const images = splitTags(row.gambar_url).filter(u => !u.startsWith("ISI:"));
   const coverEl = document.getElementById("exp-modal-cover");
-  if (images.length === 1) {
+
+  // COVER — cuma 1 foto (foto pertama), kayak sampul
+  if (images.length > 0) {
     coverEl.style.height = "220px";
-    coverEl.innerHTML = `<img src="${images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;">`;
+    coverEl.innerHTML = `<img src="${images[0]}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;cursor:zoom-in;">`;
     coverEl.querySelector("img").addEventListener("click", () => openLightbox(images, 0));
-    coverEl.querySelector("img").style.cursor = "zoom-in";
-  } else if (images.length > 1) {
-    coverEl.style.height = "";
-    coverEl.innerHTML = images.map((url, i) => `<div class="exp-gallery-item" data-idx="${i}"><img src="${url}" alt=""></div>`).join("");
-    coverEl.querySelectorAll(".exp-gallery-item").forEach(node => {
-      node.addEventListener("click", () => openLightbox(images, Number(node.dataset.idx)));
-    });
   } else {
     coverEl.style.height = "0px";
     coverEl.innerHTML = "";
   }
+
+  // GALERI — sisa foto (selain sampul), ditaruh di bawah deket deskripsi
+  const galleryBlock = document.getElementById("exp-modal-gallery-block");
+  const galleryEl = document.getElementById("exp-modal-gallery");
+  const restImages = images.slice(1);
+  if (restImages.length > 0) {
+    galleryEl.innerHTML = restImages.map((url, i) => `<div class="exp-gallery-item" data-idx="${i + 1}"><img src="${url}" alt=""></div>`).join("");
+    galleryEl.querySelectorAll(".exp-gallery-item").forEach(node => {
+      node.addEventListener("click", () => openLightbox(images, Number(node.dataset.idx)));
+    });
+    galleryBlock.style.display = "block";
+  } else {
+    galleryEl.innerHTML = "";
+    galleryBlock.style.display = "none";
+  }
+
   document.getElementById("exp-modal-badge").textContent = translateLabel(row.tipe) || "";
   document.getElementById("exp-modal-title").textContent = row.posisi || "";
   document.getElementById("exp-modal-date").textContent =
